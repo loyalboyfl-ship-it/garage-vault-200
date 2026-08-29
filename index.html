@@ -1,1 +1,3411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Garage Vault 2000</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f5f5f5;
+    color:#222;
+}
+
+button,input,select,textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+/* AUTH */
+
+.auth{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:#f7f7f7;
+}
+
+.auth-box{
+    width:100%;
+    max-width:440px;
+    background:white;
+    padding:35px;
+    border-radius:18px;
+    box-shadow:0 10px 40px rgba(0,0,0,.12);
+}
+
+.logo{
+    width:60px;
+    height:60px;
+    background:#d71920;
+    color:white;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    font-size:20px;
+    margin-bottom:20px;
+}
+
+.auth-box h1{
+    margin-bottom:5px;
+}
+
+.muted{
+    color:#777;
+}
+
+.field{
+    margin:14px 0;
+}
+
+.field label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:6px;
+}
+
+.field input,
+.field select,
+.field textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    outline:none;
+}
+
+.field textarea{
+    min-height:90px;
+    resize:vertical;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+    border-color:#d71920;
+}
+
+.btn{
+    border:0;
+    border-radius:8px;
+    padding:12px 16px;
+    background:#d71920;
+    color:white;
+    font-weight:bold;
+}
+
+.btn:hover{
+    background:#b9151b;
+}
+
+.btn.secondary{
+    background:white;
+    color:#222;
+    border:1px solid #ccc;
+}
+
+.btn.danger{
+    background:#222;
+}
+
+.auth .btn{
+    width:100%;
+}
+
+.switch{
+    text-align:center;
+    margin-top:18px;
+}
+
+.link{
+    border:0;
+    background:none;
+    color:#d71920;
+    font-weight:bold;
+}
+
+.message{
+    display:none;
+    padding:12px;
+    border-radius:8px;
+    margin:15px 0;
+}
+
+.message.error{
+    display:block;
+    background:#ffe5e5;
+    color:#990000;
+}
+
+.message.success{
+    display:block;
+    background:#e7f7eb;
+    color:#176b31;
+}
+
+footer{
+    text-align:center;
+    color:#999;
+    font-size:12px;
+    margin-top:25px;
+}
+
+
+/* APP */
+
+.app{
+    display:none;
+}
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    width:235px;
+    background:white;
+    border-right:1px solid #ddd;
+    padding:20px 14px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:bold;
+    margin-bottom:30px;
+}
+
+.brand span{
+    color:#d71920;
+}
+
+.mini-logo{
+    width:42px;
+    height:42px;
+    background:#d71920;
+    color:white;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.nav button{
+    width:100%;
+    border:0;
+    background:white;
+    text-align:left;
+    padding:13px;
+    border-radius:8px;
+    margin-bottom:5px;
+    color:#555;
+}
+
+.nav button:hover,
+.nav button.active{
+    background:#fff0f0;
+    color:#d71920;
+    font-weight:bold;
+}
+
+.main{
+    margin-left:235px;
+}
+
+.topbar{
+    height:70px;
+    background:white;
+    border-bottom:1px solid #ddd;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+}
+
+.content{
+    padding:25px;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+.hero{
+    background:#d71920;
+    color:white;
+    border-radius:14px;
+    padding:25px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-top:20px;
+}
+
+.card{
+    background:white;
+    border:1px solid #ddd;
+    border-radius:12px;
+    padding:20px;
+}
+
+.card small{
+    color:#777;
+}
+
+.card strong{
+    display:block;
+    font-size:30px;
+    margin-top:8px;
+}
+
+.panel{
+    background:white;
+    border:1px solid #ddd;
+    border-radius:12px;
+    padding:20px;
+    margin-top:20px;
+}
+
+.toolbar{
+    display:flex;
+    gap:10px;
+    margin:15px 0;
+    flex-wrap:wrap;
+}
+
+.toolbar input{
+    flex:1;
+    min-width:220px;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,
+td{
+    padding:11px;
+    border-bottom:1px solid #eee;
+    text-align:left;
+}
+
+th{
+    color:#666;
+    font-size:13px;
+}
+
+.actions{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+}
+
+.empty{
+    text-align:center;
+    padding:30px;
+    color:#777;
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.65);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:100;
+}
+
+.modal.open{
+    display:flex;
+}
+
+.modal-box{
+    background:white;
+    width:100%;
+    max-width:650px;
+    max-height:90vh;
+    overflow:auto;
+    border-radius:15px;
+    padding:25px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+@media(max-width:850px){
+
+    .sidebar{
+        width:65px;
+        padding:10px;
+    }
+
+    .brand-text,
+    .nav-text{
+        display:none;
+    }
+
+    .nav button{
+        text-align:center;
+    }
+
+    .main{
+        margin-left:65px;
+    }
+
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:550px){
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .full{
+        grid-column:auto;
+    }
+
+    .content{
+        padding:14px;
+    }
+
+    .topbar{
+        padding:0 14px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+
+<!-- ================= LOGIN ================= -->
+
+<div id="authScreen" class="auth">
+
+<div class="auth-box">
+
+<div class="logo">
+GV
+</div>
+
+<h1>Garage Vault 2000</h1>
+
+<p id="authSubtitle" class="muted">
+Sign in to your garage
+</p>
+
+<div id="message" class="message"></div>
+
+
+<!-- LOGIN -->
+
+<form id="loginForm">
+
+<div class="field">
+
+<label>Email</label>
+
+<input
+id="loginEmail"
+type="email"
+required
+>
+
+</div>
+
+
+<div class="field">
+
+<label>Password</label>
+
+<input
+id="loginPassword"
+type="password"
+required
+>
+
+</div>
+
+
+<button class="btn" type="submit">
+Login
+</button>
+
+
+<div class="switch">
+
+Don't have an account?
+
+<button
+type="button"
+class="link"
+onclick="showSignup()"
+>
+Sign up
+</button>
+
+</div>
+
+</form>
+
+
+<!-- SIGNUP -->
+
+<form id="signupForm" style="display:none">
+
+<div class="field">
+
+<label>Full Name</label>
+
+<input
+id="fullName"
+required
+>
+
+</div>
+
+
+<div class="field">
+
+<label>Garage / Business Name</label>
+
+<input
+id="garageName"
+required
+>
+
+</div>
+
+
+<div class="field">
+
+<label>Phone</label>
+
+<input
+id="phone"
+type="tel"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>Email</label>
+
+<input
+id="signupEmail"
+type="email"
+required
+>
+
+</div>
+
+
+<div class="field">
+
+<label>Password</label>
+
+<input
+id="signupPassword"
+type="password"
+minlength="6"
+required
+>
+
+</div>
+
+
+<div class="field">
+
+<label>Confirm Password</label>
+
+<input
+id="confirmPassword"
+type="password"
+minlength="6"
+required
+>
+
+</div>
+
+
+<button class="btn" type="submit">
+Create Garage Account
+</button>
+
+
+<div class="switch">
+
+Already have an account?
+
+<button
+type="button"
+class="link"
+onclick="showLogin()"
+>
+Login
+</button>
+
+</div>
+
+</form>
+
+
+<footer>
+Made by Keith Makirimira
+</footer>
+
+</div>
+
+</div>
+
+
+
+<!-- ================= APPLICATION ================= -->
+
+<div id="app" class="app">
+
+
+<aside class="sidebar">
+
+<div class="brand">
+
+<div class="mini-logo">
+GV
+</div>
+
+<div class="brand-text">
+Garage <span>Vault</span><br>
+2000
+</div>
+
+</div>
+
+
+<nav class="nav">
+
+<button
+class="active"
+onclick="goToPage('dashboard',this)"
+>
+📊 <span class="nav-text">Dashboard</span>
+</button>
+
+
+<button
+onclick="goToPage('cars',this)"
+>
+🚗 <span class="nav-text">Cars</span>
+</button>
+
+
+<button
+onclick="goToPage('parts',this)"
+>
+⚙️ <span class="nav-text">Parts</span>
+</button>
+
+
+<button
+onclick="goToPage('sales',this)"
+>
+💰 <span class="nav-text">Sales</span>
+</button>
+
+
+<button
+onclick="goToPage('invoices',this)"
+>
+🧾 <span class="nav-text">Invoices</span>
+</button>
+
+</nav>
+
+</aside>
+
+
+
+<main class="main">
+
+
+<header class="topbar">
+
+<strong id="garageTitle">
+Garage Vault 2000
+</strong>
+
+<button
+class="btn secondary"
+onclick="logout()"
+>
+Logout
+</button>
+
+</header>
+
+
+<div class="content">
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<section
+id="dashboard"
+class="page active"
+>
+
+<div class="hero">
+
+<h2 id="welcome">
+Welcome
+</h2>
+
+<p>
+Your Garage Vault 2000 management system.
+</p>
+
+</div>
+
+
+<div class="cards">
+
+<div class="card">
+
+<small>Cars</small>
+
+<strong id="carsCount">
+0
+</strong>
+
+</div>
+
+
+<div class="card">
+
+<small>Parts</small>
+
+<strong id="partsCount">
+0
+</strong>
+
+</div>
+
+
+<div class="card">
+
+<small>Sales</small>
+
+<strong id="salesCount">
+0
+</strong>
+
+</div>
+
+
+<div class="card">
+
+<small>Invoices</small>
+
+<strong id="invoiceCount">
+0
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="panel">
+
+<h3>
+Garage Account
+</h3>
+
+<p id="accountInfo">
+Loading...
+</p>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= CARS ================= -->
+
+<section
+id="cars"
+class="page"
+>
+
+<div class="panel">
+
+<h2>
+🚗 Cars Inventory
+</h2>
+
+<div class="toolbar">
+
+<input
+id="carSearch"
+placeholder="Search cars..."
+oninput="loadCars()"
+>
+
+<button
+class="btn"
+onclick="openCarModal()"
+>
++ Add Car
+</button>
+
+</div>
+
+<div id="carsTable">
+Loading...
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= PARTS ================= -->
+
+<section
+id="parts"
+class="page"
+>
+
+<div class="panel">
+
+<h2>
+⚙️ Parts Inventory
+</h2>
+
+<div class="toolbar">
+
+<input
+id="partSearch"
+placeholder="Search parts..."
+oninput="loadParts()"
+>
+
+<button
+class="btn"
+onclick="openPartModal()"
+>
++ Add Part
+</button>
+
+</div>
+
+<div id="partsTable">
+Loading...
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= SALES ================= -->
+
+<section
+id="sales"
+class="page"
+>
+
+<div class="panel">
+
+<h2>
+💰 Sales
+</h2>
+
+<div class="toolbar">
+
+<button
+class="btn"
+onclick="openSaleModal()"
+>
++ Record Sale
+</button>
+
+</div>
+
+<div id="salesTable">
+Loading...
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= INVOICES ================= -->
+
+<section
+id="invoices"
+class="page"
+>
+
+<div class="panel">
+
+<h2>
+🧾 Invoices
+</h2>
+
+<div class="toolbar">
+
+<button
+class="btn"
+onclick="openInvoiceModal()"
+>
++ Create Invoice
+</button>
+
+</div>
+
+<div id="invoiceTable">
+Loading...
+</div>
+
+</div>
+
+</section>
+
+
+</div>
+
+</main>
+
+</div>
+
+
+
+<!-- ================= CAR MODAL ================= -->
+
+<div
+id="carModal"
+class="modal"
+>
+
+<div class="modal-box">
+
+<h2>
+Add Car
+</h2>
+
+<form id="carForm">
+
+<input
+id="carId"
+type="hidden"
+>
+
+
+<div class="form-grid">
+
+
+<div class="field">
+
+<label>
+Garage Number *
+</label>
+
+<input
+id="carGarageNumber"
+required
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Number Plate
+</label>
+
+<input
+id="carPlate"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Make / Model *
+</label>
+
+<input
+id="carName"
+required
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Year
+</label>
+
+<input
+id="carYear"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Price
+</label>
+
+<input
+id="carPrice"
+type="number"
+step="0.01"
+min="0"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Status
+</label>
+
+<select id="carStatus">
+
+<option>
+Available
+</option>
+
+<option>
+Breaking
+</option>
+
+<option>
+Reserved
+</option>
+
+<option>
+Sold
+</option>
+
+</select>
+
+</div>
+
+
+</div>
+
+
+<div class="actions">
+
+<button
+class="btn"
+type="submit"
+>
+Save Car
+</button>
+
+<button
+type="button"
+class="btn secondary"
+onclick="closeModal('carModal')"
+>
+Cancel
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+
+<!-- ================= PART MODAL ================= -->
+
+<div
+id="partModal"
+class="modal"
+>
+
+<div class="modal-box">
+
+<h2>
+Add Part
+</h2>
+
+<form id="partForm">
+
+<input
+id="partId"
+type="hidden"
+>
+
+
+<div class="form-grid">
+
+
+<div class="field">
+
+<label>
+Part Number *
+</label>
+
+<input
+id="partNumber"
+required
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Part Name *
+</label>
+
+<input
+id="partName"
+required
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Category
+</label>
+
+<input
+id="partCategory"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Quantity
+</label>
+
+<input
+id="partQuantity"
+type="number"
+min="0"
+value="1"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Price
+</label>
+
+<input
+id="partPrice"
+type="number"
+min="0"
+step="0.01"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Car ID
+</label>
+
+<input
+id="partCarId"
+>
+
+</div>
+
+
+</div>
+
+
+<div class="actions">
+
+<button
+class="btn"
+type="submit"
+>
+Save Part
+</button>
+
+<button
+type="button"
+class="btn secondary"
+onclick="closeModal('partModal')"
+>
+Cancel
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+
+<!-- ================= SALE MODAL ================= -->
+
+<div
+id="saleModal"
+class="modal"
+>
+
+<div class="modal-box">
+
+<h2>
+Record Sale
+</h2>
+
+<form id="saleForm">
+
+<div class="form-grid">
+
+
+<div class="field">
+
+<label>
+Customer
+</label>
+
+<input
+id="saleCustomer"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Item Type
+</label>
+
+<select id="saleType">
+
+<option value="part">
+Part
+</option>
+
+<option value="car">
+Car
+</option>
+
+</select>
+
+</div>
+
+
+<div class="field full">
+
+<label>
+Item ID
+</label>
+
+<input
+id="saleItemId"
+required
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Item Name
+</label>
+
+<input
+id="saleItemName"
+required
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Quantity
+</label>
+
+<input
+id="saleQuantity"
+type="number"
+min="1"
+value="1"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Total
+</label>
+
+<input
+id="saleTotal"
+type="number"
+min="0"
+step="0.01"
+required
+>
+
+</div>
+
+
+</div>
+
+
+<div class="actions">
+
+<button
+class="btn"
+type="submit"
+>
+Save Sale
+</button>
+
+<button
+type="button"
+class="btn secondary"
+onclick="closeModal('saleModal')"
+>
+Cancel
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+
+<!-- ================= INVOICE MODAL ================= -->
+
+<div
+id="invoiceModal"
+class="modal"
+>
+
+<div class="modal-box">
+
+<h2>
+Create Invoice
+</h2>
+
+<form id="invoiceForm">
+
+<div class="form-grid">
+
+
+<div class="field">
+
+<label>
+Invoice Number *
+</label>
+
+<input
+id="invoiceNumber"
+required
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Customer Name
+</label>
+
+<input
+id="invoiceCustomer"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Customer Phone
+</label>
+
+<input
+id="invoicePhone"
+>
+
+</div>
+
+
+<div class="field full">
+
+<label>
+Item Description *
+</label>
+
+<textarea
+id="invoiceDescription"
+required
+></textarea>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Quantity
+</label>
+
+<input
+id="invoiceQuantity"
+type="number"
+min="1"
+value="1"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Unit Price
+</label>
+
+<input
+id="invoiceUnitPrice"
+type="number"
+min="0"
+step="0.01"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Tax
+</label>
+
+<input
+id="invoiceTax"
+type="number"
+min="0"
+step="0.01"
+value="0"
+>
+
+</div>
+
+
+</div>
+
+
+<div class="actions">
+
+<button
+class="btn"
+type="submit"
+>
+Save Invoice
+</button>
+
+<button
+type="button"
+class="btn secondary"
+onclick="closeModal('invoiceModal')"
+>
+Cancel
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+
+<script>
+
+/* =====================================================
+   SUPABASE
+===================================================== */
+
+const SUPABASE_URL =
+"https://lzrfsdxwvvtjkfrtlbbq.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_cocVkHyaqIxLGj_g5QDk5A_yDD3vwS1";
+
+const db =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+let profile = null;
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function escapeHTML(value){
+
+return String(value ?? "")
+.replace(/[&<>"']/g,function(char){
+
+return {
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+
+}[char];
+
+});
+
+}
+
+
+function showMessage(text,type="error"){
+
+const box =
+document.getElementById("message");
+
+box.textContent = text;
+
+box.className =
+"message " + type;
+
+}
+
+
+function closeModal(id){
+
+document
+.getElementById(id)
+.classList
+.remove("open");
+
+}
+
+
+/* =====================================================
+   LOGIN / SIGNUP SWITCH
+===================================================== */
+
+function showSignup(){
+
+document
+.getElementById("loginForm")
+.style.display="none";
+
+document
+.getElementById("signupForm")
+.style.display="block";
+
+document
+.getElementById("authSubtitle")
+.textContent=
+"Create your garage account";
+
+document
+.getElementById("message")
+.className="message";
+
+}
+
+
+function showLogin(){
+
+document
+.getElementById("signupForm")
+.style.display="none";
+
+document
+.getElementById("loginForm")
+.style.display="block";
+
+document
+.getElementById("authSubtitle")
+.textContent=
+"Sign in to your garage";
+
+document
+.getElementById("message")
+.className="message";
+
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+function goToPage(page,button){
+
+document
+.querySelectorAll(".page")
+.forEach(function(x){
+
+x.classList.remove("active");
+
+});
+
+
+document
+.getElementById(page)
+.classList
+.add("active");
+
+
+document
+.querySelectorAll(".nav button")
+.forEach(function(x){
+
+x.classList.remove("active");
+
+});
+
+
+button.classList.add("active");
+
+
+if(page==="cars"){
+loadCars();
+}
+
+if(page==="parts"){
+loadParts();
+}
+
+if(page==="sales"){
+loadSales();
+}
+
+if(page==="invoices"){
+loadInvoices();
+}
+
+}
+
+
+/* =====================================================
+   LOAD ACCOUNT
+===================================================== */
+
+async function loadAccount(){
+
+const {
+data:{
+user
+}
+} =
+await db.auth.getUser();
+
+
+if(!user){
+
+document
+.getElementById("authScreen")
+.style.display="flex";
+
+document
+.getElementById("app")
+.style.display="none";
+
+return;
+
+}
+
+
+const {
+data,
+error
+} =
+await db
+.from("profiles")
+.select(`
+id,
+full_name,
+role,
+garage_id,
+garages(
+name,
+phone,
+address
+)
+`)
+.eq("id",user.id)
+.single();
+
+
+if(error){
+
+showMessage(
+"Profile error: " +
+error.message
+);
+
+return;
+
+}
+
+
+profile=data;
+
+
+const garage =
+data.garages || {};
+
+
+document
+.getElementById("garageTitle")
+.textContent =
+garage.name ||
+"Garage Vault 2000";
+
+
+document
+.getElementById("welcome")
+.textContent =
+"Welcome, " +
+(data.full_name || "Owner");
+
+
+document
+.getElementById("accountInfo")
+.innerHTML =
+
+"Garage: <b>" +
+escapeHTML(garage.name || "") +
+"</b><br>" +
+
+"Owner: <b>" +
+escapeHTML(data.full_name || "") +
+"</b><br>" +
+
+"Role: <b>" +
+escapeHTML(data.role || "") +
+"</b><br>" +
+
+"Email: <b>" +
+escapeHTML(user.email || "") +
+"</b>";
+
+
+document
+.getElementById("authScreen")
+.style.display="none";
+
+document
+.getElementById("app")
+.style.display="block";
+
+
+await refreshDashboard();
+
+}
+
+
+/* =====================================================
+   DASHBOARD COUNTS
+===================================================== */
+
+async function refreshDashboard(){
+
+if(!profile) return;
+
+const gid =
+profile.garage_id;
+
+
+const cars =
+await db
+.from("cars")
+.select("id",{count:"exact",head:true})
+.eq("garage_id",gid);
+
+
+const parts =
+await db
+.from("parts")
+.select("id",{count:"exact",head:true})
+.eq("garage_id",gid);
+
+
+const sales =
+await db
+.from("sales")
+.select("id",{count:"exact",head:true})
+.eq("garage_id",gid);
+
+
+const invoices =
+await db
+.from("invoices")
+.select("id",{count:"exact",head:true})
+.eq("garage_id",gid);
+
+
+document
+.getElementById("carsCount")
+.textContent =
+cars.count || 0;
+
+
+document
+.getElementById("partsCount")
+.textContent =
+parts.count || 0;
+
+
+document
+.getElementById("salesCount")
+.textContent =
+sales.count || 0;
+
+
+document
+.getElementById("invoiceCount")
+.textContent =
+invoices.count || 0;
+
+}
+
+
+/* =====================================================
+   CARS
+===================================================== */
+
+function openCarModal(car=null){
+
+document
+.getElementById("carId")
+.value =
+car?.id || "";
+
+
+document
+.getElementById("carGarageNumber")
+.value =
+car?.garage_number || "";
+
+
+document
+.getElementById("carPlate")
+.value =
+car?.number_plate || "";
+
+
+document
+.getElementById("carName")
+.value =
+car?.name || "";
+
+
+document
+.getElementById("carYear")
+.value =
+car?.year || "";
+
+
+document
+.getElementById("carPrice")
+.value =
+car?.price || 0;
+
+
+document
+.getElementById("carStatus")
+.value =
+car?.status || "Available";
+
+
+document
+.getElementById("carModal")
+.classList
+.add("open");
+
+}
+
+
+document
+.getElementById("carForm")
+.addEventListener("submit",async function(e){
+
+e.preventDefault();
+
+
+const payload={
+
+garage_id:
+profile.garage_id,
+
+garage_number:
+document.getElementById("carGarageNumber").value.trim(),
+
+number_plate:
+document.getElementById("carPlate").value.trim(),
+
+name:
+document.getElementById("carName").value.trim(),
+
+year:
+document.getElementById("carYear").value.trim(),
+
+price:
+Number(
+document.getElementById("carPrice").value
+) || 0,
+
+status:
+document.getElementById("carStatus").value
+
+};
+
+
+let result;
+
+
+const id =
+document.getElementById("carId").value;
+
+
+if(id){
+
+result =
+await db
+.from("cars")
+.update(payload)
+.eq("id",id)
+.eq("garage_id",profile.garage_id);
+
+}else{
+
+result =
+await db
+.from("cars")
+.insert(payload);
+
+}
+
+
+if(result.error){
+
+alert(
+"Could not save car: " +
+result.error.message
+);
+
+return;
+
+}
+
+
+closeModal("carModal");
+
+await loadCars();
+
+await refreshDashboard();
+
+});
+
+
+async function loadCars(){
+
+if(!profile) return;
+
+
+const search =
+(
+document
+.getElementById("carSearch")
+?.value || ""
+)
+.toLowerCase();
+
+
+const {
+data,
+error
+} =
+await db
+.from("cars")
+.select("*")
+.eq("garage_id",profile.garage_id)
+.order("created_at",{ascending:false});
+
+
+if(error){
+
+document
+.getElementById("carsTable")
+.innerHTML =
+"<p>" +
+escapeHTML(error.message) +
+"</p>";
+
+return;
+
+}
+
+
+const cars =
+(data || []).filter(function(car){
+
+return (
+
+String(car.garage_number || "")
+.toLowerCase()
+.includes(search)
+
+||
+
+String(car.number_plate || "")
+.toLowerCase()
+.includes(search)
+
+||
+
+String(car.name || "")
+.toLowerCase()
+.includes(search)
+
+);
+
+});
+
+
+if(!cars.length){
+
+document
+.getElementById("carsTable")
+.innerHTML =
+'<div class="empty">No cars found.</div>';
+
+return;
+
+}
+
+
+document
+.getElementById("carsTable")
+.innerHTML =
+
+`
+<table>
+
+<thead>
+
+<tr>
+
+<th>Garage #</th>
+<th>Plate</th>
+<th>Car</th>
+<th>Year</th>
+<th>Price</th>
+<th>Status</th>
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${cars.map(function(car){
+
+return `
+
+<tr>
+
+<td>
+${escapeHTML(car.garage_number)}
+</td>
+
+<td>
+${escapeHTML(car.number_plate || "-")}
+</td>
+
+<td>
+${escapeHTML(car.name)}
+</td>
+
+<td>
+${escapeHTML(car.year || "-")}
+</td>
+
+<td>
+${Number(car.price || 0).toFixed(2)}
+</td>
+
+<td>
+${escapeHTML(car.status || "Available")}
+</td>
+
+<td>
+
+<div class="actions">
+
+<button
+class="btn secondary"
+onclick='openCarModal(${JSON.stringify(car)})'
+>
+Edit
+</button>
+
+<button
+class="btn danger"
+onclick="deleteCar('${car.id}')"
+>
+Delete
+</button>
+
+</div>
+
+</td>
+
+</tr>
+
+`;
+
+}).join("")}
+
+</tbody>
+
+</table>
+`;
+
+}
+
+
+async function deleteCar(id){
+
+if(
+!confirm("Delete this car?")
+)return;
+
+
+const {
+error
+} =
+await db
+.from("cars")
+.delete()
+.eq("id",id)
+.eq("garage_id",profile.garage_id);
+
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+
+await loadCars();
+
+await refreshDashboard();
+
+}
+
+
+/* =====================================================
+   PARTS
+===================================================== */
+
+function openPartModal(part=null){
+
+document
+.getElementById("partId")
+.value =
+part?.id || "";
+
+
+document
+.getElementById("partNumber")
+.value =
+part?.part_number || "";
+
+
+document
+.getElementById("partName")
+.value =
+part?.name || "";
+
+
+document
+.getElementById("partCategory")
+.value =
+part?.category || "";
+
+
+document
+.getElementById("partQuantity")
+.value =
+part?.quantity ?? 1;
+
+
+document
+.getElementById("partPrice")
+.value =
+part?.price || 0;
+
+
+document
+.getElementById("partCarId")
+.value =
+part?.car_id || "";
+
+
+document
+.getElementById("partModal")
+.classList
+.add("open");
+
+}
+
+
+document
+.getElementById("partForm")
+.addEventListener("submit",async function(e){
+
+e.preventDefault();
+
+
+const payload={
+
+garage_id:
+profile.garage_id,
+
+part_number:
+document.getElementById("partNumber").value.trim(),
+
+name:
+document.getElementById("partName").value.trim(),
+
+category:
+document.getElementById("partCategory").value.trim(),
+
+quantity:
+Number(
+document.getElementById("partQuantity").value
+) || 0,
+
+price:
+Number(
+document.getElementById("partPrice").value
+) || 0,
+
+car_id:
+document.getElementById("partCarId").value.trim() || null
+
+};
+
+
+const id =
+document.getElementById("partId").value;
+
+
+let result;
+
+
+if(id){
+
+result =
+await db
+.from("parts")
+.update(payload)
+.eq("id",id)
+.eq("garage_id",profile.garage_id);
+
+}else{
+
+result =
+await db
+.from("parts")
+.insert(payload);
+
+}
+
+
+if(result.error){
+
+alert(
+"Could not save part: " +
+result.error.message
+);
+
+return;
+
+}
+
+
+closeModal("partModal");
+
+await loadParts();
+
+await refreshDashboard();
+
+});
+
+
+async function loadParts(){
+
+if(!profile)return;
+
+
+const search =
+(
+document
+.getElementById("partSearch")
+?.value || ""
+)
+.toLowerCase();
+
+
+const {
+data,
+error
+} =
+await db
+.from("parts")
+.select("*")
+.eq("garage_id",profile.garage_id)
+.order("created_at",{ascending:false});
+
+
+if(error){
+
+document
+.getElementById("partsTable")
+.innerHTML =
+"<p>" +
+escapeHTML(error.message) +
+"</p>";
+
+return;
+
+}
+
+
+const parts =
+(data || []).filter(function(part){
+
+return (
+
+String(part.part_number || "")
+.toLowerCase()
+.includes(search)
+
+||
+
+String(part.name || "")
+.toLowerCase()
+.includes(search)
+
+||
+
+String(part.category || "")
+.toLowerCase()
+.includes(search)
+
+);
+
+});
+
+
+if(!parts.length){
+
+document
+.getElementById("partsTable")
+.innerHTML =
+'<div class="empty">No parts found.</div>';
+
+return;
+
+}
+
+
+document
+.getElementById("partsTable")
+.innerHTML =
+
+`
+<table>
+
+<thead>
+
+<tr>
+
+<th>Part #</th>
+<th>Name</th>
+<th>Category</th>
+<th>Qty</th>
+<th>Price</th>
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${parts.map(function(part){
+
+return `
+
+<tr>
+
+<td>
+${escapeHTML(part.part_number)}
+</td>
+
+<td>
+${escapeHTML(part.name)}
+</td>
+
+<td>
+${escapeHTML(part.category || "-")}
+</td>
+
+<td>
+${part.quantity ?? 0}
+</td>
+
+<td>
+${Number(part.price || 0).toFixed(2)}
+</td>
+
+<td>
+
+<div class="actions">
+
+<button
+class="btn secondary"
+onclick='openPartModal(${JSON.stringify(part)})'
+>
+Edit
+</button>
+
+<button
+class="btn danger"
+onclick="deletePart('${part.id}')"
+>
+Delete
+</button>
+
+</div>
+
+</td>
+
+</tr>
+
+`;
+
+}).join("")}
+
+</tbody>
+
+</table>
+`;
+
+}
+
+
+async function deletePart(id){
+
+if(
+!confirm("Delete this part?")
+)return;
+
+
+const {
+error
+} =
+await db
+.from("parts")
+.delete()
+.eq("id",id)
+.eq("garage_id",profile.garage_id);
+
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+
+await loadParts();
+
+await refreshDashboard();
+
+}
+
+
+/* =====================================================
+   SALES
+===================================================== */
+
+function openSaleModal(){
+
+document
+.getElementById("saleForm")
+.reset();
+
+
+document
+.getElementById("saleQuantity")
+.value=1;
+
+
+document
+.getElementById("saleModal")
+.classList
+.add("open");
+
+}
+
+
+document
+.getElementById("saleForm")
+.addEventListener("submit",async function(e){
+
+e.preventDefault();
+
+
+const payload={
+
+garage_id:
+profile.garage_id,
+
+customer_name:
+document
+.getElementById("saleCustomer")
+.value
+.trim(),
+
+item_type:
+document
+.getElementById("saleType")
+.value,
+
+item_id:
+document
+.getElementById("saleItemId")
+.value
+.trim(),
+
+item_name:
+document
+.getElementById("saleItemName")
+.value
+.trim(),
+
+quantity:
+Number(
+document
+.getElementById("saleQuantity")
+.value
+) || 1,
+
+total:
+Number(
+document
+.getElementById("saleTotal")
+.value
+) || 0
+
+};
+
+
+const {
+error
+} =
+await db
+.from("sales")
+.insert(payload);
+
+
+if(error){
+
+alert(
+"Could not save sale: " +
+error.message
+);
+
+return;
+
+}
+
+
+/* reduce part stock */
+
+if(payload.item_type==="part"){
+
+const {
+data:part
+} =
+await db
+.from("parts")
+.select("quantity")
+.eq("id",payload.item_id)
+.eq("garage_id",profile.garage_id)
+.single();
+
+
+if(part){
+
+await db
+.from("parts")
+.update({
+
+quantity:
+Math.max(
+0,
+Number(part.quantity || 0)
+-
+payload.quantity
+
+)
+
+})
+.eq("id",payload.item_id)
+.eq("garage_id",profile.garage_id);
+
+}
+
+}
+
+
+closeModal("saleModal");
+
+await loadSales();
+
+await refreshDashboard();
+
+});
+
+
+async function loadSales(){
+
+if(!profile)return;
+
+
+const {
+data,
+error
+} =
+await db
+.from("sales")
+.select("*")
+.eq("garage_id",profile.garage_id)
+.order("created_at",{ascending:false});
+
+
+if(error){
+
+document
+.getElementById("salesTable")
+.innerHTML =
+"<p>" +
+escapeHTML(error.message) +
+"</p>";
+
+return;
+
+}
+
+
+if(!data?.length){
+
+document
+.getElementById("salesTable")
+.innerHTML =
+'<div class="empty">No sales recorded.</div>';
+
+return;
+
+}
+
+
+document
+.getElementById("salesTable")
+.innerHTML =
+
+`
+<table>
+
+<thead>
+
+<tr>
+
+<th>Date</th>
+<th>Customer</th>
+<th>Item</th>
+<th>Qty</th>
+<th>Total</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${data.map(function(sale){
+
+return `
+
+<tr>
+
+<td>
+${new Date(
+sale.created_at
+).toLocaleString()}
+</td>
+
+<td>
+${escapeHTML(
+sale.customer_name || "-"
+)}
+</td>
+
+<td>
+${escapeHTML(
+sale.item_name || "-"
+)}
+</td>
+
+<td>
+${sale.quantity || 1}
+</td>
+
+<td>
+${Number(
+sale.total || 0
+).toFixed(2)}
+</td>
+
+</tr>
+
+`;
+
+}).join("")}
+
+</tbody>
+
+</table>
+`;
+
+}
+
+
+/* =====================================================
+   INVOICES
+===================================================== */
+
+function openInvoiceModal(){
+
+document
+.getElementById("invoiceForm")
+.reset();
+
+
+document
+.getElementById("invoiceNumber")
+.value =
+"INV-" +
+Date.now();
+
+
+document
+.getElementById("invoiceQuantity")
+.value=1;
+
+
+document
+.getElementById("invoiceTax")
+.value=0;
+
+
+document
+.getElementById("invoiceModal")
+.classList
+.add("open");
+
+}
+
+
+document
+.getElementById("invoiceForm")
+.addEventListener("submit",async function(e){
+
+e.preventDefault();
+
+
+const quantity =
+Number(
+document
+.getElementById("invoiceQuantity")
+.value
+) || 1;
+
+
+const unitPrice =
+Number(
+document
+.getElementById("invoiceUnitPrice")
+.value
+) || 0;
+
+
+const tax =
+Number(
+document
+.getElementById("invoiceTax")
+.value
+) || 0;
+
+
+const payload={
+
+garage_id:
+profile.garage_id,
+
+invoice_number:
+document
+.getElementById("invoiceNumber")
+.value
+.trim(),
+
+customer_name:
+document
+.getElementById("invoiceCustomer")
+.value
+.trim(),
+
+customer_phone:
+document
+.getElementById("invoicePhone")
+.value
+.trim(),
+
+item_description:
+document
+.getElementById("invoiceDescription")
+.value
+.trim(),
+
+quantity:
+
+quantity,
+
+unit_price:
+
+unitPrice,
+
+tax:
+
+tax,
+
+total:
+
+(quantity * unitPrice) + tax
+
+};
+
+
+const {
+error
+} =
+await db
+.from("invoices")
+.insert(payload);
+
+
+if(error){
+
+alert(
+"Could not save invoice: " +
+error.message
+);
+
+return;
+
+}
+
+
+closeModal("invoiceModal");
+
+await loadInvoices();
+
+await refreshDashboard();
+
+});
+
+
+async function loadInvoices(){
+
+if(!profile)return;
+
+
+const {
+data,
+error
+} =
+await db
+.from("invoices")
+.select("*")
+.eq("garage_id",profile.garage_id)
+.order("created_at",{ascending:false});
+
+
+if(error){
+
+document
+.getElementById("invoiceTable")
+.innerHTML =
+"<p>" +
+escapeHTML(error.message) +
+"</p>";
+
+return;
+
+}
+
+
+if(!data?.length){
+
+document
+.getElementById("invoiceTable")
+.innerHTML =
+'<div class="empty">No invoices created.</div>';
+
+return;
+
+}
+
+
+document
+.getElementById("invoiceTable")
+.innerHTML =
+
+`
+<table>
+
+<thead>
+
+<tr>
+
+<th>Invoice</th>
+<th>Customer</th>
+<th>Description</th>
+<th>Total</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${data.map(function(invoice){
+
+return `
+
+<tr>
+
+<td>
+${escapeHTML(
+invoice.invoice_number
+)}
+</td>
+
+<td>
+${escapeHTML(
+invoice.customer_name || "-"
+)}
+</td>
+
+<td>
+${escapeHTML(
+invoice.item_description || "-"
+)}
+</td>
+
+<td>
+${Number(
+invoice.total || 0
+).toFixed(2)}
+</td>
+
+<td>
+
+<button
+class="btn"
+onclick='printInvoice(${JSON.stringify(invoice)})'
+>
+Print
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+}).join("")}
+
+</tbody>
+
+</table>
+`;
+
+}
+
+
+/* =====================================================
+   PRINT INVOICE
+===================================================== */
+
+function printInvoice(invoice){
+
+const garage =
+profile?.garages || {};
+
+
+const win =
+window.open(
+"",
+"_blank"
+);
+
+
+win.document.write(`
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>
+${escapeHTML(invoice.invoice_number)}
+</title>
+
+<style>
+
+body{
+font-family:Arial;
+padding:40px;
+}
+
+h1{
+color:#d71920;
+}
+
+hr{
+border:0;
+border-top:1px solid #ddd;
+margin:20px 0;
+}
+
+.row{
+margin:10px 0;
+}
+
+.total{
+font-size:24px;
+font-weight:bold;
+margin-top:30px;
+}
+
+button{
+padding:10px 15px;
+}
+
+@media print{
+button{
+display:none;
+}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>
+Garage Vault 2000
+</h1>
+
+<h2>
+INVOICE ${escapeHTML(invoice.invoice_number)}
+</h2>
+
+<div class="row">
+<b>Garage:</b>
+${escapeHTML(garage.name || "")}
+</div>
+
+<div class="row">
+<b>Customer:</b>
+${escapeHTML(invoice.customer_name || "")}
+</div>
+
+<div class="row">
+<b>Phone:</b>
+${escapeHTML(invoice.customer_phone || "")}
+</div>
+
+<hr>
+
+<div class="row">
+<b>Description:</b>
+${escapeHTML(invoice.item_description || "")}
+</div>
+
+<div class="row">
+Quantity:
+${invoice.quantity || 1}
+</div>
+
+<div class="row">
+Unit Price:
+${Number(invoice.unit_price || 0).toFixed(2)}
+</div>
+
+<div class="row">
+Tax:
+${Number(invoice.tax || 0).toFixed(2)}
+</div>
+
+<div class="total">
+Total:
+${Number(invoice.total || 0).toFixed(2)}
+</div>
+
+<button onclick="window.print()">
+Print Invoice
+</button>
+
+</body>
+
+</html>
+
+`);
+
+
+win.document.close();
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+async function logout(){
+
+await db.auth.signOut();
+
+window.location.reload();
+
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+document
+.getElementById("loginForm")
+.addEventListener("submit",async function(e){
+
+e.preventDefault();
+
+
+showMessage(
+"Logging in...",
+"success"
+);
+
+
+const {
+error
+} =
+await db.auth.signInWithPassword({
+
+email:
+document
+.getElementById("loginEmail")
+.value
+.trim(),
+
+password:
+document
+.getElementById("loginPassword")
+.value
+
+});
+
+
+if(error){
+
+showMessage(
+error.message
+);
+
+return;
+
+}
+
+
+await loadAccount();
+
+});
+
+
+/* =====================================================
+   SIGNUP
+===================================================== */
+
+document
+.getElementById("signupForm")
+.addEventListener("submit",async function(e){
+
+e.preventDefault();
+
+
+const password =
+document
+.getElementById("signupPassword")
+.value;
+
+
+const confirm =
+document
+.getElementById("confirmPassword")
+.value;
+
+
+if(password !== confirm){
+
+showMessage(
+"Passwords do not match."
+);
+
+return;
+
+}
+
+
+showMessage(
+"Creating account...",
+"success"
+);
+
+
+const {
+data,
+error
+} =
+await db.auth.signUp({
+
+email:
+document
+.getElementById("signupEmail")
+.value
+.trim(),
+
+password:
+
+password,
+
+options:{
+
+data:{
+
+full_name:
+document
+.getElementById("fullName")
+.value
+.trim(),
+
+garage_name:
+document
+.getElementById("garageName")
+.value
+.trim(),
+
+phone:
+document
+.getElementById("phone")
+.value
+.trim()
+
+}
+
+}
+
+});
+
+
+if(error){
+
+showMessage(
+error.message
+);
+
+return;
+
+}
+
+
+if(data.session){
+
+await loadAccount();
+
+}else{
+
+showMessage(
+"Account created. Check your email to confirm your account, then log in.",
+"success"
+);
+
+showLogin();
+
+}
+
+});
+
+
+/* =====================================================
+   SESSION
+===================================================== */
+
+db.auth.onAuthStateChange(
+function(event){
+
+if(event==="SIGNED_IN"){
+
+loadAccount();
+
+}
+
+});
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadAccount();
+
+</script>
+
+</body>
+</html>
