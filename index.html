@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Top Ranger Breakers</title>
+<title>Top Range Breakers</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -92,7 +92,7 @@ th{color:#666;font-size:13px}
 <div class="auth-box">
 
 <div class="logo">TRB</div>
-<h1>Top Ranger Breakers</h1>
+<h1>Top Range Breakers</h1>
 <p id="authSubtitle" class="muted">Sign in to your garage</p>
 
 <div id="message" class="message"></div>
@@ -156,7 +156,7 @@ Already have an account?
 </div>
 </form>
 
-<footer>Top Ranger Breakers</footer>
+<footer>Top Range Breakers</footer>
 </div>
 </div>
 
@@ -168,7 +168,7 @@ Already have an account?
 <div class="brand">
 <div class="mini-logo">TRB</div>
 <div class="brand-text">
-Top Ranger <span>Breakers</span><br>
+Top Range <span>Breakers</span><br>
 Garage System
 </div>
 </div>
@@ -201,7 +201,7 @@ Garage System
 <main class="main">
 
 <header class="topbar">
-<strong id="garageTitle">Top Ranger Breakers</strong>
+<strong id="garageTitle">Top Range Breakers</strong>
 <button class="btn secondary" onclick="logout()">Logout</button>
 </header>
 
@@ -211,7 +211,7 @@ Garage System
 
 <div class="hero">
 <h2 id="welcome">Welcome</h2>
-<p>Top Ranger Breakers management system.</p>
+<p>Top Range Breakers management system.</p>
 </div>
 
 <div class="cards">
@@ -659,11 +659,11 @@ profile=data;
 
 const garage=data.garages || {};
 
-document.getElementById("garageTitle").textContent=garage.name || "Top Ranger Breakers";
+document.getElementById("garageTitle").textContent=garage.name || "Top Range Breakers";
 document.getElementById("welcome").textContent="Welcome, "+(data.full_name || "Owner");
 
 document.getElementById("accountInfo").innerHTML=
-"Garage: <b>"+escapeHTML(garage.name || "Top Ranger Breakers")+"</b><br>"+
+"Garage: <b>"+escapeHTML(garage.name || "Top Range Breakers")+"</b><br>"+
 "Owner: <b>"+escapeHTML(data.full_name || "")+"</b><br>"+
 "Role: <b>"+escapeHTML(data.role || "")+"</b><br>"+
 "Email: <b>"+escapeHTML(user.email || "")+"</b>";
@@ -1361,7 +1361,7 @@ button{display:none}
 <div class="invoice-box">
 
 <div class="header">
-<h1>TOP RANGER BREAKERS</h1>
+<h1>TOP Range BREAKERS</h1>
 <div>Vehicle Parts & Breakers</div>
 </div>
 
@@ -1369,7 +1369,7 @@ button{display:none}
 
 <div class="row">
 <b>Garage:</b>
-${escapeHTML(garage.name || "Top Ranger Breakers")}
+${escapeHTML(garage.name || "Top Range Breakers")}
 </div>
 
 <div class="row">
