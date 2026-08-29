@@ -1,10 +1,8 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Garage Vault 2000</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -40,16 +38,19 @@ button{cursor:pointer}
     box-shadow:0 10px 40px rgba(0,0,0,.12);
 }
 
-.logo{
-    width:60px;
-    height:60px;
+.logo,.mini-logo{
     background:#d71920;
     color:white;
-    border-radius:14px;
     display:flex;
     align-items:center;
     justify-content:center;
     font-weight:bold;
+}
+
+.logo{
+    width:60px;
+    height:60px;
+    border-radius:14px;
     font-size:20px;
     margin-bottom:20px;
 }
@@ -58,7 +59,6 @@ button{cursor:pointer}
 .muted{color:#777}
 
 .field{margin:14px 0}
-
 .field label{
     display:block;
     font-weight:bold;
@@ -171,13 +171,7 @@ footer{
 .mini-logo{
     width:42px;
     height:42px;
-    background:#d71920;
-    color:white;
     border-radius:10px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:bold;
 }
 
 .nav button{
@@ -326,53 +320,55 @@ th{
 
 .full{grid-column:1/-1}
 
-.car-photo{
-    width:80px;
-    height:60px;
+.photo{
+    width:65px;
+    height:65px;
     object-fit:cover;
     border-radius:8px;
     border:1px solid #ddd;
+    background:#eee;
 }
 
-.photo-preview{
-    margin-top:10px;
+.photo-placeholder{
+    width:65px;
+    height:65px;
+    border-radius:8px;
+    background:#eee;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
 }
 
-.photo-preview img{
-    width:180px;
-    height:120px;
+.preview{
+    width:150px;
+    height:110px;
     object-fit:cover;
     border-radius:10px;
     border:1px solid #ddd;
+    display:none;
+    margin-top:10px;
 }
 
 @media(max-width:850px){
-
     .sidebar{
         width:65px;
         padding:10px;
     }
 
-    .brand-text,
-    .nav-text{
-        display:none;
-    }
+    .brand-text,.nav-text{display:none}
 
     .nav button{text-align:center}
+
     .main{margin-left:65px}
 
-    .cards{
-        grid-template-columns:repeat(2,1fr);
-    }
+    .cards{grid-template-columns:repeat(2,1fr)}
 }
 
 @media(max-width:550px){
-
     .cards{grid-template-columns:1fr}
 
-    .form-grid{
-        grid-template-columns:1fr;
-    }
+    .form-grid{grid-template-columns:1fr}
 
     .full{grid-column:auto}
 
@@ -389,6 +385,8 @@ th{
 </head>
 
 <body>
+
+<!-- ================= LOGIN ================= -->
 
 <div id="authScreen" class="auth">
 
@@ -457,7 +455,9 @@ Don't have an account?
 <input id="confirmPassword" type="password" minlength="6" required>
 </div>
 
-<button class="btn" type="submit">Create Garage Account</button>
+<button class="btn" type="submit">
+Create Garage Account
+</button>
 
 <div class="switch">
 Already have an account?
@@ -470,6 +470,9 @@ Already have an account?
 
 </div>
 </div>
+
+
+<!-- ================= APP ================= -->
 
 <div id="app" class="app">
 
@@ -509,6 +512,7 @@ Garage <span>Vault</span><br>
 </button>
 
 </nav>
+
 </aside>
 
 <main class="main">
@@ -517,11 +521,15 @@ Garage <span>Vault</span><br>
 
 <strong id="garageTitle">Garage Vault 2000</strong>
 
-<button class="btn secondary" onclick="logout()">Logout</button>
+<button class="btn secondary" onclick="logout()">
+Logout
+</button>
 
 </header>
 
 <div class="content">
+
+<!-- DASHBOARD -->
 
 <section id="dashboard" class="page active">
 
@@ -567,6 +575,9 @@ Garage <span>Vault</span><br>
 
 </section>
 
+
+<!-- CARS -->
+
 <section id="cars" class="page">
 
 <div class="panel">
@@ -592,6 +603,9 @@ oninput="loadCars()"
 </div>
 
 </section>
+
+
+<!-- PARTS -->
 
 <section id="parts" class="page">
 
@@ -619,6 +633,9 @@ oninput="loadParts()"
 
 </section>
 
+
+<!-- SALES -->
+
 <section id="sales" class="page">
 
 <div class="panel">
@@ -638,6 +655,9 @@ oninput="loadParts()"
 </div>
 
 </section>
+
+
+<!-- INVOICES -->
 
 <section id="invoices" class="page">
 
@@ -663,13 +683,14 @@ oninput="loadParts()"
 </main>
 </div>
 
-<!-- CAR MODAL -->
+
+<!-- ================= CAR MODAL ================= -->
 
 <div id="carModal" class="modal">
 
 <div class="modal-box">
 
-<h2 id="carModalTitle">Add Car</h2>
+<h2>Add Car</h2>
 
 <form id="carForm">
 
@@ -678,61 +699,38 @@ oninput="loadParts()"
 <div class="form-grid">
 
 <div class="field">
-
 <label>Garage Number *</label>
-
 <input id="carGarageNumber" required>
-
 </div>
 
 <div class="field">
-
 <label>Number Plate</label>
-
 <input id="carPlate">
-
 </div>
 
 <div class="field">
-
 <label>Make / Model *</label>
-
 <input id="carName" required>
-
 </div>
 
 <div class="field">
-
 <label>Year</label>
-
 <input id="carYear">
-
 </div>
 
 <div class="field">
-
 <label>Price</label>
-
-<input
-id="carPrice"
-type="number"
-step="0.01"
-min="0"
->
-
+<input id="carPrice" type="number" step="0.01" min="0">
 </div>
 
 <div class="field">
-
 <label>Status</label>
 
 <select id="carStatus">
-
-<option value="Available">Available</option>
-<option value="Breaking">Breaking</option>
-<option value="Reserved">Reserved</option>
-<option value="Sold">Sold</option>
-
+<option>Available</option>
+<option>Breaking</option>
+<option>Reserved</option>
+<option>Sold</option>
 </select>
 
 </div>
@@ -744,14 +742,11 @@ min="0"
 <input
 id="carPhoto"
 type="file"
-accept="image/jpeg,image/png,image/webp"
+accept="image/*"
+onchange="previewPhoto(this,'carPreview')"
 >
 
-<small class="muted">
-JPG, PNG or WebP — maximum 5 MB
-</small>
-
-<div id="carPhotoPreview" class="photo-preview"></div>
+<img id="carPreview" class="preview">
 
 </div>
 
@@ -778,7 +773,8 @@ Cancel
 </div>
 </div>
 
-<!-- PART MODAL -->
+
+<!-- ================= PART MODAL ================= -->
 
 <div id="partModal" class="modal">
 
@@ -822,11 +818,28 @@ Cancel
 <input id="partCarId">
 </div>
 
+<div class="field full">
+
+<label>Part Photo</label>
+
+<input
+id="partPhoto"
+type="file"
+accept="image/*"
+onchange="previewPhoto(this,'partPreview')"
+>
+
+<img id="partPreview" class="preview">
+
+</div>
+
 </div>
 
 <div class="actions">
 
-<button class="btn" type="submit">Save Part</button>
+<button class="btn" type="submit">
+Save Part
+</button>
 
 <button
 type="button"
@@ -843,7 +856,8 @@ Cancel
 </div>
 </div>
 
-<!-- SALE MODAL -->
+
+<!-- ================= SALE MODAL ================= -->
 
 <div id="saleModal" class="modal">
 
@@ -865,19 +879,15 @@ Cancel
 <label>Item Type</label>
 
 <select id="saleType">
-
 <option value="part">Part</option>
 <option value="car">Car</option>
-
 </select>
 
 </div>
 
 <div class="field full">
-
 <label>Item ID</label>
 <input id="saleItemId" required>
-
 </div>
 
 <div class="field">
@@ -899,7 +909,9 @@ Cancel
 
 <div class="actions">
 
-<button class="btn" type="submit">Save Sale</button>
+<button class="btn" type="submit">
+Save Sale
+</button>
 
 <button
 type="button"
@@ -916,7 +928,8 @@ Cancel
 </div>
 </div>
 
-<!-- INVOICE MODAL -->
+
+<!-- ================= INVOICE MODAL ================= -->
 
 <div id="invoiceModal" class="modal">
 
@@ -967,7 +980,9 @@ Cancel
 
 <div class="actions">
 
-<button class="btn" type="submit">Save Invoice</button>
+<button class="btn" type="submit">
+Save Invoice
+</button>
 
 <button
 type="button"
@@ -984,7 +999,12 @@ Cancel
 </div>
 </div>
 
+
 <script>
+
+/* =====================================================
+SUPABASE
+===================================================== */
 
 const SUPABASE_URL =
 "https://lzrfsdxwvvtjkfrtlbbq.supabase.co";
@@ -1001,7 +1021,9 @@ SUPABASE_KEY
 let profile = null;
 
 
-/* HELPERS */
+/* =====================================================
+HELPERS
+===================================================== */
 
 function escapeHTML(value){
 
@@ -1043,84 +1065,149 @@ document
 }
 
 
-/* AUTH */
+/* =====================================================
+PHOTO PREVIEW
+===================================================== */
+
+function previewPhoto(input,previewId){
+
+const file=input.files[0];
+
+const preview=
+document.getElementById(previewId);
+
+if(!file){
+
+preview.style.display="none";
+preview.src="";
+
+return;
+
+}
+
+preview.src=
+URL.createObjectURL(file);
+
+preview.style.display="block";
+
+}
+
+
+/* =====================================================
+UPLOAD PHOTO
+===================================================== */
+
+async function uploadPhoto(file,bucket,folder){
+
+if(!file)return null;
+
+const extension =
+file.name.split(".").pop().toLowerCase();
+
+const fileName =
+folder +
+"/" +
+crypto.randomUUID() +
+"." +
+extension;
+
+const {
+error
+} =
+await db
+.storage
+.from(bucket)
+.upload(
+fileName,
+file,
+{
+upsert:false,
+contentType:file.type
+}
+);
+
+if(error){
+
+throw error;
+
+}
+
+const {
+data
+} =
+db
+.storage
+.from(bucket)
+.getPublicUrl(fileName);
+
+return data.publicUrl;
+
+}
+
+
+/* =====================================================
+LOGIN / SIGNUP
+===================================================== */
 
 function showSignup(){
 
-document
-.getElementById("loginForm")
-.style.display="none";
+document.getElementById("loginForm").style.display="none";
 
-document
-.getElementById("signupForm")
-.style.display="block";
+document.getElementById("signupForm").style.display="block";
 
-document
-.getElementById("authSubtitle")
-.textContent=
+document.getElementById("authSubtitle").textContent=
 "Create your garage account";
 
-document
-.getElementById("message")
-.className="message";
+document.getElementById("message").className="message";
 
 }
 
 
 function showLogin(){
 
-document
-.getElementById("signupForm")
-.style.display="none";
+document.getElementById("signupForm").style.display="none";
 
-document
-.getElementById("loginForm")
-.style.display="block";
+document.getElementById("loginForm").style.display="block";
 
-document
-.getElementById("authSubtitle")
-.textContent=
+document.getElementById("authSubtitle").textContent=
 "Sign in to your garage";
 
-document
-.getElementById("message")
-.className="message";
+document.getElementById("message").className="message";
 
 }
 
 
-/* NAVIGATION */
+/* =====================================================
+NAVIGATION
+===================================================== */
 
 function goToPage(page,button){
 
 document
 .querySelectorAll(".page")
-.forEach(function(x){
-x.classList.remove("active");
-});
+.forEach(x=>x.classList.remove("active"));
 
 document
 .getElementById(page)
-.classList
-.add("active");
+.classList.add("active");
 
 document
 .querySelectorAll(".nav button")
-.forEach(function(x){
-x.classList.remove("active");
-});
+.forEach(x=>x.classList.remove("active"));
 
 button.classList.add("active");
 
-if(page==="cars") loadCars();
-if(page==="parts") loadParts();
-if(page==="sales") loadSales();
-if(page==="invoices") loadInvoices();
+if(page==="cars")loadCars();
+if(page==="parts")loadParts();
+if(page==="sales")loadSales();
+if(page==="invoices")loadInvoices();
 
 }
 
 
-/* ACCOUNT */
+/* =====================================================
+ACCOUNT
+===================================================== */
 
 async function loadAccount(){
 
@@ -1129,21 +1216,15 @@ data:{user}
 } =
 await db.auth.getUser();
 
-
 if(!user){
 
-document
-.getElementById("authScreen")
-.style.display="flex";
+document.getElementById("authScreen").style.display="flex";
 
-document
-.getElementById("app")
-.style.display="none";
+document.getElementById("app").style.display="none";
 
 return;
 
 }
-
 
 const {
 data,
@@ -1165,7 +1246,6 @@ address
 .eq("id",user.id)
 .single();
 
-
 if(error){
 
 showMessage(
@@ -1176,29 +1256,17 @@ return;
 
 }
 
-
 profile=data;
 
 const garage=data.garages || {};
 
+document.getElementById("garageTitle").textContent=
+garage.name || "Garage Vault 2000";
 
-document
-.getElementById("garageTitle")
-.textContent=
-garage.name ||
-"Garage Vault 2000";
+document.getElementById("welcome").textContent=
+"Welcome, "+(data.full_name || "Owner");
 
-
-document
-.getElementById("welcome")
-.textContent=
-"Welcome, "+
-(data.full_name || "Owner");
-
-
-document
-.getElementById("accountInfo")
-.innerHTML=
+document.getElementById("accountInfo").innerHTML=
 
 "Garage: <b>"+
 escapeHTML(garage.name || "")+
@@ -1216,22 +1284,18 @@ escapeHTML(data.role || "")+
 escapeHTML(user.email || "")+
 "</b>";
 
+document.getElementById("authScreen").style.display="none";
 
-document
-.getElementById("authScreen")
-.style.display="none";
-
-document
-.getElementById("app")
-.style.display="block";
-
+document.getElementById("app").style.display="block";
 
 await refreshDashboard();
 
 }
 
 
-/* DASHBOARD */
+/* =====================================================
+DASHBOARD
+===================================================== */
 
 async function refreshDashboard(){
 
@@ -1239,114 +1303,90 @@ if(!profile)return;
 
 const gid=profile.garage_id;
 
-const cars =
+const cars=
 await db
 .from("cars")
 .select("id",{count:"exact",head:true})
 .eq("garage_id",gid);
 
-const parts =
+const parts=
 await db
 .from("parts")
 .select("id",{count:"exact",head:true})
 .eq("garage_id",gid);
 
-const sales =
+const sales=
 await db
 .from("sales")
 .select("id",{count:"exact",head:true})
 .eq("garage_id",gid);
 
-const invoices =
+const invoices=
 await db
 .from("invoices")
 .select("id",{count:"exact",head:true})
 .eq("garage_id",gid);
 
-document
-.getElementById("carsCount")
-.textContent=cars.count || 0;
+document.getElementById("carsCount").textContent=
+cars.count || 0;
 
-document
-.getElementById("partsCount")
-.textContent=parts.count || 0;
+document.getElementById("partsCount").textContent=
+parts.count || 0;
 
-document
-.getElementById("salesCount")
-.textContent=sales.count || 0;
+document.getElementById("salesCount").textContent=
+sales.count || 0;
 
-document
-.getElementById("invoiceCount")
-.textContent=invoices.count || 0;
+document.getElementById("invoiceCount").textContent=
+invoices.count || 0;
 
 }
 
 
 /* =====================================================
-   CARS + PHOTO UPLOAD
+CARS
 ===================================================== */
 
 function openCarModal(car=null){
 
-document
-.getElementById("carId")
-.value=car?.id || "";
+document.getElementById("carId").value=
+car?.id || "";
 
-document
-.getElementById("carGarageNumber")
-.value=car?.garage_number || "";
+document.getElementById("carGarageNumber").value=
+car?.garage_number || "";
 
-document
-.getElementById("carPlate")
-.value=car?.number_plate || "";
+document.getElementById("carPlate").value=
+car?.number_plate || "";
 
-document
-.getElementById("carName")
-.value=car?.name || "";
+document.getElementById("carName").value=
+car?.name || "";
 
-document
-.getElementById("carYear")
-.value=car?.year || "";
+document.getElementById("carYear").value=
+car?.year || "";
 
-document
-.getElementById("carPrice")
-.value=car?.price || 0;
+document.getElementById("carPrice").value=
+car?.price || 0;
 
-document
-.getElementById("carStatus")
-.value=car?.status || "Available";
+document.getElementById("carStatus").value=
+car?.status || "Available";
 
-document
-.getElementById("carPhoto")
-.value="";
+document.getElementById("carPhoto").value="";
 
-const preview =
-document.getElementById("carPhotoPreview");
+const preview=
+document.getElementById("carPreview");
 
 if(car?.photo_url){
 
-preview.innerHTML=`
-<img
-src="${escapeHTML(car.photo_url)}"
-alt="Car photo"
->
-`;
+preview.src=car.photo_url;
+preview.style.display="block";
 
 }else{
 
-preview.innerHTML="";
+preview.src="";
+preview.style.display="none";
 
 }
 
-document
-.getElementById("carModalTitle")
-.textContent=
-car ? "Edit Car" : "Add Car";
-
-document
-.getElementById("carModal")
-.classList
-.add("open");
+document.getElementById("carModal").classList.add("open");
 
 }
 
@@ -1357,206 +1397,62 @@ document
 
 e.preventDefault();
 
-if(!profile){
+try{
 
-alert("Please log in again.");
-
-return;
-
-}
-
-
-const id =
-document
-.getElementById("carId")
-.value;
-
-const photoInput =
-document
-.getElementById("carPhoto");
-
-const photoFile =
-photoInput.files[0];
+const id=
+document.getElementById("carId").value;
 
 let photoUrl=null;
 
+const file=
+document.getElementById("carPhoto").files[0];
 
-/* GET EXISTING PHOTO */
-
-if(id){
-
-const {
-data:existingCar,
-error:existingError
-} =
-await db
-.from("cars")
-.select("photo_url")
-.eq("id",id)
-.eq("garage_id",profile.garage_id)
-.single();
-
-if(existingError){
-
-alert(
-"Could not load car: "+
-existingError.message
-);
-
-return;
-
-}
-
-photoUrl=existingCar?.photo_url || null;
-
-}
-
-
-/* UPLOAD PHOTO */
-
-if(photoFile){
-
-if(photoFile.size > 5 * 1024 * 1024){
-
-alert(
-"Photo must be smaller than 5 MB."
-);
-
-return;
-
-}
-
-
-const allowedTypes=[
-"image/jpeg",
-"image/png",
-"image/webp"
-];
-
-
-if(!allowedTypes.includes(photoFile.type)){
-
-alert(
-"Please use JPG, PNG or WebP."
-);
-
-return;
-
-}
-
-
-const extension =
-photoFile.name
-.split(".")
-.pop()
-.toLowerCase();
-
-
-const fileName =
-profile.garage_id+
-"/"+
-crypto.randomUUID()+
-"."+extension;
-
-
-const {
-error:uploadError
-} =
-await db
-.storage
-.from("car-photos")
-.upload(
-fileName,
-photoFile,
-{
-cacheControl:"3600",
-upsert:false,
-contentType:photoFile.type
-}
-);
-
-
-if(uploadError){
-
-alert(
-"Photo upload failed: "+
-uploadError.message
-);
-
-return;
-
-}
-
-
-const {
-data:publicData
-} =
-db
-.storage
-.from("car-photos")
-.getPublicUrl(fileName);
-
+if(file){
 
 photoUrl=
-publicData.publicUrl;
+await uploadPhoto(
+file,
+"car-photos",
+profile.garage_id
+);
 
 }
-
-
-/* SAVE CAR */
 
 const payload={
 
-garage_id:
-profile.garage_id,
+garage_id:profile.garage_id,
 
 garage_number:
-document
-.getElementById("carGarageNumber")
-.value
-.trim(),
+document.getElementById("carGarageNumber").value.trim(),
 
 number_plate:
-document
-.getElementById("carPlate")
-.value
-.trim(),
+document.getElementById("carPlate").value.trim(),
 
 name:
-document
-.getElementById("carName")
-.value
-.trim(),
+document.getElementById("carName").value.trim(),
 
 year:
-document
-.getElementById("carYear")
-.value
-.trim(),
+document.getElementById("carYear").value.trim(),
 
 price:
-Number(
-document
-.getElementById("carPrice")
-.value
-)||0,
+Number(document.getElementById("carPrice").value)||0,
 
 status:
-document
-.getElementById("carStatus")
-.value,
-
-photo_url:
-photoUrl
+document.getElementById("carStatus").value
 
 };
 
+if(photoUrl){
+
+payload.photo_url=photoUrl;
+
+}
 
 let result;
 
 if(id){
 
-result =
+result=
 await db
 .from("cars")
 .update(payload)
@@ -1565,39 +1461,33 @@ await db
 
 }else{
 
-result =
+result=
 await db
 .from("cars")
 .insert(payload);
 
 }
 
-
 if(result.error){
 
-alert(
-"Could not save car: "+
-result.error.message
-);
-
-return;
+throw result.error;
 
 }
-
-
-document
-.getElementById("carForm")
-.reset();
-
-document
-.getElementById("carPhotoPreview")
-.innerHTML="";
 
 closeModal("carModal");
 
 await loadCars();
 
 await refreshDashboard();
+
+}catch(error){
+
+alert(
+"Could not save car: "+
+error.message
+);
+
+}
 
 });
 
@@ -1606,14 +1496,10 @@ async function loadCars(){
 
 if(!profile)return;
 
-const search =
+const search=
 (
-document
-.getElementById("carSearch")
-?.value || ""
-)
-.toLowerCase();
-
+document.getElementById("carSearch")?.value || ""
+).toLowerCase();
 
 const {
 data,
@@ -1625,70 +1511,49 @@ await db
 .eq("garage_id",profile.garage_id)
 .order("created_at",{ascending:false});
 
-
 if(error){
 
-document
-.getElementById("carsTable")
-.innerHTML=
-"<p>"+
-escapeHTML(error.message)+
-"</p>";
+document.getElementById("carsTable").innerHTML=
+"<p>"+escapeHTML(error.message)+"</p>";
 
 return;
 
 }
 
+const cars=(data||[]).filter(function(car){
 
-const cars =
-(data || []).filter(function(car){
+return (
 
-return(
-
-String(car.garage_number || "")
-.toLowerCase()
-.includes(search)
+String(car.garage_number||"").toLowerCase().includes(search)
 
 ||
 
-String(car.number_plate || "")
-.toLowerCase()
-.includes(search)
+String(car.number_plate||"").toLowerCase().includes(search)
 
 ||
 
-String(car.name || "")
-.toLowerCase()
-.includes(search)
+String(car.name||"").toLowerCase().includes(search)
 
 );
 
 });
 
-
 if(!cars.length){
 
-document
-.getElementById("carsTable")
-.innerHTML=
+document.getElementById("carsTable").innerHTML=
 '<div class="empty">No cars found.</div>';
 
 return;
 
 }
 
-
-document
-.getElementById("carsTable")
-.innerHTML=
+document.getElementById("carsTable").innerHTML=
 
 `
 <table>
 
 <thead>
-
 <tr>
-
 <th>Photo</th>
 <th>Garage #</th>
 <th>Plate</th>
@@ -1697,64 +1562,37 @@ document
 <th>Price</th>
 <th>Status</th>
 <th>Actions</th>
-
 </tr>
-
 </thead>
 
 <tbody>
 
 ${cars.map(function(car){
 
-return`
+const photo=
+car.photo_url
+?
+`<img class="photo" src="${escapeHTML(car.photo_url)}">`
+:
+`<div class="photo-placeholder">🚗</div>`;
+
+return `
 
 <tr>
 
-<td>
+<td>${photo}</td>
 
-${
-car.photo_url
+<td>${escapeHTML(car.garage_number)}</td>
 
-?
+<td>${escapeHTML(car.number_plate||"-")}</td>
 
-`
-<img
-class="car-photo"
-src="${escapeHTML(car.photo_url)}"
-alt="Car photo"
->
-`
+<td>${escapeHTML(car.name)}</td>
 
-:
+<td>${escapeHTML(car.year||"-")}</td>
 
-"No photo"
-}
+<td>${Number(car.price||0).toFixed(2)}</td>
 
-</td>
-
-<td>
-${escapeHTML(car.garage_number)}
-</td>
-
-<td>
-${escapeHTML(car.number_plate || "-")}
-</td>
-
-<td>
-${escapeHTML(car.name)}
-</td>
-
-<td>
-${escapeHTML(car.year || "-")}
-</td>
-
-<td>
-${Number(car.price || 0).toFixed(2)}
-</td>
-
-<td>
-${escapeHTML(car.status || "Available")}
-</td>
+<td>${escapeHTML(car.status||"Available")}</td>
 
 <td>
 
@@ -1762,7 +1600,7 @@ ${escapeHTML(car.status || "Available")}
 
 <button
 class="btn secondary"
-onclick='openCarModal(${JSON.stringify(car).replace(/'/g,"&#39;")})'
+onclick='openCarModal(${JSON.stringify(car)})'
 >
 Edit
 </button>
@@ -1785,7 +1623,6 @@ Delete
 }).join("")}
 
 </tbody>
-
 </table>
 `;
 
@@ -1796,87 +1633,87 @@ async function deleteCar(id){
 
 if(!confirm("Delete this car?"))return;
 
-
-const {
-data:car
-} =
-await db
+const {data:car}=await db
 .from("cars")
 .select("photo_url")
 .eq("id",id)
 .eq("garage_id",profile.garage_id)
 .single();
 
-
-const {
-error
-} =
+const {error}=
 await db
 .from("cars")
 .delete()
 .eq("id",id)
 .eq("garage_id",profile.garage_id);
 
-
 if(error){
 
 alert(error.message);
-
 return;
 
 }
 
-
-/* Delete stored photo too */
-
 if(car?.photo_url){
 
-const marker="/storage/v1/object/public/car-photos/";
-
-const position=
-car.photo_url.indexOf(marker);
-
-if(position!==-1){
-
-const filePath=
-decodeURIComponent(
-car.photo_url
-.substring(position+marker.length)
+await deleteStoragePhoto(
+car.photo_url,
+"car-photos"
 );
 
-await db
-.storage
-.from("car-photos")
-.remove([filePath]);
-
 }
-
-}
-
 
 await loadCars();
-
 await refreshDashboard();
 
 }
 
 
-/* PARTS */
+/* =====================================================
+PARTS
+===================================================== */
 
 function openPartModal(part=null){
 
-document.getElementById("partId").value=part?.id || "";
-document.getElementById("partNumber").value=part?.part_number || "";
-document.getElementById("partName").value=part?.name || "";
-document.getElementById("partCategory").value=part?.category || "";
-document.getElementById("partQuantity").value=part?.quantity ?? 1;
-document.getElementById("partPrice").value=part?.price || 0;
-document.getElementById("partCarId").value=part?.car_id || "";
+document.getElementById("partId").value=
+part?.id || "";
 
-document
-.getElementById("partModal")
-.classList
-.add("open");
+document.getElementById("partNumber").value=
+part?.part_number || "";
+
+document.getElementById("partName").value=
+part?.name || "";
+
+document.getElementById("partCategory").value=
+part?.category || "";
+
+document.getElementById("partQuantity").value=
+part?.quantity ?? 1;
+
+document.getElementById("partPrice").value=
+part?.price || 0;
+
+document.getElementById("partCarId").value=
+part?.car_id || "";
+
+document.getElementById("partPhoto").value="";
+
+const preview=
+document.getElementById("partPreview");
+
+if(part?.photo_url){
+
+preview.src=part.photo_url;
+preview.style.display="block";
+
+}else{
+
+preview.src="";
+preview.style.display="none";
+
+}
+
+document.getElementById("partModal").classList.add("open");
 
 }
 
@@ -1886,6 +1723,27 @@ document
 .addEventListener("submit",async function(e){
 
 e.preventDefault();
+
+try{
+
+const id=
+document.getElementById("partId").value;
+
+let photoUrl=null;
+
+const file=
+document.getElementById("partPhoto").files[0];
+
+if(file){
+
+photoUrl=
+await uploadPhoto(
+file,
+"part-photos",
+profile.garage_id
+);
+
+}
 
 const payload={
 
@@ -1901,29 +1759,27 @@ category:
 document.getElementById("partCategory").value.trim(),
 
 quantity:
-Number(
-document.getElementById("partQuantity").value
-)||0,
+Number(document.getElementById("partQuantity").value)||0,
 
 price:
-Number(
-document.getElementById("partPrice").value
-)||0,
+Number(document.getElementById("partPrice").value)||0,
 
 car_id:
 document.getElementById("partCarId").value.trim()||null
 
 };
 
+if(photoUrl){
 
-const id =
-document.getElementById("partId").value;
+payload.photo_url=photoUrl;
+
+}
 
 let result;
 
 if(id){
 
-result =
+result=
 await db
 .from("parts")
 .update(payload)
@@ -1932,22 +1788,16 @@ await db
 
 }else{
 
-result =
+result=
 await db
 .from("parts")
 .insert(payload);
 
 }
 
-
 if(result.error){
 
-alert(
-"Could not save part: "+
-result.error.message
-);
-
-return;
+throw result.error;
 
 }
 
@@ -1957,6 +1807,15 @@ await loadParts();
 
 await refreshDashboard();
 
+}catch(error){
+
+alert(
+"Could not save part: "+
+error.message
+);
+
+}
+
 });
 
 
@@ -1964,14 +1823,10 @@ async function loadParts(){
 
 if(!profile)return;
 
-const search =
+const search=
 (
-document
-.getElementById("partSearch")
-?.value || ""
-)
-.toLowerCase();
-
+document.getElementById("partSearch")?.value || ""
+).toLowerCase();
 
 const {
 data,
@@ -1983,62 +1838,43 @@ await db
 .eq("garage_id",profile.garage_id)
 .order("created_at",{ascending:false});
 
-
 if(error){
 
-document
-.getElementById("partsTable")
-.innerHTML=
-"<p>"+
-escapeHTML(error.message)+
-"</p>";
+document.getElementById("partsTable").innerHTML=
+"<p>"+escapeHTML(error.message)+"</p>";
 
 return;
 
 }
 
+const parts=(data||[]).filter(function(part){
 
-const parts =
-(data || []).filter(function(part){
+return (
 
-return(
-
-String(part.part_number || "")
-.toLowerCase()
-.includes(search)
+String(part.part_number||"").toLowerCase().includes(search)
 
 ||
 
-String(part.name || "")
-.toLowerCase()
-.includes(search)
+String(part.name||"").toLowerCase().includes(search)
 
 ||
 
-String(part.category || "")
-.toLowerCase()
-.includes(search)
+String(part.category||"").toLowerCase().includes(search)
 
 );
 
 });
 
-
 if(!parts.length){
 
-document
-.getElementById("partsTable")
-.innerHTML=
+document.getElementById("partsTable").innerHTML=
 '<div class="empty">No parts found.</div>';
 
 return;
 
 }
 
-
-document
-.getElementById("partsTable")
-.innerHTML=
+document.getElementById("partsTable").innerHTML=
 
 `
 <table>
@@ -2046,6 +1882,7 @@ document
 <thead>
 
 <tr>
+<th>Photo</th>
 <th>Part #</th>
 <th>Name</th>
 <th>Category</th>
@@ -2060,19 +1897,28 @@ document
 
 ${parts.map(function(part){
 
-return`
+const photo=
+part.photo_url
+?
+`<img class="photo" src="${escapeHTML(part.photo_url)}">`
+:
+`<div class="photo-placeholder">⚙️</div>`;
+
+return `
 
 <tr>
+
+<td>${photo}</td>
 
 <td>${escapeHTML(part.part_number)}</td>
 
 <td>${escapeHTML(part.name)}</td>
 
-<td>${escapeHTML(part.category || "-")}</td>
+<td>${escapeHTML(part.category||"-")}</td>
 
-<td>${part.quantity ?? 0}</td>
+<td>${part.quantity??0}</td>
 
-<td>${Number(part.price || 0).toFixed(2)}</td>
+<td>${Number(part.price||0).toFixed(2)}</td>
 
 <td>
 
@@ -2114,9 +1960,14 @@ async function deletePart(id){
 
 if(!confirm("Delete this part?"))return;
 
-const {
-error
-} =
+const {data:part}=await db
+.from("parts")
+.select("photo_url")
+.eq("id",id)
+.eq("garage_id",profile.garage_id)
+.single();
+
+const {error}=
 await db
 .from("parts")
 .delete()
@@ -2126,19 +1977,63 @@ await db
 if(error){
 
 alert(error.message);
-
 return;
 
 }
 
-await loadParts();
+if(part?.photo_url){
 
+await deleteStoragePhoto(
+part.photo_url,
+"part-photos"
+);
+
+}
+
+await loadParts();
 await refreshDashboard();
 
 }
 
 
-/* SALES */
+/* =====================================================
+DELETE STORAGE PHOTO
+===================================================== */
+
+async function deleteStoragePhoto(url,bucket){
+
+try{
+
+const marker="/storage/v1/object/public/"+bucket+"/";
+
+const index=url.indexOf(marker);
+
+if(index===-1)return;
+
+const path=url.substring(
+index+marker.length
+);
+
+await db
+.storage
+.from(bucket)
+.remove([path]);
+
+}catch(error){
+
+console.log(
+"Photo delete warning:",
+error.message
+);
+
+}
+
+}
+
+
+/* =====================================================
+SALES
+===================================================== */
 
 function openSaleModal(){
 
@@ -2146,10 +2041,7 @@ document.getElementById("saleForm").reset();
 
 document.getElementById("saleQuantity").value=1;
 
-document
-.getElementById("saleModal")
-.classList
-.add("open");
+document.getElementById("saleModal").classList.add("open");
 
 }
 
@@ -2165,52 +2057,29 @@ const payload={
 garage_id:profile.garage_id,
 
 customer_name:
-document
-.getElementById("saleCustomer")
-.value
-.trim(),
+document.getElementById("saleCustomer").value.trim(),
 
 item_type:
-document
-.getElementById("saleType")
-.value,
+document.getElementById("saleType").value,
 
 item_id:
-document
-.getElementById("saleItemId")
-.value
-.trim(),
+document.getElementById("saleItemId").value.trim(),
 
 item_name:
-document
-.getElementById("saleItemName")
-.value
-.trim(),
+document.getElementById("saleItemName").value.trim(),
 
 quantity:
-Number(
-document
-.getElementById("saleQuantity")
-.value
-)||1,
+Number(document.getElementById("saleQuantity").value)||1,
 
 total:
-Number(
-document
-.getElementById("saleTotal")
-.value
-)||0
+Number(document.getElementById("saleTotal").value)||0
 
 };
 
-
-const {
-error
-} =
+const {error}=
 await db
 .from("sales")
 .insert(payload);
-
 
 if(error){
 
@@ -2223,12 +2092,9 @@ return;
 
 }
 
-
 if(payload.item_type==="part"){
 
-const {
-data:part
-} =
+const {data:part}=
 await db
 .from("parts")
 .select("quantity")
@@ -2236,20 +2102,15 @@ await db
 .eq("garage_id",profile.garage_id)
 .single();
 
-
 if(part){
 
 await db
 .from("parts")
 .update({
-
-quantity:
-Math.max(
+quantity:Math.max(
 0,
-Number(part.quantity || 0)-
-payload.quantity
+Number(part.quantity||0)-payload.quantity
 )
-
 })
 .eq("id",payload.item_id)
 .eq("garage_id",profile.garage_id);
@@ -2258,11 +2119,9 @@ payload.quantity
 
 }
 
-
 closeModal("saleModal");
 
 await loadSales();
-
 await refreshDashboard();
 
 });
@@ -2282,42 +2141,30 @@ await db
 .eq("garage_id",profile.garage_id)
 .order("created_at",{ascending:false});
 
-
 if(error){
 
-document
-.getElementById("salesTable")
-.innerHTML=
-"<p>"+
-escapeHTML(error.message)+
-"</p>";
+document.getElementById("salesTable").innerHTML=
+"<p>"+escapeHTML(error.message)+"</p>";
 
 return;
 
 }
 
-
 if(!data?.length){
 
-document
-.getElementById("salesTable")
-.innerHTML=
+document.getElementById("salesTable").innerHTML=
 '<div class="empty">No sales recorded.</div>';
 
 return;
 
 }
 
-
-document
-.getElementById("salesTable")
-.innerHTML=
+document.getElementById("salesTable").innerHTML=
 
 `
 <table>
 
 <thead>
-
 <tr>
 <th>Date</th>
 <th>Customer</th>
@@ -2325,14 +2172,13 @@ document
 <th>Qty</th>
 <th>Total</th>
 </tr>
-
 </thead>
 
 <tbody>
 
 ${data.map(function(sale){
 
-return`
+return `
 
 <tr>
 
@@ -2341,19 +2187,19 @@ ${new Date(sale.created_at).toLocaleString()}
 </td>
 
 <td>
-${escapeHTML(sale.customer_name || "-")}
+${escapeHTML(sale.customer_name||"-")}
 </td>
 
 <td>
-${escapeHTML(sale.item_name || "-")}
+${escapeHTML(sale.item_name||"-")}
 </td>
 
 <td>
-${sale.quantity || 1}
+${sale.quantity||1}
 </td>
 
 <td>
-${Number(sale.total || 0).toFixed(2)}
+${Number(sale.total||0).toFixed(2)}
 </td>
 
 </tr>
@@ -2370,31 +2216,22 @@ ${Number(sale.total || 0).toFixed(2)}
 }
 
 
-/* INVOICES */
+/* =====================================================
+INVOICES
+===================================================== */
 
 function openInvoiceModal(){
 
-document
-.getElementById("invoiceForm")
-.reset();
+document.getElementById("invoiceForm").reset();
 
-document
-.getElementById("invoiceNumber")
-.value=
+document.getElementById("invoiceNumber").value=
 "INV-"+Date.now();
 
-document
-.getElementById("invoiceQuantity")
-.value=1;
+document.getElementById("invoiceQuantity").value=1;
 
-document
-.getElementById("invoiceTax")
-.value=0;
+document.getElementById("invoiceTax").value=0;
 
-document
-.getElementById("invoiceModal")
-.classList
-.add("open");
+document.getElementById("invoiceModal").classList.add("open");
 
 }
 
@@ -2406,48 +2243,29 @@ document
 e.preventDefault();
 
 const quantity=
-Number(
-document.getElementById("invoiceQuantity").value
-)||1;
+Number(document.getElementById("invoiceQuantity").value)||1;
 
 const unitPrice=
-Number(
-document.getElementById("invoiceUnitPrice").value
-)||0;
+Number(document.getElementById("invoiceUnitPrice").value)||0;
 
 const tax=
-Number(
-document.getElementById("invoiceTax").value
-)||0;
-
+Number(document.getElementById("invoiceTax").value)||0;
 
 const payload={
 
 garage_id:profile.garage_id,
 
 invoice_number:
-document
-.getElementById("invoiceNumber")
-.value
-.trim(),
+document.getElementById("invoiceNumber").value.trim(),
 
 customer_name:
-document
-.getElementById("invoiceCustomer")
-.value
-.trim(),
+document.getElementById("invoiceCustomer").value.trim(),
 
 customer_phone:
-document
-.getElementById("invoicePhone")
-.value
-.trim(),
+document.getElementById("invoicePhone").value.trim(),
 
 item_description:
-document
-.getElementById("invoiceDescription")
-.value
-.trim(),
+document.getElementById("invoiceDescription").value.trim(),
 
 quantity:quantity,
 
@@ -2459,14 +2277,10 @@ total:(quantity*unitPrice)+tax
 
 };
 
-
-const {
-error
-} =
+const {error}=
 await db
 .from("invoices")
 .insert(payload);
-
 
 if(error){
 
@@ -2482,7 +2296,6 @@ return;
 closeModal("invoiceModal");
 
 await loadInvoices();
-
 await refreshDashboard();
 
 });
@@ -2502,36 +2315,25 @@ await db
 .eq("garage_id",profile.garage_id)
 .order("created_at",{ascending:false});
 
-
 if(error){
 
-document
-.getElementById("invoiceTable")
-.innerHTML=
-"<p>"+
-escapeHTML(error.message)+
-"</p>";
+document.getElementById("invoiceTable").innerHTML=
+"<p>"+escapeHTML(error.message)+"</p>";
 
 return;
 
 }
 
-
 if(!data?.length){
 
-document
-.getElementById("invoiceTable")
-.innerHTML=
+document.getElementById("invoiceTable").innerHTML=
 '<div class="empty">No invoices created.</div>';
 
 return;
 
 }
 
-
-document
-.getElementById("invoiceTable")
-.innerHTML=
+document.getElementById("invoiceTable").innerHTML=
 
 `
 <table>
@@ -2552,7 +2354,7 @@ document
 
 ${data.map(function(invoice){
 
-return`
+return `
 
 <tr>
 
@@ -2561,15 +2363,15 @@ ${escapeHTML(invoice.invoice_number)}
 </td>
 
 <td>
-${escapeHTML(invoice.customer_name || "-")}
+${escapeHTML(invoice.customer_name||"-")}
 </td>
 
 <td>
-${escapeHTML(invoice.item_description || "-")}
+${escapeHTML(invoice.item_description||"-")}
 </td>
 
 <td>
-${Number(invoice.total || 0).toFixed(2)}
+${Number(invoice.total||0).toFixed(2)}
 </td>
 
 <td>
@@ -2597,21 +2399,15 @@ Print
 }
 
 
-/* PRINT */
+/* =====================================================
+PRINT INVOICE
+===================================================== */
 
 function printInvoice(invoice){
 
-const garage=profile?.garages || {};
+const garage=profile?.garages||{};
 
 const win=window.open("","_blank");
-
-if(!win){
-
-alert("Please allow popups to print invoices.");
-
-return;
-
-}
 
 win.document.write(`
 
@@ -2621,9 +2417,7 @@ win.document.write(`
 
 <head>
 
-<title>
-${escapeHTML(invoice.invoice_number)}
-</title>
+<title>${escapeHTML(invoice.invoice_number)}</title>
 
 <style>
 
@@ -2657,7 +2451,9 @@ padding:10px 15px;
 }
 
 @media print{
-button{display:none}
+button{
+display:none;
+}
 }
 
 </style>
@@ -2674,44 +2470,44 @@ INVOICE ${escapeHTML(invoice.invoice_number)}
 
 <div class="row">
 <b>Garage:</b>
-${escapeHTML(garage.name || "")}
+${escapeHTML(garage.name||"")}
 </div>
 
 <div class="row">
 <b>Customer:</b>
-${escapeHTML(invoice.customer_name || "")}
+${escapeHTML(invoice.customer_name||"")}
 </div>
 
 <div class="row">
 <b>Phone:</b>
-${escapeHTML(invoice.customer_phone || "")}
+${escapeHTML(invoice.customer_phone||"")}
 </div>
 
 <hr>
 
 <div class="row">
 <b>Description:</b>
-${escapeHTML(invoice.item_description || "")}
+${escapeHTML(invoice.item_description||"")}
 </div>
 
 <div class="row">
 Quantity:
-${invoice.quantity || 1}
+${invoice.quantity||1}
 </div>
 
 <div class="row">
 Unit Price:
-${Number(invoice.unit_price || 0).toFixed(2)}
+${Number(invoice.unit_price||0).toFixed(2)}
 </div>
 
 <div class="row">
 Tax:
-${Number(invoice.tax || 0).toFixed(2)}
+${Number(invoice.tax||0).toFixed(2)}
 </div>
 
 <div class="total">
 Total:
-${Number(invoice.total || 0).toFixed(2)}
+${Number(invoice.total||0).toFixed(2)}
 </div>
 
 <button onclick="window.print()">
@@ -2729,7 +2525,9 @@ win.document.close();
 }
 
 
-/* LOGIN */
+/* =====================================================
+LOGOUT
+===================================================== */
 
 async function logout(){
 
@@ -2739,6 +2537,10 @@ window.location.reload();
 
 }
 
+
+/* =====================================================
+LOGIN
+===================================================== */
 
 document
 .getElementById("loginForm")
@@ -2754,18 +2556,12 @@ error
 await db.auth.signInWithPassword({
 
 email:
-document
-.getElementById("loginEmail")
-.value
-.trim(),
+document.getElementById("loginEmail").value.trim(),
 
 password:
-document
-.getElementById("loginPassword")
-.value
+document.getElementById("loginPassword").value
 
 });
-
 
 if(error){
 
@@ -2780,7 +2576,9 @@ await loadAccount();
 });
 
 
-/* SIGNUP */
+/* =====================================================
+SIGNUP
+===================================================== */
 
 document
 .getElementById("signupForm")
@@ -2789,14 +2587,10 @@ document
 e.preventDefault();
 
 const password=
-document
-.getElementById("signupPassword")
-.value;
+document.getElementById("signupPassword").value;
 
 const confirm=
-document
-.getElementById("confirmPassword")
-.value;
+document.getElementById("confirmPassword").value;
 
 if(password!==confirm){
 
@@ -2806,7 +2600,10 @@ return;
 
 }
 
-showMessage("Creating account...","success");
+showMessage(
+"Creating account...",
+"success"
+);
 
 const {
 data,
@@ -2815,37 +2612,28 @@ error
 await db.auth.signUp({
 
 email:
-document
-.getElementById("signupEmail")
-.value
-.trim(),
+document.getElementById("signupEmail").value.trim(),
 
 password:password,
 
 options:{
+
 data:{
+
 full_name:
-document
-.getElementById("fullName")
-.value
-.trim(),
+document.getElementById("fullName").value.trim(),
 
 garage_name:
-document
-.getElementById("garageName")
-.value
-.trim(),
+document.getElementById("garageName").value.trim(),
 
 phone:
-document
-.getElementById("phone")
-.value
-.trim()
+document.getElementById("phone").value.trim()
+
 }
+
 }
 
 });
-
 
 if(error){
 
@@ -2855,7 +2643,6 @@ return;
 
 }
 
-
 if(data.session){
 
 await loadAccount();
@@ -2863,7 +2650,7 @@ await loadAccount();
 }else{
 
 showMessage(
-"Account created. You can now log in.",
+"Account created. Check your email to confirm your account, then log in.",
 "success"
 );
 
@@ -2874,19 +2661,24 @@ showLogin();
 });
 
 
-/* SESSION */
+/* =====================================================
+SESSION
+===================================================== */
 
-db.auth.onAuthStateChange(
-function(event){
+db.auth.onAuthStateChange(function(event){
 
 if(event==="SIGNED_IN"){
+
 loadAccount();
+
 }
 
 });
 
 
-/* START */
+/* =====================================================
+START
+===================================================== */
 
 loadAccount();
 
@@ -2894,4 +2686,3 @@ loadAccount();
 
 </body>
 </html>
-```
