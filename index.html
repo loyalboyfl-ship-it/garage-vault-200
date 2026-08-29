@@ -1,249 +1,804 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garage Vault 2000</title>
 
-    <title>Garage Vault 2000</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<style>
+*{box-sizing:border-box}
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            color: #222;
-        }
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f5f5f5;
+    color:#222;
+}
 
-        .login-page {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
+.auth{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
 
-        .login-box {
-            width: 100%;
-            max-width: 430px;
-            background: white;
-            padding: 35px;
-            border-radius: 15px;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.1);
-        }
+.box{
+    width:100%;
+    max-width:440px;
+    background:white;
+    padding:35px;
+    border-radius:18px;
+    box-shadow:0 12px 40px rgba(0,0,0,.12);
+}
 
-        .logo {
-            width: 60px;
-            height: 60px;
-            background: #d71920;
-            color: white;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 20px;
-            margin-bottom: 20px;
-        }
+.logo{
+    width:60px;
+    height:60px;
+    background:#d71920;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:13px;
+    font-weight:bold;
+    font-size:20px;
+    margin-bottom:18px;
+}
 
-        h1 {
-            margin: 0;
-        }
+h1{margin:0 0 7px}
 
-        .subtitle {
-            color: #777;
-            margin-bottom: 25px;
-        }
+.subtitle{
+    color:#777;
+    margin-bottom:25px;
+}
 
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: bold;
-        }
+.field{
+    margin-bottom:15px;
+}
 
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
+label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:6px;
+}
 
-        .btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            background: #d71920;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-        }
+input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:15px;
+}
 
-        .btn:hover {
-            background: #b9141a;
-        }
+.btn{
+    width:100%;
+    padding:13px;
+    border:0;
+    border-radius:8px;
+    background:#d71920;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
 
-        .switch {
-            text-align: center;
-            margin-top: 20px;
-        }
+.btn:hover{
+    background:#b9151b;
+}
 
-        .switch button {
-            border: none;
-            background: none;
-            color: #d71920;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.switch{
+    text-align:center;
+    margin-top:20px;
+}
 
-        footer {
-            text-align: center;
-            color: #999;
-            font-size: 12px;
-            margin-top: 25px;
-        }
-    </style>
+.link{
+    border:0;
+    background:none;
+    color:#d71920;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.message{
+    display:none;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:15px;
+}
+
+.error{
+    display:block;
+    background:#ffe5e5;
+    color:#a00000;
+}
+
+.success{
+    display:block;
+    background:#e5f7e9;
+    color:#176b31;
+}
+
+footer{
+    text-align:center;
+    color:#999;
+    font-size:12px;
+    margin-top:25px;
+}
+
+.app{
+    display:none;
+    min-height:100vh;
+}
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    width:230px;
+    background:white;
+    border-right:1px solid #ddd;
+    padding:20px;
+}
+
+.brand{
+    font-size:19px;
+    font-weight:bold;
+    margin-bottom:30px;
+}
+
+.brand span{
+    color:#d71920;
+}
+
+.nav button{
+    width:100%;
+    padding:13px;
+    margin-bottom:7px;
+    border:0;
+    background:white;
+    text-align:left;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.nav button:hover{
+    background:#fff0f0;
+    color:#d71920;
+}
+
+.main{
+    margin-left:230px;
+}
+
+.topbar{
+    height:70px;
+    background:white;
+    border-bottom:1px solid #ddd;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+}
+
+.logout{
+    padding:9px 14px;
+    border:1px solid #ccc;
+    background:white;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.content{
+    padding:25px;
+}
+
+.hero{
+    background:#d71920;
+    color:white;
+    padding:25px;
+    border-radius:14px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-top:20px;
+}
+
+.card{
+    background:white;
+    border:1px solid #ddd;
+    border-radius:12px;
+    padding:20px;
+}
+
+.card small{
+    color:#777;
+}
+
+.card strong{
+    display:block;
+    font-size:30px;
+    margin-top:8px;
+}
+
+.panel{
+    background:white;
+    border:1px solid #ddd;
+    border-radius:12px;
+    padding:20px;
+    margin-top:20px;
+}
+
+@media(max-width:800px){
+    .sidebar{
+        width:65px;
+        padding:10px;
+    }
+
+    .brand{
+        font-size:0;
+    }
+
+    .brand:after{
+        content:"GV";
+        font-size:18px;
+        font-weight:bold;
+        color:#d71920;
+    }
+
+    .nav button{
+        font-size:0;
+        text-align:center;
+    }
+
+    .nav button:first-letter{
+        font-size:18px;
+    }
+
+    .main{
+        margin-left:65px;
+    }
+
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+</style>
 </head>
 
 <body>
 
-    <div class="login-page">
+<!-- LOGIN / SIGNUP -->
 
-        <div class="login-box">
+<div id="authScreen" class="auth">
 
-            <div class="logo">
-                GV
-            </div>
+<div class="box">
 
-            <h1>Garage Vault 2000</h1>
+<div class="logo">GV</div>
 
-            <p class="subtitle">
-                Garage management system
-            </p>
+<h1>Garage Vault 2000</h1>
 
-            <div id="loginSection">
+<p class="subtitle" id="authSubtitle">
+Sign in to your garage
+</p>
 
-                <h2>Login</h2>
-
-                <form>
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        placeholder="Enter your email"
-                        required
-                    >
-
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        placeholder="Enter your password"
-                        required
-                    >
-
-                    <button class="btn" type="submit">
-                        Login
-                    </button>
-                </form>
-
-                <div class="switch">
-                    Don't have an account?
-                    <button type="button" onclick="showSignup()">
-                        Sign up
-                    </button>
-                </div>
-
-            </div>
+<div id="message" class="message"></div>
 
 
-            <div id="signupSection" style="display:none;">
+<!-- LOGIN -->
 
-                <h2>Create Account</h2>
+<div id="loginForm">
 
-                <form>
+<form id="login">
 
-                    <label>Full Name</label>
-                    <input
-                        type="text"
-                        placeholder="Your full name"
-                        required
-                    >
+<div class="field">
+<label>Email</label>
+<input id="loginEmail" type="email" required>
+</div>
 
-                    <label>Garage / Business Name</label>
-                    <input
-                        type="text"
-                        placeholder="Your garage name"
-                        required
-                    >
+<div class="field">
+<label>Password</label>
+<input id="loginPassword" type="password" required>
+</div>
 
-                    <label>Phone</label>
-                    <input
-                        type="tel"
-                        placeholder="Phone number"
-                    >
+<button class="btn" type="submit">
+Login
+</button>
 
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        placeholder="Email address"
-                        required
-                    >
+</form>
 
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        placeholder="Create a password"
-                        required
-                    >
+<div class="switch">
+Don't have an account?
 
-                    <label>Confirm Password</label>
-                    <input
-                        type="password"
-                        placeholder="Confirm password"
-                        required
-                    >
+<button class="link" onclick="showSignup()">
+Sign up
+</button>
+</div>
 
-                    <button class="btn" type="submit">
-                        Create Garage Account
-                    </button>
-
-                </form>
-
-                <div class="switch">
-                    Already have an account?
-                    <button type="button" onclick="showLogin()">
-                        Login
-                    </button>
-                </div>
-
-            </div>
+</div>
 
 
-            <footer>
-                Made by Keith Makirimira
-            </footer>
+<!-- SIGNUP -->
 
-        </div>
+<div id="signupForm" style="display:none">
 
-    </div>
+<form id="signup">
+
+<div class="field">
+<label>Full Name</label>
+<input id="fullName" type="text" required>
+</div>
+
+<div class="field">
+<label>Garage / Business Name</label>
+<input id="garageName" type="text" required>
+</div>
+
+<div class="field">
+<label>Phone</label>
+<input id="phone" type="tel">
+</div>
+
+<div class="field">
+<label>Email</label>
+<input id="signupEmail" type="email" required>
+</div>
+
+<div class="field">
+<label>Password</label>
+<input id="signupPassword" type="password" minlength="6" required>
+</div>
+
+<div class="field">
+<label>Confirm Password</label>
+<input id="confirmPassword" type="password" minlength="6" required>
+</div>
+
+<button class="btn" type="submit">
+Create Garage Account
+</button>
+
+</form>
+
+<div class="switch">
+Already have an account?
+
+<button class="link" onclick="showLogin()">
+Login
+</button>
+</div>
+
+</div>
+
+<footer>
+Made by Keith Makirimira
+</footer>
+
+</div>
+</div>
 
 
-    <script>
+<!-- APPLICATION -->
 
-        function showSignup() {
-            document.getElementById("loginSection").style.display = "none";
-            document.getElementById("signupSection").style.display = "block";
-        }
+<div id="app" class="app">
 
-        function showLogin() {
-            document.getElementById("signupSection").style.display = "none";
-            document.getElementById("loginSection").style.display = "block";
-        }
+<aside class="sidebar">
 
-    </script>
+<div class="brand">
+Garage <span>Vault</span> 2000
+</div>
+
+<nav class="nav">
+
+<button>📊 Dashboard</button>
+<button>🚗 Cars</button>
+<button>⚙️ Parts</button>
+<button>💰 Sales</button>
+<button>🧾 Invoices</button>
+
+</nav>
+
+</aside>
+
+
+<main class="main">
+
+<header class="topbar">
+
+<strong id="garageNameDisplay">
+Garage Vault 2000
+</strong>
+
+<button class="logout" onclick="logout()">
+Logout
+</button>
+
+</header>
+
+
+<div class="content">
+
+<div class="hero">
+
+<h2 id="welcome">
+Welcome
+</h2>
+
+<p>
+Your Garage Vault 2000 account is connected.
+</p>
+
+</div>
+
+
+<div class="cards">
+
+<div class="card">
+<small>Cars</small>
+<strong>0</strong>
+</div>
+
+<div class="card">
+<small>Parts</small>
+<strong>0</strong>
+</div>
+
+<div class="card">
+<small>Sales</small>
+<strong>0</strong>
+</div>
+
+<div class="card">
+<small>Invoices</small>
+<strong>0</strong>
+</div>
+
+</div>
+
+
+<div class="panel">
+
+<h3>Garage Account</h3>
+
+<p id="accountDetails">
+Loading account...
+</p>
+
+</div>
+
+</div>
+
+</main>
+
+</div>
+
+
+<script>
+
+/* SUPABASE CONNECTION */
+
+const SUPABASE_URL =
+"https://lzrfsdxwvvtjkfrtlbbq.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_cocVkHyaqIxLGj_g5QDk5A_yDD3vwS1";
+
+const db =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+
+/* MESSAGE */
+
+function showMessage(text,type="error"){
+
+const box=document.getElementById("message");
+
+box.textContent=text;
+
+box.className="message "+type;
+
+}
+
+
+/* SWITCH TO SIGNUP */
+
+function showSignup(){
+
+document.getElementById("loginForm").style.display="none";
+
+document.getElementById("signupForm").style.display="block";
+
+document.getElementById("authSubtitle").textContent=
+"Create your garage account";
+
+showMessage("");
+
+}
+
+
+/* SWITCH TO LOGIN */
+
+function showLogin(){
+
+document.getElementById("signupForm").style.display="none";
+
+document.getElementById("loginForm").style.display="block";
+
+document.getElementById("authSubtitle").textContent=
+"Sign in to your garage";
+
+showMessage("");
+
+}
+
+
+/* SIGNUP */
+
+document.getElementById("signup").addEventListener(
+"submit",
+async function(event){
+
+event.preventDefault();
+
+const name=
+document.getElementById("fullName").value.trim();
+
+const garage=
+document.getElementById("garageName").value.trim();
+
+const phone=
+document.getElementById("phone").value.trim();
+
+const email=
+document.getElementById("signupEmail").value.trim();
+
+const password=
+document.getElementById("signupPassword").value;
+
+const confirm=
+document.getElementById("confirmPassword").value;
+
+
+if(password!==confirm){
+
+showMessage("Passwords do not match.");
+
+return;
+
+}
+
+
+showMessage("Creating your garage account...","success");
+
+
+const {data,error}=await db.auth.signUp({
+
+email:email,
+
+password:password,
+
+options:{
+data:{
+full_name:name,
+garage_name:garage,
+phone:phone
+}
+}
+
+});
+
+
+if(error){
+
+showMessage(error.message);
+
+return;
+
+}
+
+
+if(data.session){
+
+await loadAccount();
+
+}else{
+
+showMessage(
+"Account created! Check your email to confirm your account, then return here and log in.",
+"success"
+);
+
+showLogin();
+
+}
+
+});
+
+
+/* LOGIN */
+
+document.getElementById("login").addEventListener(
+"submit",
+async function(event){
+
+event.preventDefault();
+
+const email=
+document.getElementById("loginEmail").value.trim();
+
+const password=
+document.getElementById("loginPassword").value;
+
+
+showMessage("Logging in...","success");
+
+
+const {data,error}=await db.auth.signInWithPassword({
+
+email:email,
+
+password:password
+
+});
+
+
+if(error){
+
+showMessage(error.message);
+
+return;
+
+}
+
+
+await loadAccount();
+
+});
+
+
+/* LOAD ACCOUNT */
+
+async function loadAccount(){
+
+const {
+data:{user}
+}=await db.auth.getUser();
+
+
+if(!user){
+
+showAuth();
+
+return;
+
+}
+
+
+const {data,error}=await db
+.from("profiles")
+.select(`
+id,
+full_name,
+role,
+garage_id,
+garages(
+name,
+phone,
+address
+)
+`)
+.eq("id",user.id)
+.single();
+
+
+if(error){
+
+showMessage(
+"Login worked, but your garage profile could not be loaded. "+error.message
+);
+
+return;
+
+}
+
+
+const garage=data.garages;
+
+
+document.getElementById("garageNameDisplay").textContent=
+garage?.name || "Garage Vault 2000";
+
+
+document.getElementById("welcome").textContent=
+"Welcome, "+(data.full_name || "Owner");
+
+
+document.getElementById("accountDetails").innerHTML=
+"Garage: <b>"+escapeHTML(garage?.name || "")+"</b><br>"+
+"Owner: <b>"+escapeHTML(data.full_name || "")+"</b><br>"+
+"Role: <b>"+escapeHTML(data.role || "")+"</b><br>"+
+"Email: <b>"+escapeHTML(user.email || "")+"</b>";
+
+
+document.getElementById("authScreen").style.display="none";
+
+document.getElementById("app").style.display="block";
+
+}
+
+
+/* LOGOUT */
+
+async function logout(){
+
+await db.auth.signOut();
+
+showAuth();
+
+showLogin();
+
+}
+
+
+/* SHOW LOGIN SCREEN */
+
+function showAuth(){
+
+document.getElementById("authScreen").style.display="flex";
+
+document.getElementById("app").style.display="none";
+
+}
+
+
+/* PROTECT AGAINST HTML IN ACCOUNT DATA */
+
+function escapeHTML(value){
+
+return String(value ?? "").replace(
+/[&<>"']/g,
+function(character){
+
+return {
+
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+
+}[character];
+
+});
+
+}
+
+
+/* CHECK EXISTING SESSION */
+
+db.auth.onAuthStateChange(
+function(event){
+
+if(event==="SIGNED_IN"){
+
+loadAccount();
+
+}
+
+});
+
+
+loadAccount();
+
+</script>
 
 </body>
 </html>
