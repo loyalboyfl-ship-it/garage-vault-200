@@ -1033,7 +1033,23 @@ Status
 </label>
 
 <select id="carStatus">
+<div class="field full">
 
+<label>
+Car Photo
+</label>
+
+<input
+id="carPhoto"
+type="file"
+accept="image/jpeg,image/png,image/webp"
+>
+
+<small class="muted">
+JPG, PNG or WebP — maximum 5 MB
+</small>
+
+</div>
 <option>
 Available
 </option>
@@ -1924,13 +1940,143 @@ document
 .add("open");
 
 }
-
-
 document
 .getElementById("carForm")
 .addEventListener("submit",async function(e){
 
 e.preventDefault();
+
+if(!profile){
+
+alert("Garage profile not loaded.");
+
+return;
+
+}
+
+const id =
+document.getElementById("carId").value;
+
+const photoInput =
+document.getElementById("carPhoto");
+
+const photoFile =
+photoInput.files[0];
+
+let photoUrl = null;
+
+
+/* Keep existing photo when editing */
+
+if(id){
+
+const {
+data:existingCar,
+error:existingError
+} =
+await db
+.from("cars")
+.select("photo_url")
+.eq("id",id)
+.eq("garage_id",profile.garage_id)
+.single();
+
+if(existingError){
+
+alert(existingError.message);
+
+return;
+
+}
+
+photoUrl =
+existingCar?.photo_url || null;
+
+}
+
+
+/* Upload new photo */
+
+if(photoFile){
+
+if(photoFile.size > 5 * 1024 * 1024){
+
+alert("Photo must be smaller than 5 MB.");
+
+return;
+
+}
+
+const allowedTypes = [
+"image/jpeg",
+"image/png",
+"image/webp"
+];
+
+if(!allowedTypes.includes(photoFile.type)){
+
+alert("Use JPG, PNG or WebP only.");
+
+return;
+
+}
+
+const extension =
+photoFile.name
+.split(".")
+.pop()
+.toLowerCase();
+
+const fileName =
+profile.garage_id +
+"/" +
+crypto.randomUUID() +
+"." +
+extension;
+
+
+const {
+error:uploadError
+} =
+await db
+.storage
+.from("car-photos")
+.upload(
+fileName,
+photoFile,
+{
+cacheControl:"3600",
+upsert:false,
+contentType:photoFile.type
+}
+);
+
+
+if(uploadError){
+
+alert(
+"Photo upload failed: " +
+uploadError.message
+);
+
+return;
+
+}
+
+
+const {
+data:publicData
+} =
+db
+.storage
+.from("car-photos")
+.getPublicUrl(fileName);
+
+
+photoUrl =
+publicData.publicUrl;
+
+}
 
 
 const payload={
@@ -1939,33 +2085,48 @@ garage_id:
 profile.garage_id,
 
 garage_number:
-document.getElementById("carGarageNumber").value.trim(),
+document
+.getElementById("carGarageNumber")
+.value
+.trim(),
 
 number_plate:
-document.getElementById("carPlate").value.trim(),
+document
+.getElementById("carPlate")
+.value
+.trim(),
 
 name:
-document.getElementById("carName").value.trim(),
+document
+.getElementById("carName")
+.value
+.trim(),
 
 year:
-document.getElementById("carYear").value.trim(),
+document
+.getElementById("carYear")
+.value
+.trim(),
 
 price:
 Number(
-document.getElementById("carPrice").value
+document
+.getElementById("carPrice")
+.value
 ) || 0,
 
 status:
-document.getElementById("carStatus").value
+document
+.getElementById("carStatus")
+.value,
+
+photo_url:
+photoUrl
 
 };
 
 
 let result;
-
-
-const id =
-document.getElementById("carId").value;
 
 
 if(id){
@@ -1999,16 +2160,17 @@ return;
 }
 
 
+document
+.getElementById("carPhoto")
+.value="";
+
 closeModal("carModal");
 
 await loadCars();
 
 await refreshDashboard();
 
-});
-
-
-async function loadCars(){
+});    
 
 if(!profile) return;
 
@@ -2096,6 +2258,7 @@ document
 
 <tr>
 
+<th>Photo</th>
 <th>Garage #</th>
 <th>Plate</th>
 <th>Car</th>
@@ -2115,6 +2278,24 @@ ${cars.map(function(car){
 return `
 
 <tr>
+
+<td>
+${
+car.photo_url
+?
+`<img
+src="${escapeHTML(car.photo_url)}"
+alt="Car"
+style="
+width:80px;
+height:60px;
+object-fit:cover;
+border-radius:8px;
+">`
+:
+"No photo"
+}
+</td>
 
 <td>
 ${escapeHTML(car.garage_number)}
