@@ -1,6 +1,8 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -9,6 +11,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
 *{
     box-sizing:border-box;
 }
@@ -382,6 +385,22 @@ th{
     display:none;
 }
 
+.status-dot{
+    display:inline-block;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    margin-right:6px;
+}
+
+.status-dot.online{
+    background:#20b15a;
+}
+
+.status-dot.offline{
+    background:#999;
+}
+
 @media(max-width:850px){
 
     .sidebar{
@@ -405,6 +424,7 @@ th{
     .cards{
         grid-template-columns:repeat(2,1fr);
     }
+
 }
 
 @media(max-width:550px){
@@ -428,8 +448,11 @@ th{
     .topbar{
         padding:0 14px;
     }
+
 }
+
 </style>
+
 </head>
 
 <body>
@@ -453,13 +476,19 @@ Sign in to your garage
 <form id="loginForm">
 
 <div class="field">
+
 <label>Email</label>
+
 <input id="loginEmail" type="email" required>
+
 </div>
 
 <div class="field">
+
 <label>Password</label>
+
 <input id="loginPassword" type="password" required>
+
 </div>
 
 <button class="btn" type="submit">
@@ -467,11 +496,18 @@ Login
 </button>
 
 <div class="switch">
+
 Don't have an account?
 
-<button type="button" class="link" onclick="showSignup()">
-Sign up
-</button>
+<button
+type="button"
+class="link"
+onclick="showSignup()"
+
+>
+
+Sign up </button>
+
 </div>
 
 </form>
@@ -479,28 +515,55 @@ Sign up
 <form id="signupForm" style="display:none">
 
 <div class="field">
+
 <label>Full Name</label>
+
 <input id="fullName" required>
+
 </div>
 
 <div class="field">
+
 <label>Phone</label>
+
 <input id="phone" type="tel">
+
 </div>
 
 <div class="field">
+
 <label>Email</label>
+
 <input id="signupEmail" type="email" required>
+
 </div>
 
 <div class="field">
+
 <label>Password</label>
-<input id="signupPassword" type="password" minlength="6" required>
+
+<input
+id="signupPassword"
+type="password"
+minlength="6"
+required
+
+>
+
 </div>
 
 <div class="field">
+
 <label>Confirm Password</label>
-<input id="confirmPassword" type="password" minlength="6" required>
+
+<input
+id="confirmPassword"
+type="password"
+minlength="6"
+required
+
+>
+
 </div>
 
 <button class="btn" type="submit">
@@ -508,11 +571,18 @@ Create Account
 </button>
 
 <div class="switch">
+
 Already have an account?
 
-<button type="button" class="link" onclick="showLogin()">
-Login
-</button>
+<button
+type="button"
+class="link"
+onclick="showLogin()"
+
+>
+
+Login </button>
+
 </div>
 
 </form>
@@ -522,8 +592,8 @@ Top Ranger Breakers
 </footer>
 
 </div>
-</div>
 
+</div>
 
 <!-- APPLICATION -->
 
@@ -538,38 +608,71 @@ TRB
 </div>
 
 <div class="brand-text">
+
 Top Ranger<br>
-<span>Breakers</span>
+
+<span>
+Breakers
+</span>
+
 </div>
 
 </div>
 
 <nav class="nav">
 
-<button class="active" onclick="goToPage('dashboard',this)">
-📊 <span class="nav-text">Dashboard</span>
-</button>
+<button
+class="active"
+onclick="goToPage('dashboard',this)"
 
-<button onclick="goToPage('cars',this)">
-🚗 <span class="nav-text">Cars</span>
-</button>
+>
 
-<button onclick="goToPage('parts',this)">
-⚙️ <span class="nav-text">Parts</span>
-</button>
+📊 <span class="nav-text">
+Dashboard </span> </button>
 
-<button onclick="goToPage('sales',this)">
-💰 <span class="nav-text">Sales</span>
-</button>
+<button
+onclick="goToPage('cars',this)"
 
-<button onclick="goToPage('invoices',this)">
-🧾 <span class="nav-text">Invoices</span>
-</button>
+>
+
+🚗 <span class="nav-text">
+Cars </span> </button>
+
+<button
+onclick="goToPage('parts',this)"
+
+>
+
+⚙️ <span class="nav-text">
+Parts </span> </button>
+
+<button
+onclick="goToPage('sales',this)"
+
+>
+
+💰 <span class="nav-text">
+Sales </span> </button>
+
+<button
+onclick="goToPage('invoices',this)"
+
+>
+
+🧾 <span class="nav-text">
+Invoices </span> </button>
+
+<button
+onclick="goToPage('profiles',this)"
+
+>
+
+👥 <span class="nav-text">
+Profiles </span> </button>
 
 </nav>
 
 </aside>
-
 
 <main class="main">
 
@@ -579,18 +682,24 @@ Top Ranger<br>
 Top Ranger Breakers
 </strong>
 
-<button class="btn secondary" onclick="logout()">
-Logout
-</button>
+<button
+class="btn secondary"
+onclick="logout()"
+
+>
+
+Logout </button>
 
 </header>
-
 
 <div class="content">
 
 <!-- DASHBOARD -->
 
-<section id="dashboard" class="page active">
+<section
+id="dashboard"
+class="page active"
+>
 
 <div class="hero">
 
@@ -607,23 +716,43 @@ Top Ranger Breakers management system.
 <div class="cards">
 
 <div class="card">
+
 <small>Cars</small>
-<strong id="carsCount">0</strong>
+
+<strong id="carsCount">
+0
+</strong>
+
 </div>
 
 <div class="card">
+
 <small>Parts</small>
-<strong id="partsCount">0</strong>
+
+<strong id="partsCount">
+0
+</strong>
+
 </div>
 
 <div class="card">
+
 <small>Sales</small>
-<strong id="salesCount">0</strong>
+
+<strong id="salesCount">
+0
+</strong>
+
 </div>
 
 <div class="card">
+
 <small>Invoices</small>
-<strong id="invoiceCount">0</strong>
+
+<strong id="invoiceCount">
+0
+</strong>
+
 </div>
 
 </div>
@@ -642,14 +771,18 @@ Loading...
 
 </section>
 
-
 <!-- CARS -->
 
-<section id="cars" class="page">
+<section
+id="cars"
+class="page"
+>
 
 <div class="panel">
 
-<h2>🚗 Cars Inventory</h2>
+<h2>
+🚗 Cars Inventory
+</h2>
 
 <div class="toolbar">
 
@@ -657,11 +790,18 @@ Loading...
 id="carSearch"
 placeholder="Search cars..."
 oninput="loadCars()"
+
 >
 
-<button class="btn" onclick="openCarModal()">
-+ Add Car
-</button>
+<button
+class="btn"
+onclick="openCarModal()"
+
+>
+
+* Add Car
+
+  </button>
 
 </div>
 
@@ -673,14 +813,18 @@ Loading...
 
 </section>
 
-
 <!-- PARTS -->
 
-<section id="parts" class="page">
+<section
+id="parts"
+class="page"
+>
 
 <div class="panel">
 
-<h2>⚙️ Parts Inventory</h2>
+<h2>
+⚙️ Parts Inventory
+</h2>
 
 <div class="toolbar">
 
@@ -688,11 +832,18 @@ Loading...
 id="partSearch"
 placeholder="Search parts..."
 oninput="loadParts()"
+
 >
 
-<button class="btn" onclick="openPartModal()">
-+ Add Part
-</button>
+<button
+class="btn"
+onclick="openPartModal()"
+
+>
+
+* Add Part
+
+  </button>
 
 </div>
 
@@ -704,20 +855,30 @@ Loading...
 
 </section>
 
-
 <!-- SALES -->
 
-<section id="sales" class="page">
+<section
+id="sales"
+class="page"
+>
 
 <div class="panel">
 
-<h2>💰 Sales</h2>
+<h2>
+💰 Sales
+</h2>
 
 <div class="toolbar">
 
-<button class="btn" onclick="openSaleModal()">
-+ Record Sale
-</button>
+<button
+class="btn"
+onclick="openSaleModal()"
+
+>
+
+* Record Sale
+
+  </button>
 
 </div>
 
@@ -729,20 +890,30 @@ Loading...
 
 </section>
 
-
 <!-- INVOICES -->
 
-<section id="invoices" class="page">
+<section
+id="invoices"
+class="page"
+>
 
 <div class="panel">
 
-<h2>🧾 Invoices</h2>
+<h2>
+🧾 Invoices
+</h2>
 
 <div class="toolbar">
 
-<button class="btn" onclick="openInvoiceModal()">
-+ Create Invoice
-</button>
+<button
+class="btn"
+onclick="openInvoiceModal()"
+
+>
+
+* Create Invoice
+
+  </button>
 
 </div>
 
@@ -754,59 +925,159 @@ Loading...
 
 </section>
 
-</div>
-</main>
+<!-- PROFILES -->
+
+<section
+id="profiles"
+class="page"
+>
+
+<div class="panel">
+
+<h2>
+👥 Users & Profiles
+</h2>
+
+<p class="muted">
+See registered users and who is currently online.
+</p>
+
+<div class="toolbar">
+
+<button
+class="btn secondary"
+onclick="loadProfiles()"
+
+>
+
+Refresh Users </button>
+
 </div>
 
+<div id="profilesTable">
+Loading...
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+</main>
+
+</div>
 
 <!-- CAR MODAL -->
 
-<div id="carModal" class="modal">
+<div
+id="carModal"
+class="modal"
+>
 
 <div class="modal-box">
 
-<h2>Add Car</h2>
+<h2>
+Add Car
+</h2>
 
 <form id="carForm">
 
-<input id="carId" type="hidden">
+<input
+id="carId"
+type="hidden"
+
+>
 
 <div class="form-grid">
 
 <div class="field">
-<label>Garage Number *</label>
-<input id="carGarageNumber" required>
+
+<label>
+Garage Number *
+</label>
+
+<input
+id="carGarageNumber"
+required
+
+>
+
 </div>
 
 <div class="field">
-<label>Number Plate</label>
+
+<label>
+Number Plate
+</label>
+
 <input id="carPlate">
+
 </div>
 
 <div class="field">
-<label>Make / Model *</label>
-<input id="carName" required>
+
+<label>
+Make / Model *
+</label>
+
+<input
+id="carName"
+required
+
+>
+
 </div>
 
 <div class="field">
-<label>Year</label>
+
+<label>
+Year
+</label>
+
 <input id="carYear">
+
 </div>
 
 <div class="field">
-<label>Price</label>
-<input id="carPrice" type="number" step="0.01" min="0">
+
+<label>
+Price
+</label>
+
+<input
+id="carPrice"
+type="number"
+step="0.01"
+min="0"
+
+>
+
 </div>
 
 <div class="field">
-<label>Status</label>
+
+<label>
+Status
+</label>
 
 <select id="carStatus">
 
-<option>Available</option>
-<option>Breaking</option>
-<option>Reserved</option>
-<option>Sold</option>
+<option>
+Available
+</option>
+
+<option>
+Breaking
+</option>
+
+<option>
+Reserved
+</option>
+
+<option>
+Sold
+</option>
 
 </select>
 
@@ -814,17 +1085,21 @@ Loading...
 
 <div class="field full">
 
-<label>Car Photo</label>
+<label>
+Car Photo
+</label>
 
 <input
 id="carPhoto"
 type="file"
 accept="image/*"
+
 >
 
 <img
 id="carPhotoPreview"
 class="photo-preview"
+
 >
 
 </div>
@@ -833,83 +1108,151 @@ class="photo-preview"
 
 <div class="actions">
 
-<button class="btn" type="submit">
-Save Car
-</button>
+<button
+class="btn"
+type="submit"
+
+>
+
+Save Car </button>
 
 <button
 type="button"
 class="btn secondary"
 onclick="closeModal('carModal')"
+
 >
-Cancel
-</button>
+
+Cancel </button>
 
 </div>
 
 </form>
 
 </div>
-</div>
 
+</div>
 
 <!-- PART MODAL -->
 
-<div id="partModal" class="modal">
+<div
+id="partModal"
+class="modal"
+>
 
 <div class="modal-box">
 
-<h2>Add Part</h2>
+<h2>
+Add Part
+</h2>
 
 <form id="partForm">
 
-<input id="partId" type="hidden">
+<input
+id="partId"
+type="hidden"
+
+>
 
 <div class="form-grid">
 
 <div class="field">
-<label>Part Number *</label>
-<input id="partNumber" required>
+
+<label>
+Part Number *
+</label>
+
+<input
+id="partNumber"
+required
+
+>
+
 </div>
 
 <div class="field">
-<label>Part Name *</label>
-<input id="partName" required>
+
+<label>
+Part Name *
+</label>
+
+<input
+id="partName"
+required
+
+>
+
 </div>
 
 <div class="field">
-<label>Category</label>
+
+<label>
+Category
+</label>
+
 <input id="partCategory">
+
 </div>
 
 <div class="field">
-<label>Quantity</label>
-<input id="partQuantity" type="number" min="0" value="1">
+
+<label>
+Quantity
+</label>
+
+<input
+id="partQuantity"
+type="number"
+min="0"
+value="1"
+
+>
+
 </div>
 
 <div class="field">
-<label>Price</label>
-<input id="partPrice" type="number" min="0" step="0.01">
+
+<label>
+Price
+</label>
+
+<input
+id="partPrice"
+type="number"
+min="0"
+step="0.01"
+
+>
+
 </div>
 
 <div class="field">
-<label>Car ID</label>
+
+<label>
+Car ID
+</label>
+
 <input id="partCarId">
+
 </div>
 
 <div class="field full">
 
-<label>Part Photo</label>
+<label>
+Part Photo
+</label>
 
 <input
 id="partPhoto"
 type="file"
 accept="image/*"
+
 >
 
 <img
 id="partPhotoPreview"
 class="photo-preview"
+
 >
 
 </div>
@@ -918,51 +1261,73 @@ class="photo-preview"
 
 <div class="actions">
 
-<button class="btn" type="submit">
-Save Part
-</button>
+<button
+class="btn"
+type="submit"
+
+>
+
+Save Part </button>
 
 <button
 type="button"
 class="btn secondary"
 onclick="closeModal('partModal')"
+
 >
-Cancel
-</button>
+
+Cancel </button>
 
 </div>
 
 </form>
 
 </div>
-</div>
 
+</div>
 
 <!-- SALE MODAL -->
 
-<div id="saleModal" class="modal">
+<div
+id="saleModal"
+class="modal"
+>
 
 <div class="modal-box">
 
-<h2>Record Sale</h2>
+<h2>
+Record Sale
+</h2>
 
 <form id="saleForm">
 
 <div class="form-grid">
 
 <div class="field">
-<label>Customer</label>
+
+<label>
+Customer
+</label>
+
 <input id="saleCustomer">
+
 </div>
 
 <div class="field">
 
-<label>Item Type</label>
+<label>
+Item Type
+</label>
 
 <select id="saleType">
 
-<option value="part">Part</option>
-<option value="car">Car</option>
+<option value="part">
+Part
+</option>
+
+<option value="car">
+Car
+</option>
 
 </select>
 
@@ -970,29 +1335,62 @@ Cancel
 
 <div class="field full">
 
-<label>Item ID</label>
-<input id="saleItemId" required>
+<label>
+Item ID
+</label>
+
+<input
+id="saleItemId"
+required
+
+>
 
 </div>
 
 <div class="field">
 
-<label>Item Name</label>
-<input id="saleItemName" required>
+<label>
+Item Name
+</label>
+
+<input
+id="saleItemName"
+required
+
+>
 
 </div>
 
 <div class="field">
 
-<label>Quantity</label>
-<input id="saleQuantity" type="number" min="1" value="1">
+<label>
+Quantity
+</label>
+
+<input
+id="saleQuantity"
+type="number"
+min="1"
+value="1"
+
+>
 
 </div>
 
 <div class="field">
 
-<label>Total</label>
-<input id="saleTotal" type="number" min="0" step="0.01" required>
+<label>
+Total
+</label>
+
+<input
+id="saleTotal"
+type="number"
+min="0"
+step="0.01"
+required
+
+>
 
 </div>
 
@@ -1000,33 +1398,43 @@ Cancel
 
 <div class="actions">
 
-<button class="btn" type="submit">
-Save Sale
-</button>
+<button
+class="btn"
+type="submit"
+
+>
+
+Save Sale </button>
 
 <button
 type="button"
 class="btn secondary"
 onclick="closeModal('saleModal')"
+
 >
-Cancel
-</button>
+
+Cancel </button>
 
 </div>
 
 </form>
 
 </div>
-</div>
 
+</div>
 
 <!-- INVOICE MODAL -->
 
-<div id="invoiceModal" class="modal">
+<div
+id="invoiceModal"
+class="modal"
+>
 
 <div class="modal-box">
 
-<h2>Create Invoice</h2>
+<h2>
+Create Invoice
+</h2>
 
 <form id="invoiceForm">
 
@@ -1034,15 +1442,23 @@ Cancel
 
 <div class="field">
 
-<label>Invoice Number *</label>
+<label>
+Invoice Number *
+</label>
 
-<input id="invoiceNumber" required>
+<input
+id="invoiceNumber"
+required
+
+>
 
 </div>
 
 <div class="field">
 
-<label>Customer Name</label>
+<label>
+Customer Name
+</label>
 
 <input id="invoiceCustomer">
 
@@ -1050,7 +1466,9 @@ Cancel
 
 <div class="field">
 
-<label>Customer Phone</label>
+<label>
+Customer Phone
+</label>
 
 <input id="invoicePhone">
 
@@ -1058,41 +1476,54 @@ Cancel
 
 <div class="field full">
 
-<label>Item Description *</label>
+<label>
+Item Description *
+</label>
 
-<textarea id="invoiceDescription" required></textarea>
+<textarea
+id="invoiceDescription"
+required
+></textarea>
 
 </div>
 
 <div class="field">
 
-<label>Quantity</label>
+<label>
+Quantity
+</label>
 
 <input
 id="invoiceQuantity"
 type="number"
 min="1"
 value="1"
+
 >
 
 </div>
 
 <div class="field">
 
-<label>Unit Price</label>
+<label>
+Unit Price
+</label>
 
 <input
 id="invoiceUnitPrice"
 type="number"
 min="0"
 step="0.01"
+
 >
 
 </div>
 
 <div class="field">
 
-<label>Tax</label>
+<label>
+Tax
+</label>
 
 <input
 id="invoiceTax"
@@ -1100,6 +1531,7 @@ type="number"
 min="0"
 step="0.01"
 value="0"
+
 >
 
 </div>
@@ -1108,25 +1540,30 @@ value="0"
 
 <div class="actions">
 
-<button class="btn" type="submit">
-Save Invoice
-</button>
+<button
+class="btn"
+type="submit"
+
+>
+
+Save Invoice </button>
 
 <button
 type="button"
 class="btn secondary"
 onclick="closeModal('invoiceModal')"
+
 >
-Cancel
-</button>
+
+Cancel </button>
 
 </div>
 
 </form>
 
 </div>
-</div>
 
+</div>
 
 <script>
 
@@ -1142,13 +1579,13 @@ const SUPABASE_KEY =
 
 const db =
 supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
+    SUPABASE_URL,
+    SUPABASE_KEY
 );
 
 
 /* =====================================================
-   SINGLE GARAGE
+   GARAGE
 ===================================================== */
 
 const GARAGE_ID =
@@ -1167,41 +1604,41 @@ let profile = null;
 
 function escapeHTML(value){
 
-return String(value ?? "")
-.replace(/[&<>"']/g,function(char){
+    return String(value ?? "")
+    .replace(/[&<>"']/g,function(char){
 
-return {
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#039;"
-}[char];
+        return {
+            "&":"&amp;",
+            "<":"&lt;",
+            ">":"&gt;",
+            '"':"&quot;",
+            "'":"&#039;"
+        }[char];
 
-});
+    });
 
 }
 
 
 function showMessage(text,type="error"){
 
-const box =
-document.getElementById("message");
+    const box =
+    document.getElementById("message");
 
-box.textContent = text;
+    box.textContent = text;
 
-box.className =
-"message " + type;
+    box.className =
+    "message " + type;
 
 }
 
 
 function closeModal(id){
 
-document
-.getElementById(id)
-.classList
-.remove("open");
+    document
+    .getElementById(id)
+    .classList
+    .remove("open");
 
 }
 
@@ -1212,44 +1649,50 @@ document
 
 function showSignup(){
 
-document
-.getElementById("loginForm")
-.style.display="none";
+    document
+    .getElementById("loginForm")
+    .style.display="none";
 
-document
-.getElementById("signupForm")
-.style.display="block";
 
-document
-.getElementById("authSubtitle")
-.textContent =
-"Create your Top Ranger Breakers account";
+    document
+    .getElementById("signupForm")
+    .style.display="block";
 
-document
-.getElementById("message")
-.className="message";
+
+    document
+    .getElementById("authSubtitle")
+    .textContent =
+    "Create your Top Ranger Breakers account";
+
+
+    document
+    .getElementById("message")
+    .className="message";
 
 }
 
 
 function showLogin(){
 
-document
-.getElementById("signupForm")
-.style.display="none";
+    document
+    .getElementById("signupForm")
+    .style.display="none";
 
-document
-.getElementById("loginForm")
-.style.display="block";
 
-document
-.getElementById("authSubtitle")
-.textContent =
-"Sign in to your garage";
+    document
+    .getElementById("loginForm")
+    .style.display="block";
 
-document
-.getElementById("message")
-.className="message";
+
+    document
+    .getElementById("authSubtitle")
+    .textContent =
+    "Sign in to your garage";
+
+
+    document
+    .getElementById("message")
+    .className="message";
 
 }
 
@@ -1260,34 +1703,42 @@ document
 
 function goToPage(page,button){
 
-document
-.querySelectorAll(".page")
-.forEach(function(x){
+    document
+    .querySelectorAll(".page")
+    .forEach(function(x){
 
-x.classList.remove("active");
+        x.classList.remove("active");
 
-});
-
-document
-.getElementById(page)
-.classList
-.add("active");
-
-document
-.querySelectorAll(".nav button")
-.forEach(function(x){
-
-x.classList.remove("active");
-
-});
-
-button.classList.add("active");
+    });
 
 
-if(page==="cars") loadCars();
-if(page==="parts") loadParts();
-if(page==="sales") loadSales();
-if(page==="invoices") loadInvoices();
+    document
+    .getElementById(page)
+    .classList
+    .add("active");
+
+
+    document
+    .querySelectorAll(".nav button")
+    .forEach(function(x){
+
+        x.classList.remove("active");
+
+    });
+
+
+    button.classList.add("active");
+
+
+    if(page==="cars") loadCars();
+
+    if(page==="parts") loadParts();
+
+    if(page==="sales") loadSales();
+
+    if(page==="invoices") loadInvoices();
+
+    if(page==="profiles") loadProfiles();
 
 }
 
@@ -1298,140 +1749,120 @@ if(page==="invoices") loadInvoices();
 
 async function loadAccount(){
 
-const {
-data:{
-user
-}
-} =
-await db.auth.getUser();
+    const {
+        data:{
+            user
+        }
+    } =
+    await db.auth.getUser();
 
 
-if(!user){
+    if(!user){
 
-document
-.getElementById("authScreen")
-.style.display="flex";
-
-document
-.getElementById("app")
-.style.display="none";
-
-return;
-
-}
+        document
+        .getElementById("authScreen")
+        .style.display="flex";
 
 
-/*
-   IMPORTANT:
-   Automatically link EVERY account to
-   Top Ranger Breakers.
-*/
+        document
+        .getElementById("app")
+        .style.display="none";
 
-const {
-error:updateError
-} =
-await db
-.from("profiles")
-.update({
-garage_id: GARAGE_ID
-})
-.eq("id",user.id);
+        return;
+
+    }
 
 
-if(updateError){
-
-console.error(updateError);
-
-showMessage(
-"Could not link account to Top Ranger Breakers: " +
-updateError.message
-);
-
-return;
-
-}
+    await db
+    .from("profiles")
+    .update({
+        garage_id:GARAGE_ID
+    })
+    .eq("id",user.id);
 
 
-/* LOAD PROFILE */
-
-const {
-data,
-error
-} =
-await db
-.from("profiles")
-.select(`
-id,
-full_name,
-role,
-garage_id,
-garages(
-name,
-phone,
-address
-)
-`)
-.eq("id",user.id)
-.single();
+    const {
+        data,
+        error
+    } =
+    await db
+    .from("profiles")
+    .select(`
+        id,
+        full_name,
+        role,
+        garage_id,
+        garages(
+            name,
+            phone,
+            address
+        )
+    `)
+    .eq("id",user.id)
+    .single();
 
 
-if(error){
+    if(error){
 
-showMessage(
-"Profile error: " +
-error.message
-);
+        showMessage(
+            "Profile error: " +
+            error.message
+        );
 
-return;
+        return;
 
-}
-
-
-profile=data;
+    }
 
 
-document
-.getElementById("garageTitle")
-.textContent =
-GARAGE_NAME;
+    profile = data;
 
 
-document
-.getElementById("welcome")
-.textContent =
-"Welcome, " +
-(data.full_name || "User");
+    await setOnlineStatus(true);
 
 
-document
-.getElementById("accountInfo")
-.innerHTML =
-
-"Garage: <b>TBR</b><br>" +
-
-"User: <b>" +
-escapeHTML(data.full_name || "") +
-"</b><br>" +
-
-"Role: <b>" +
-escapeHTML(data.role || "User") +
-"</b><br>" +
-
-"Email: <b>" +
-escapeHTML(user.email || "") +
-"</b>";
+    document
+    .getElementById("garageTitle")
+    .textContent =
+    GARAGE_NAME;
 
 
-document
-.getElementById("authScreen")
-.style.display="none";
-
-document
-.getElementById("app")
-.style.display="block";
+    document
+    .getElementById("welcome")
+    .textContent =
+    "Welcome, " +
+    (data.full_name || "User");
 
 
-await refreshDashboard();
+    document
+    .getElementById("accountInfo")
+    .innerHTML =
+
+    "Garage: <b>TBR</b><br>" +
+
+    "User: <b>" +
+    escapeHTML(data.full_name || "") +
+    "</b><br>" +
+
+    "Role: <b>" +
+    escapeHTML(data.role || "User") +
+    "</b><br>" +
+
+    "Email: <b>" +
+    escapeHTML(user.email || "") +
+    "</b>";
+
+
+    document
+    .getElementById("authScreen")
+    .style.display="none";
+
+
+    document
+    .getElementById("app")
+    .style.display="block";
+
+
+    await refreshDashboard();
 
 }
 
@@ -1442,59 +1873,297 @@ await refreshDashboard();
 
 async function refreshDashboard(){
 
-if(!profile)return;
-
-const gid =
-GARAGE_ID;
+    if(!profile)return;
 
 
-const cars =
-await db
-.from("cars")
-.select("id",{count:"exact",head:true})
-.eq("garage_id",gid);
+    const cars =
+    await db
+    .from("cars")
+    .select("id",{count:"exact",head:true})
+    .eq("garage_id",GARAGE_ID);
 
 
-const parts =
-await db
-.from("parts")
-.select("id",{count:"exact",head:true})
-.eq("garage_id",gid);
+    const parts =
+    await db
+    .from("parts")
+    .select("id",{count:"exact",head:true})
+    .eq("garage_id",GARAGE_ID);
 
 
-const sales =
-await db
-.from("sales")
-.select("id",{count:"exact",head:true})
-.eq("garage_id",gid);
+    const sales =
+    await db
+    .from("sales")
+    .select("id",{count:"exact",head:true})
+    .eq("garage_id",GARAGE_ID);
 
 
-const invoices =
-await db
-.from("invoices")
-.select("id",{count:"exact",head:true})
-.eq("garage_id",gid);
+    const invoices =
+    await db
+    .from("invoices")
+    .select("id",{count:"exact",head:true})
+    .eq("garage_id",GARAGE_ID);
 
 
-document
-.getElementById("carsCount")
-.textContent =
-cars.count || 0;
+    document
+    .getElementById("carsCount")
+    .textContent =
+    cars.count || 0;
 
-document
-.getElementById("partsCount")
-.textContent =
-parts.count || 0;
 
-document
-.getElementById("salesCount")
-.textContent =
-sales.count || 0;
+    document
+    .getElementById("partsCount")
+    .textContent =
+    parts.count || 0;
 
-document
-.getElementById("invoiceCount")
-.textContent =
-invoices.count || 0;
+
+    document
+    .getElementById("salesCount")
+    .textContent =
+    sales.count || 0;
+
+
+    document
+    .getElementById("invoiceCount")
+    .textContent =
+    invoices.count || 0;
+
+}
+
+
+/* =====================================================
+   ONLINE STATUS
+===================================================== */
+
+async function setOnlineStatus(isOnline){
+
+    const {
+        data:{
+            user
+        }
+    } =
+    await db.auth.getUser();
+
+
+    if(!user)return;
+
+
+    const {
+        error
+    } =
+    await db
+    .from("profiles")
+    .update({
+
+        is_online:isOnline,
+
+        last_seen:
+        new Date().toISOString(),
+
+        garage_id:GARAGE_ID
+
+    })
+    .eq("id",user.id);
+
+
+    if(error){
+
+        console.error(
+            "Online status error:",
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   KEEP USER ONLINE
+===================================================== */
+
+setInterval(
+async function(){
+
+    const {
+        data:{
+            user
+        }
+    } =
+    await db.auth.getUser();
+
+
+    if(user){
+
+        await setOnlineStatus(true);
+
+    }
+
+},
+30000
+);
+
+
+/* =====================================================
+   LOAD PROFILES
+===================================================== */
+
+async function loadProfiles(){
+
+    if(!profile)return;
+
+
+    const container =
+    document
+    .getElementById("profilesTable");
+
+
+    container.innerHTML =
+    "Loading users...";
+
+
+    const {
+        data,
+        error
+    } =
+    await db
+    .from("profiles")
+    .select(`
+        id,
+        full_name,
+        role,
+        is_online,
+        last_seen,
+        created_at
+    `)
+    .eq("garage_id",GARAGE_ID)
+    .order(
+        "full_name",
+        {
+            ascending:true
+        }
+    );
+
+
+    if(error){
+
+        container.innerHTML =
+        "<p>" +
+        escapeHTML(error.message) +
+        "</p>";
+
+        return;
+
+    }
+
+
+    if(!data || !data.length){
+
+        container.innerHTML =
+        '<div class="empty">No profiles found.</div>';
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+
+    `<table>
+
+        <thead>
+
+            <tr>
+
+                <th>Status</th>
+
+                <th>Name</th>
+
+                <th>Role</th>
+
+                <th>Last Seen</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            ${data.map(function(user){
+
+                const online =
+                user.is_online === true;
+
+
+                return `
+
+                    <tr>
+
+                        <td>
+
+                            <span
+                            class="status-dot ${online ? "online" : "offline"}"
+                            ></span>
+
+                            ${
+                                online
+                                ? "Online"
+                                : "Offline"
+                            }
+
+                        </td>
+
+
+                        <td>
+
+                            ${
+                                escapeHTML(
+                                    user.full_name ||
+                                    "Unnamed User"
+                                )
+                            }
+
+                        </td>
+
+
+                        <td>
+
+                            ${
+                                escapeHTML(
+                                    user.role ||
+                                    "User"
+                                )
+                            }
+
+                        </td>
+
+
+                        <td>
+
+                            ${
+                                user.last_seen
+
+                                ?
+
+                                new Date(
+                                    user.last_seen
+                                ).toLocaleString()
+
+                                :
+
+                                "-"
+                            }
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }).join("")}
+
+        </tbody>
+
+    </table>`;
 
 }
 
@@ -1505,119 +2174,142 @@ invoices.count || 0;
 
 async function uploadPhoto(file,folder){
 
-if(!file)return null;
-
-const extension =
-file.name.split(".").pop();
-
-const fileName =
-GARAGE_ID +
-"/" +
-folder +
-"/" +
-crypto.randomUUID() +
-"." +
-extension;
+    if(!file)return null;
 
 
-const {
-error
-} =
-await db.storage
-.from("garage-photos")
-.upload(
-fileName,
-file,
-{
-cacheControl:"3600",
-upsert:false
-}
-);
+    const extension =
+    file.name
+    .split(".")
+    .pop();
 
 
-if(error){
+    const fileName =
 
-console.error(error);
-
-alert(
-"Photo upload failed: " +
-error.message
-);
-
-return null;
-
-}
+    GARAGE_ID +
+    "/" +
+    folder +
+    "/" +
+    crypto.randomUUID() +
+    "." +
+    extension;
 
 
-const {
-data
-} =
-db.storage
-.from("garage-photos")
-.getPublicUrl(fileName);
+    const {
+        error
+    } =
+    await db.storage
+    .from("garage-photos")
+    .upload(
+        fileName,
+        file,
+        {
+            cacheControl:"3600",
+            upsert:false
+        }
+    );
 
 
-return data.publicUrl;
+    if(error){
+
+        console.error(error);
+
+        alert(
+            "Photo upload failed: " +
+            error.message
+        );
+
+        return null;
+
+    }
+
+
+    const {
+        data
+    } =
+    db.storage
+    .from("garage-photos")
+    .getPublicUrl(fileName);
+
+
+    return data.publicUrl;
 
 }
 
 
 /* =====================================================
-   CAR PHOTO PREVIEW
+   PHOTO PREVIEWS
 ===================================================== */
 
 document
 .getElementById("carPhoto")
-.addEventListener("change",function(){
+.addEventListener(
+"change",
+function(){
 
-const file=this.files[0];
+    const file =
+    this.files[0];
 
-const preview =
-document.getElementById("carPhotoPreview");
 
-if(file){
+    const preview =
+    document
+    .getElementById(
+        "carPhotoPreview"
+    );
 
-preview.src =
-URL.createObjectURL(file);
 
-preview.style.display="block";
+    if(file){
 
-}else{
+        preview.src =
+        URL.createObjectURL(file);
 
-preview.style.display="none";
+        preview.style.display =
+        "block";
+
+    }else{
+
+        preview.style.display =
+        "none";
+
+    }
 
 }
+);
 
-});
-
-
-/* =====================================================
-   PART PHOTO PREVIEW
-===================================================== */
 
 document
 .getElementById("partPhoto")
-.addEventListener("change",function(){
+.addEventListener(
+"change",
+function(){
 
-const file=this.files[0];
+    const file =
+    this.files[0];
 
-const preview =
-document.getElementById("partPhotoPreview");
 
-if(file){
+    const preview =
+    document
+    .getElementById(
+        "partPhotoPreview"
+    );
 
-preview.src =
-URL.createObjectURL(file);
 
-preview.style.display="block";
+    if(file){
 
-}else{
+        preview.src =
+        URL.createObjectURL(file);
 
-preview.style.display="none";
+        preview.style.display =
+        "block";
+
+    }else{
+
+        preview.style.display =
+        "none";
+
+    }
 
 }
-
-});
+);
 
 
 /* =====================================================
@@ -1626,410 +2318,476 @@ preview.style.display="none";
 
 function openCarModal(car=null){
 
-document
-.getElementById("carId")
-.value =
-car?.id || "";
-
-document
-.getElementById("carGarageNumber")
-.value =
-car?.garage_number || "";
-
-document
-.getElementById("carPlate")
-.value =
-car?.number_plate || "";
-
-document
-.getElementById("carName")
-.value =
-car?.name || "";
-
-document
-.getElementById("carYear")
-.value =
-car?.year || "";
-
-document
-.getElementById("carPrice")
-.value =
-car?.price || 0;
-
-document
-.getElementById("carStatus")
-.value =
-car?.status || "Available";
-
-document
-.getElementById("carPhoto")
-.value="";
+    document
+    .getElementById("carId")
+    .value =
+    car?.id || "";
 
 
-const preview =
-document.getElementById("carPhotoPreview");
+    document
+    .getElementById("carGarageNumber")
+    .value =
+    car?.garage_number || "";
 
-if(car?.photo_url){
 
-preview.src =
-car.photo_url;
+    document
+    .getElementById("carPlate")
+    .value =
+    car?.number_plate || "";
 
-preview.style.display="block";
 
-}else{
+    document
+    .getElementById("carName")
+    .value =
+    car?.name || "";
 
-preview.style.display="none";
 
-}
+    document
+    .getElementById("carYear")
+    .value =
+    car?.year || "";
 
-document
-.getElementById("carModal")
-.classList
-.add("open");
+
+    document
+    .getElementById("carPrice")
+    .value =
+    car?.price || 0;
+
+
+    document
+    .getElementById("carStatus")
+    .value =
+    car?.status || "Available";
+
+
+    document
+    .getElementById("carPhoto")
+    .value="";
+
+
+    const preview =
+    document
+    .getElementById(
+        "carPhotoPreview"
+    );
+
+
+    if(car?.photo_url){
+
+        preview.src =
+        car.photo_url;
+
+        preview.style.display =
+        "block";
+
+    }else{
+
+        preview.style.display =
+        "none";
+
+    }
+
+
+    document
+    .getElementById("carModal")
+    .classList
+    .add("open");
 
 }
 
 
 document
 .getElementById("carForm")
-.addEventListener("submit",async function(e){
+.addEventListener(
+"submit",
+async function(e){
 
-e.preventDefault();
-
-const id =
-document.getElementById("carId").value;
-
-const photoFile =
-document
-.getElementById("carPhoto")
-.files[0];
+    e.preventDefault();
 
 
-let photoUrl=null;
+    const id =
+    document
+    .getElementById("carId")
+    .value;
 
 
-if(photoFile){
+    const photoFile =
+    document
+    .getElementById("carPhoto")
+    .files[0];
 
-photoUrl =
-await uploadPhoto(
-photoFile,
-"cars"
+
+    let photoUrl=null;
+
+
+    if(photoFile){
+
+        photoUrl =
+        await uploadPhoto(
+            photoFile,
+            "cars"
+        );
+
+        if(!photoUrl)return;
+
+    }
+
+
+    const payload={
+
+        garage_id:GARAGE_ID,
+
+        garage_number:
+        document
+        .getElementById("carGarageNumber")
+        .value
+        .trim(),
+
+        number_plate:
+        document
+        .getElementById("carPlate")
+        .value
+        .trim(),
+
+        name:
+        document
+        .getElementById("carName")
+        .value
+        .trim(),
+
+        year:
+        document
+        .getElementById("carYear")
+        .value
+        .trim(),
+
+        price:
+        Number(
+            document
+            .getElementById("carPrice")
+            .value
+        ) || 0,
+
+        status:
+        document
+        .getElementById("carStatus")
+        .value
+
+    };
+
+
+    if(photoUrl){
+
+        payload.photo_url =
+        photoUrl;
+
+    }
+
+
+    let result;
+
+
+    if(id){
+
+        result =
+        await db
+        .from("cars")
+        .update(payload)
+        .eq("id",id)
+        .eq(
+            "garage_id",
+            GARAGE_ID
+        );
+
+    }else{
+
+        result =
+        await db
+        .from("cars")
+        .insert(payload);
+
+    }
+
+
+    if(result.error){
+
+        alert(
+            "Could not save car: " +
+            result.error.message
+        );
+
+        return;
+
+    }
+
+
+    closeModal(
+        "carModal"
+    );
+
+
+    await loadCars();
+
+    await refreshDashboard();
+
+}
 );
-
-if(!photoUrl)return;
-
-}
-
-
-const payload={
-
-garage_id:GARAGE_ID,
-
-garage_number:
-document
-.getElementById("carGarageNumber")
-.value
-.trim(),
-
-number_plate:
-document
-.getElementById("carPlate")
-.value
-.trim(),
-
-name:
-document
-.getElementById("carName")
-.value
-.trim(),
-
-year:
-document
-.getElementById("carYear")
-.value
-.trim(),
-
-price:
-Number(
-document
-.getElementById("carPrice")
-.value
-) || 0,
-
-status:
-document
-.getElementById("carStatus")
-.value
-
-};
-
-
-if(photoUrl){
-
-payload.photo_url =
-photoUrl;
-
-}
-
-
-let result;
-
-
-if(id){
-
-result =
-await db
-.from("cars")
-.update(payload)
-.eq("id",id)
-.eq("garage_id",GARAGE_ID);
-
-}else{
-
-result =
-await db
-.from("cars")
-.insert(payload);
-
-}
-
-
-if(result.error){
-
-alert(
-"Could not save car: " +
-result.error.message
-);
-
-return;
-
-}
-
-
-closeModal("carModal");
-
-await loadCars();
-
-await refreshDashboard();
-
-});
 
 
 async function loadCars(){
 
-if(!profile)return;
-
-const search =
-(
-document
-.getElementById("carSearch")
-?.value || ""
-)
-.toLowerCase();
+    if(!profile)return;
 
 
-const {
-data,
-error
-} =
-await db
-.from("cars")
-.select("*")
-.eq("garage_id",GARAGE_ID)
-.order("created_at",{ascending:false});
+    const search =
+
+    (
+        document
+        .getElementById("carSearch")
+        ?.value || ""
+    )
+    .toLowerCase();
 
 
-if(error){
-
-document
-.getElementById("carsTable")
-.innerHTML =
-"<p>" +
-escapeHTML(error.message) +
-"</p>";
-
-return;
-
-}
-
-
-const cars =
-(data || []).filter(function(car){
-
-return (
-
-String(car.garage_number || "")
-.toLowerCase()
-.includes(search)
-
-||
-
-String(car.number_plate || "")
-.toLowerCase()
-.includes(search)
-
-||
-
-String(car.name || "")
-.toLowerCase()
-.includes(search)
-
-);
-
-});
+    const {
+        data,
+        error
+    } =
+    await db
+    .from("cars")
+    .select("*")
+    .eq(
+        "garage_id",
+        GARAGE_ID
+    )
+    .order(
+        "created_at",
+        {
+            ascending:false
+        }
+    );
 
 
-if(!cars.length){
+    if(error){
 
-document
-.getElementById("carsTable")
-.innerHTML =
-'<div class="empty">No cars found.</div>';
+        document
+        .getElementById("carsTable")
+        .innerHTML =
 
-return;
+        "<p>" +
+        escapeHTML(error.message) +
+        "</p>";
 
-}
+        return;
+
+    }
 
 
-document
-.getElementById("carsTable")
-.innerHTML =
+    const cars =
+    (data || [])
+    .filter(function(car){
 
-`
-<table>
+        return (
 
-<thead>
+            String(
+                car.garage_number || ""
+            )
+            .toLowerCase()
+            .includes(search)
 
-<tr>
+            ||
 
-<th>Photo</th>
-<th>Garage #</th>
-<th>Plate</th>
-<th>Car</th>
-<th>Year</th>
-<th>Price</th>
-<th>Status</th>
-<th>Actions</th>
+            String(
+                car.number_plate || ""
+            )
+            .toLowerCase()
+            .includes(search)
 
-</tr>
+            ||
 
-</thead>
+            String(
+                car.name || ""
+            )
+            .toLowerCase()
+            .includes(search)
 
-<tbody>
+        );
 
-${cars.map(function(car){
+    });
 
-return `
 
-<tr>
+    if(!cars.length){
 
-<td>
+        document
+        .getElementById("carsTable")
+        .innerHTML =
+        '<div class="empty">No cars found.</div>';
 
-${
-car.photo_url
+        return;
 
-?
+    }
 
-`<img
-src="${escapeHTML(car.photo_url)}"
-class="car-photo"
->`
 
-:
+    document
+    .getElementById("carsTable")
+    .innerHTML =
 
-"-"
+    `<table>
 
-}
+        <thead>
 
-</td>
+            <tr>
 
-<td>
-${escapeHTML(car.garage_number)}
-</td>
+                <th>Photo</th>
+                <th>Garage #</th>
+                <th>Plate</th>
+                <th>Car</th>
+                <th>Year</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Actions</th>
 
-<td>
-${escapeHTML(car.number_plate || "-")}
-</td>
+            </tr>
 
-<td>
-${escapeHTML(car.name)}
-</td>
+        </thead>
 
-<td>
-${escapeHTML(car.year || "-")}
-</td>
+        <tbody>
 
-<td>
-${Number(car.price || 0).toFixed(2)}
-</td>
+            ${cars.map(function(car){
 
-<td>
-${escapeHTML(car.status || "Available")}
-</td>
+                return `
 
-<td>
+                    <tr>
 
-<div class="actions">
+                        <td>
 
-<button
-class="btn secondary"
-onclick='openCarModal(${JSON.stringify(car)})'
->
-Edit
-</button>
+                            ${
+                                car.photo_url
 
-<button
-class="btn danger"
-onclick="deleteCar('${car.id}')"
->
-Delete
-</button>
+                                ?
 
-</div>
+                                `<img
+                                src="${escapeHTML(car.photo_url)}"
+                                class="car-photo"
+                                >`
 
-</td>
+                                :
 
-</tr>
+                                "-"
+                            }
 
-`;
+                        </td>
 
-}).join("")}
 
-</tbody>
+                        <td>
+                        ${escapeHTML(car.garage_number)}
+                        </td>
 
-</table>
-`;
+
+                        <td>
+                        ${escapeHTML(
+                            car.number_plate || "-"
+                        )}
+                        </td>
+
+
+                        <td>
+                        ${escapeHTML(car.name)}
+                        </td>
+
+
+                        <td>
+                        ${escapeHTML(
+                            car.year || "-"
+                        )}
+                        </td>
+
+
+                        <td>
+                        ${Number(
+                            car.price || 0
+                        ).toFixed(2)}
+                        </td>
+
+
+                        <td>
+                        ${escapeHTML(
+                            car.status ||
+                            "Available"
+                        )}
+                        </td>
+
+
+                        <td>
+
+                            <div class="actions">
+
+                                <button
+                                class="btn secondary"
+                                onclick='openCarModal(${JSON.stringify(car)})'
+                                >
+                                Edit
+                                </button>
+
+
+                                <button
+                                class="btn danger"
+                                onclick="deleteCar('${car.id}')"
+                                >
+                                Delete
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }).join("")}
+
+        </tbody>
+
+    </table>`;
 
 }
 
 
 async function deleteCar(id){
 
-if(!confirm("Delete this car?"))return;
+    if(
+        !confirm(
+            "Delete this car?"
+        )
+    )return;
 
 
-const {
-error
-} =
-await db
-.from("cars")
-.delete()
-.eq("id",id)
-.eq("garage_id",GARAGE_ID);
+    const {
+        error
+    } =
+    await db
+    .from("cars")
+    .delete()
+    .eq("id",id)
+    .eq(
+        "garage_id",
+        GARAGE_ID
+    );
 
 
-if(error){
+    if(error){
 
-alert(error.message);
+        alert(error.message);
 
-return;
+        return;
 
-}
+    }
 
 
-await loadCars();
+    await loadCars();
 
-await refreshDashboard();
+    await refreshDashboard();
 
 }
 
@@ -2040,412 +2798,467 @@ await refreshDashboard();
 
 function openPartModal(part=null){
 
-document
-.getElementById("partId")
-.value =
-part?.id || "";
-
-document
-.getElementById("partNumber")
-.value =
-part?.part_number || "";
-
-document
-.getElementById("partName")
-.value =
-part?.name || "";
-
-document
-.getElementById("partCategory")
-.value =
-part?.category || "";
-
-document
-.getElementById("partQuantity")
-.value =
-part?.quantity ?? 1;
-
-document
-.getElementById("partPrice")
-.value =
-part?.price || 0;
-
-document
-.getElementById("partCarId")
-.value =
-part?.car_id || "";
-
-document
-.getElementById("partPhoto")
-.value="";
+    document
+    .getElementById("partId")
+    .value =
+    part?.id || "";
 
 
-const preview =
-document.getElementById("partPhotoPreview");
+    document
+    .getElementById("partNumber")
+    .value =
+    part?.part_number || "";
 
-if(part?.photo_url){
 
-preview.src =
-part.photo_url;
+    document
+    .getElementById("partName")
+    .value =
+    part?.name || "";
 
-preview.style.display="block";
 
-}else{
+    document
+    .getElementById("partCategory")
+    .value =
+    part?.category || "";
 
-preview.style.display="none";
 
-}
+    document
+    .getElementById("partQuantity")
+    .value =
+    part?.quantity ?? 1;
 
-document
-.getElementById("partModal")
-.classList
-.add("open");
+
+    document
+    .getElementById("partPrice")
+    .value =
+    part?.price || 0;
+
+
+    document
+    .getElementById("partCarId")
+    .value =
+    part?.car_id || "";
+
+
+    document
+    .getElementById("partPhoto")
+    .value="";
+
+
+    const preview =
+    document
+    .getElementById(
+        "partPhotoPreview"
+    );
+
+
+    if(part?.photo_url){
+
+        preview.src =
+        part.photo_url;
+
+        preview.style.display =
+        "block";
+
+    }else{
+
+        preview.style.display =
+        "none";
+
+    }
+
+
+    document
+    .getElementById("partModal")
+    .classList
+    .add("open");
 
 }
 
 
 document
 .getElementById("partForm")
-.addEventListener("submit",async function(e){
+.addEventListener(
+"submit",
+async function(e){
 
-e.preventDefault();
-
-
-const id =
-document
-.getElementById("partId")
-.value;
+    e.preventDefault();
 
 
-const photoFile =
-document
-.getElementById("partPhoto")
-.files[0];
+    const id =
+    document
+    .getElementById("partId")
+    .value;
 
 
-let photoUrl=null;
+    const photoFile =
+    document
+    .getElementById("partPhoto")
+    .files[0];
 
 
-if(photoFile){
+    let photoUrl=null;
 
-photoUrl =
-await uploadPhoto(
-photoFile,
-"parts"
+
+    if(photoFile){
+
+        photoUrl =
+        await uploadPhoto(
+            photoFile,
+            "parts"
+        );
+
+        if(!photoUrl)return;
+
+    }
+
+
+    const payload={
+
+        garage_id:GARAGE_ID,
+
+        part_number:
+        document
+        .getElementById("partNumber")
+        .value
+        .trim(),
+
+        name:
+        document
+        .getElementById("partName")
+        .value
+        .trim(),
+
+        category:
+        document
+        .getElementById("partCategory")
+        .value
+        .trim(),
+
+        quantity:
+        Number(
+            document
+            .getElementById("partQuantity")
+            .value
+        ) || 0,
+
+        price:
+        Number(
+            document
+            .getElementById("partPrice")
+            .value
+        ) || 0,
+
+        car_id:
+        document
+        .getElementById("partCarId")
+        .value
+        .trim() || null
+
+    };
+
+
+    if(photoUrl){
+
+        payload.photo_url =
+        photoUrl;
+
+    }
+
+
+    let result;
+
+
+    if(id){
+
+        result =
+        await db
+        .from("parts")
+        .update(payload)
+        .eq("id",id)
+        .eq(
+            "garage_id",
+            GARAGE_ID
+        );
+
+    }else{
+
+        result =
+        await db
+        .from("parts")
+        .insert(payload);
+
+    }
+
+
+    if(result.error){
+
+        alert(
+            "Could not save part: " +
+            result.error.message
+        );
+
+        return;
+
+    }
+
+
+    closeModal(
+        "partModal"
+    );
+
+
+    await loadParts();
+
+    await refreshDashboard();
+
+}
 );
-
-if(!photoUrl)return;
-
-}
-
-
-const payload={
-
-garage_id:GARAGE_ID,
-
-part_number:
-document
-.getElementById("partNumber")
-.value
-.trim(),
-
-name:
-document
-.getElementById("partName")
-.value
-.trim(),
-
-category:
-document
-.getElementById("partCategory")
-.value
-.trim(),
-
-quantity:
-Number(
-document
-.getElementById("partQuantity")
-.value
-) || 0,
-
-price:
-Number(
-document
-.getElementById("partPrice")
-.value
-) || 0,
-
-car_id:
-document
-.getElementById("partCarId")
-.value
-.trim() || null
-
-};
-
-
-if(photoUrl){
-
-payload.photo_url =
-photoUrl;
-
-}
-
-
-let result;
-
-
-if(id){
-
-result =
-await db
-.from("parts")
-.update(payload)
-.eq("id",id)
-.eq("garage_id",GARAGE_ID);
-
-}else{
-
-result =
-await db
-.from("parts")
-.insert(payload);
-
-}
-
-
-if(result.error){
-
-alert(
-"Could not save part: " +
-result.error.message
-);
-
-return;
-
-}
-
-
-closeModal("partModal");
-
-await loadParts();
-
-await refreshDashboard();
-
-});
 
 
 async function loadParts(){
 
-if(!profile)return;
+    if(!profile)return;
 
 
-const search =
-(
-document
-.getElementById("partSearch")
-?.value || ""
-)
-.toLowerCase();
+    const search =
+
+    (
+        document
+        .getElementById("partSearch")
+        ?.value || ""
+    )
+    .toLowerCase();
 
 
-const {
-data,
-error
-} =
-await db
-.from("parts")
-.select("*")
-.eq("garage_id",GARAGE_ID)
-.order("created_at",{ascending:false});
+    const {
+        data,
+        error
+    } =
+    await db
+    .from("parts")
+    .select("*")
+    .eq(
+        "garage_id",
+        GARAGE_ID
+    )
+    .order(
+        "created_at",
+        {
+            ascending:false
+        }
+    );
 
 
-if(error){
+    if(error){
 
-document
-.getElementById("partsTable")
-.innerHTML =
-"<p>" +
-escapeHTML(error.message) +
-"</p>";
+        document
+        .getElementById("partsTable")
+        .innerHTML =
 
-return;
+        "<p>" +
+        escapeHTML(error.message) +
+        "</p>";
 
-}
+        return;
 
-
-const parts =
-(data || []).filter(function(part){
-
-return (
-
-String(part.part_number || "")
-.toLowerCase()
-.includes(search)
-
-||
-
-String(part.name || "")
-.toLowerCase()
-.includes(search)
-
-||
-
-String(part.category || "")
-.toLowerCase()
-.includes(search)
-
-);
-
-});
+    }
 
 
-if(!parts.length){
+    const parts =
+    (data || [])
+    .filter(function(part){
 
-document
-.getElementById("partsTable")
-.innerHTML =
-'<div class="empty">No parts found.</div>';
+        return (
 
-return;
+            String(
+                part.part_number || ""
+            )
+            .toLowerCase()
+            .includes(search)
 
-}
+            ||
+
+            String(
+                part.name || ""
+            )
+            .toLowerCase()
+            .includes(search)
+
+            ||
+
+            String(
+                part.category || ""
+            )
+            .toLowerCase()
+            .includes(search)
+
+        );
+
+    });
 
 
-document
-.getElementById("partsTable")
-.innerHTML =
+    if(!parts.length){
 
-`
-<table>
+        document
+        .getElementById("partsTable")
+        .innerHTML =
+        '<div class="empty">No parts found.</div>';
 
-<thead>
+        return;
 
-<tr>
+    }
 
-<th>Photo</th>
-<th>Part #</th>
-<th>Name</th>
-<th>Category</th>
-<th>Qty</th>
-<th>Price</th>
-<th>Actions</th>
 
-</tr>
+    document
+    .getElementById("partsTable")
+    .innerHTML =
 
-</thead>
+    `<table>
 
-<tbody>
+        <thead>
 
-${parts.map(function(part){
+            <tr>
 
-return `
+                <th>Photo</th>
+                <th>Part #</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Actions</th>
 
-<tr>
+            </tr>
 
-<td>
+        </thead>
 
-${
-part.photo_url
+        <tbody>
 
-?
+            ${parts.map(function(part){
 
-`<img
-src="${escapeHTML(part.photo_url)}"
-class="part-photo"
->`
+                return `
 
-:
+                    <tr>
 
-"-"
+                        <td>
 
-}
+                            ${
+                                part.photo_url
 
-</td>
+                                ?
 
-<td>
-${escapeHTML(part.part_number)}
-</td>
+                                `<img
+                                src="${escapeHTML(part.photo_url)}"
+                                class="part-photo"
+                                >`
 
-<td>
-${escapeHTML(part.name)}
-</td>
+                                :
 
-<td>
-${escapeHTML(part.category || "-")}
-</td>
+                                "-"
+                            }
 
-<td>
-${part.quantity ?? 0}
-</td>
+                        </td>
 
-<td>
-${Number(part.price || 0).toFixed(2)}
-</td>
 
-<td>
+                        <td>
+                        ${escapeHTML(part.part_number)}
+                        </td>
 
-<div class="actions">
 
-<button
-class="btn secondary"
-onclick='openPartModal(${JSON.stringify(part)})'
->
-Edit
-</button>
+                        <td>
+                        ${escapeHTML(part.name)}
+                        </td>
 
-<button
-class="btn danger"
-onclick="deletePart('${part.id}')"
->
-Delete
-</button>
 
-</div>
+                        <td>
+                        ${escapeHTML(
+                            part.category || "-"
+                        )}
+                        </td>
 
-</td>
 
-</tr>
+                        <td>
+                        ${part.quantity ?? 0}
+                        </td>
 
-`;
 
-}).join("")}
+                        <td>
+                        ${Number(
+                            part.price || 0
+                        ).toFixed(2)}
+                        </td>
 
-</tbody>
 
-</table>
-`;
+                        <td>
+
+                            <div class="actions">
+
+                                <button
+                                class="btn secondary"
+                                onclick='openPartModal(${JSON.stringify(part)})'
+                                >
+                                Edit
+                                </button>
+
+
+                                <button
+                                class="btn danger"
+                                onclick="deletePart('${part.id}')"
+                                >
+                                Delete
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }).join("")}
+
+        </tbody>
+
+    </table>`;
 
 }
 
 
 async function deletePart(id){
 
-if(!confirm("Delete this part?"))return;
+    if(
+        !confirm(
+            "Delete this part?"
+        )
+    )return;
 
 
-const {
-error
-} =
-await db
-.from("parts")
-.delete()
-.eq("id",id)
-.eq("garage_id",GARAGE_ID);
+    const {
+        error
+    } =
+    await db
+    .from("parts")
+    .delete()
+    .eq("id",id)
+    .eq(
+        "garage_id",
+        GARAGE_ID
+    );
 
 
-if(error){
+    if(error){
 
-alert(error.message);
+        alert(error.message);
 
-return;
+        return;
 
-}
+    }
 
 
-await loadParts();
+    await loadParts();
 
-await refreshDashboard();
+    await refreshDashboard();
 
 }
 
@@ -2456,250 +3269,300 @@ await refreshDashboard();
 
 function openSaleModal(){
 
-document
-.getElementById("saleForm")
-.reset();
+    document
+    .getElementById("saleForm")
+    .reset();
 
-document
-.getElementById("saleQuantity")
-.value=1;
 
-document
-.getElementById("saleModal")
-.classList
-.add("open");
+    document
+    .getElementById("saleQuantity")
+    .value=1;
+
+
+    document
+    .getElementById("saleModal")
+    .classList
+    .add("open");
 
 }
 
 
 document
 .getElementById("saleForm")
-.addEventListener("submit",async function(e){
+.addEventListener(
+"submit",
+async function(e){
 
-e.preventDefault();
-
-
-const payload={
-
-garage_id:GARAGE_ID,
-
-customer_name:
-document
-.getElementById("saleCustomer")
-.value
-.trim(),
-
-item_type:
-document
-.getElementById("saleType")
-.value,
-
-item_id:
-document
-.getElementById("saleItemId")
-.value
-.trim(),
-
-item_name:
-document
-.getElementById("saleItemName")
-.value
-.trim(),
-
-quantity:
-Number(
-document
-.getElementById("saleQuantity")
-.value
-) || 1,
-
-total:
-Number(
-document
-.getElementById("saleTotal")
-.value
-) || 0
-
-};
+    e.preventDefault();
 
 
-const {
-error
-} =
-await db
-.from("sales")
-.insert(payload);
+    const payload={
+
+        garage_id:GARAGE_ID,
+
+        customer_name:
+        document
+        .getElementById("saleCustomer")
+        .value
+        .trim(),
+
+        item_type:
+        document
+        .getElementById("saleType")
+        .value,
+
+        item_id:
+        document
+        .getElementById("saleItemId")
+        .value
+        .trim(),
+
+        item_name:
+        document
+        .getElementById("saleItemName")
+        .value
+        .trim(),
+
+        quantity:
+        Number(
+            document
+            .getElementById("saleQuantity")
+            .value
+        ) || 1,
+
+        total:
+        Number(
+            document
+            .getElementById("saleTotal")
+            .value
+        ) || 0
+
+    };
 
 
-if(error){
+    const {
+        error
+    } =
+    await db
+    .from("sales")
+    .insert(payload);
 
-alert(
-"Could not save sale: " +
-error.message
+
+    if(error){
+
+        alert(
+            "Could not save sale: " +
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    if(
+        payload.item_type==="part"
+    ){
+
+        const {
+            data:part
+        } =
+        await db
+        .from("parts")
+        .select("quantity")
+        .eq(
+            "id",
+            payload.item_id
+        )
+        .eq(
+            "garage_id",
+            GARAGE_ID
+        )
+        .single();
+
+
+        if(part){
+
+            await db
+            .from("parts")
+            .update({
+
+                quantity:
+                Math.max(
+                    0,
+                    Number(
+                        part.quantity || 0
+                    )
+                    -
+                    payload.quantity
+                )
+
+            })
+            .eq(
+                "id",
+                payload.item_id
+            )
+            .eq(
+                "garage_id",
+                GARAGE_ID
+            );
+
+        }
+
+    }
+
+
+    closeModal(
+        "saleModal"
+    );
+
+
+    await loadSales();
+
+    await refreshDashboard();
+
+}
 );
-
-return;
-
-}
-
-
-/* REDUCE PART STOCK */
-
-if(payload.item_type==="part"){
-
-const {
-data:part
-} =
-await db
-.from("parts")
-.select("quantity")
-.eq("id",payload.item_id)
-.eq("garage_id",GARAGE_ID)
-.single();
-
-
-if(part){
-
-await db
-.from("parts")
-.update({
-
-quantity:
-Math.max(
-0,
-Number(part.quantity || 0)
--
-payload.quantity
-
-)
-
-})
-.eq("id",payload.item_id)
-.eq("garage_id",GARAGE_ID);
-
-}
-
-}
-
-
-closeModal("saleModal");
-
-await loadSales();
-
-await refreshDashboard();
-
-});
 
 
 async function loadSales(){
 
-if(!profile)return;
+    if(!profile)return;
 
 
-const {
-data,
-error
-} =
-await db
-.from("sales")
-.select("*")
-.eq("garage_id",GARAGE_ID)
-.order("created_at",{ascending:false});
+    const {
+        data,
+        error
+    } =
+    await db
+    .from("sales")
+    .select("*")
+    .eq(
+        "garage_id",
+        GARAGE_ID
+    )
+    .order(
+        "created_at",
+        {
+            ascending:false
+        }
+    );
 
 
-if(error){
+    if(error){
 
-document
-.getElementById("salesTable")
-.innerHTML =
-"<p>" +
-escapeHTML(error.message) +
-"</p>";
+        document
+        .getElementById("salesTable")
+        .innerHTML =
 
-return;
+        "<p>" +
+        escapeHTML(error.message) +
+        "</p>";
 
-}
+        return;
 
-
-if(!data?.length){
-
-document
-.getElementById("salesTable")
-.innerHTML =
-'<div class="empty">No sales recorded.</div>';
-
-return;
-
-}
+    }
 
 
-document
-.getElementById("salesTable")
-.innerHTML =
+    if(!data?.length){
 
-`
-<table>
+        document
+        .getElementById("salesTable")
+        .innerHTML =
+        '<div class="empty">No sales recorded.</div>';
 
-<thead>
+        return;
 
-<tr>
+    }
 
-<th>Date</th>
-<th>Customer</th>
-<th>Item</th>
-<th>Qty</th>
-<th>Total</th>
 
-</tr>
+    document
+    .getElementById("salesTable")
+    .innerHTML =
 
-</thead>
+    `<table>
 
-<tbody>
+        <thead>
 
-${data.map(function(sale){
+            <tr>
 
-return `
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Total</th>
 
-<tr>
+            </tr>
 
-<td>
-${new Date(
-sale.created_at
-).toLocaleString()}
-</td>
+        </thead>
 
-<td>
-${escapeHTML(
-sale.customer_name || "-"
-)}
-</td>
+        <tbody>
 
-<td>
-${escapeHTML(
-sale.item_name || "-"
-)}
-</td>
+            ${data.map(function(sale){
 
-<td>
-${sale.quantity || 1}
-</td>
+                return `
 
-<td>
-${Number(
-sale.total || 0
-).toFixed(2)}
-</td>
+                    <tr>
 
-</tr>
+                        <td>
 
-`;
+                        ${
+                            new Date(
+                                sale.created_at
+                            )
+                            .toLocaleString()
+                        }
 
-}).join("")}
+                        </td>
 
-</tbody>
 
-</table>
-`;
+                        <td>
+
+                        ${
+                            escapeHTML(
+                                sale.customer_name || "-"
+                            )
+                        }
+
+                        </td>
+
+
+                        <td>
+
+                        ${
+                            escapeHTML(
+                                sale.item_name || "-"
+                            )
+                        }
+
+                        </td>
+
+
+                        <td>
+                        ${sale.quantity || 1}
+                        </td>
+
+
+                        <td>
+
+                        ${
+                            Number(
+                                sale.total || 0
+                            )
+                            .toFixed(2)
+                        }
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }).join("")}
+
+        </tbody>
+
+    </table>`;
 
 }
 
@@ -2710,252 +3573,291 @@ sale.total || 0
 
 function openInvoiceModal(){
 
-document
-.getElementById("invoiceForm")
-.reset();
+    document
+    .getElementById("invoiceForm")
+    .reset();
 
 
-document
-.getElementById("invoiceNumber")
-.value =
-"INV-" +
-Date.now();
+    document
+    .getElementById("invoiceNumber")
+    .value =
+    "INV-" +
+    Date.now();
 
 
-document
-.getElementById("invoiceQuantity")
-.value=1;
+    document
+    .getElementById("invoiceQuantity")
+    .value=1;
 
 
-document
-.getElementById("invoiceTax")
-.value=0;
+    document
+    .getElementById("invoiceTax")
+    .value=0;
 
 
-document
-.getElementById("invoiceModal")
-.classList
-.add("open");
+    document
+    .getElementById("invoiceModal")
+    .classList
+    .add("open");
 
 }
 
 
 document
 .getElementById("invoiceForm")
-.addEventListener("submit",async function(e){
+.addEventListener(
+"submit",
+async function(e){
 
-e.preventDefault();
-
-
-const quantity =
-Number(
-document
-.getElementById("invoiceQuantity")
-.value
-) || 1;
+    e.preventDefault();
 
 
-const unitPrice =
-Number(
-document
-.getElementById("invoiceUnitPrice")
-.value
-) || 0;
+    const quantity =
+    Number(
+        document
+        .getElementById("invoiceQuantity")
+        .value
+    ) || 1;
 
 
-const tax =
-Number(
-document
-.getElementById("invoiceTax")
-.value
-) || 0;
+    const unitPrice =
+    Number(
+        document
+        .getElementById("invoiceUnitPrice")
+        .value
+    ) || 0;
 
 
-const payload={
-
-garage_id:GARAGE_ID,
-
-invoice_number:
-document
-.getElementById("invoiceNumber")
-.value
-.trim(),
-
-customer_name:
-document
-.getElementById("invoiceCustomer")
-.value
-.trim(),
-
-customer_phone:
-document
-.getElementById("invoicePhone")
-.value
-.trim(),
-
-item_description:
-document
-.getElementById("invoiceDescription")
-.value
-.trim(),
-
-quantity:quantity,
-
-unit_price:unitPrice,
-
-tax:tax,
-
-total:
-(quantity * unitPrice) + tax
-
-};
+    const tax =
+    Number(
+        document
+        .getElementById("invoiceTax")
+        .value
+    ) || 0;
 
 
-const {
-error
-} =
-await db
-.from("invoices")
-.insert(payload);
+    const payload={
+
+        garage_id:GARAGE_ID,
+
+        invoice_number:
+        document
+        .getElementById("invoiceNumber")
+        .value
+        .trim(),
+
+        customer_name:
+        document
+        .getElementById("invoiceCustomer")
+        .value
+        .trim(),
+
+        customer_phone:
+        document
+        .getElementById("invoicePhone")
+        .value
+        .trim(),
+
+        item_description:
+        document
+        .getElementById("invoiceDescription")
+        .value
+        .trim(),
+
+        quantity:quantity,
+
+        unit_price:unitPrice,
+
+        tax:tax,
+
+        total:
+        (
+            quantity *
+            unitPrice
+        )
+        +
+        tax
+
+    };
 
 
-if(error){
+    const {
+        error
+    } =
+    await db
+    .from("invoices")
+    .insert(payload);
 
-alert(
-"Could not save invoice: " +
-error.message
+
+    if(error){
+
+        alert(
+            "Could not save invoice: " +
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    closeModal(
+        "invoiceModal"
+    );
+
+
+    await loadInvoices();
+
+    await refreshDashboard();
+
+}
 );
-
-return;
-
-}
-
-
-closeModal("invoiceModal");
-
-await loadInvoices();
-
-await refreshDashboard();
-
-});
 
 
 async function loadInvoices(){
 
-if(!profile)return;
+    if(!profile)return;
 
 
-const {
-data,
-error
-} =
-await db
-.from("invoices")
-.select("*")
-.eq("garage_id",GARAGE_ID)
-.order("created_at",{ascending:false});
+    const {
+        data,
+        error
+    } =
+    await db
+    .from("invoices")
+    .select("*")
+    .eq(
+        "garage_id",
+        GARAGE_ID
+    )
+    .order(
+        "created_at",
+        {
+            ascending:false
+        }
+    );
 
 
-if(error){
+    if(error){
 
-document
-.getElementById("invoiceTable")
-.innerHTML =
-"<p>" +
-escapeHTML(error.message) +
-"</p>";
+        document
+        .getElementById("invoiceTable")
+        .innerHTML =
 
-return;
+        "<p>" +
+        escapeHTML(error.message) +
+        "</p>";
 
-}
+        return;
 
-
-if(!data?.length){
-
-document
-.getElementById("invoiceTable")
-.innerHTML =
-'<div class="empty">No invoices created.</div>';
-
-return;
-
-}
+    }
 
 
-document
-.getElementById("invoiceTable")
-.innerHTML =
+    if(!data?.length){
 
-`
-<table>
+        document
+        .getElementById("invoiceTable")
+        .innerHTML =
+        '<div class="empty">No invoices created.</div>';
 
-<thead>
+        return;
 
-<tr>
+    }
 
-<th>Invoice</th>
-<th>Customer</th>
-<th>Description</th>
-<th>Total</th>
-<th>Action</th>
 
-</tr>
+    document
+    .getElementById("invoiceTable")
+    .innerHTML =
 
-</thead>
+    `<table>
 
-<tbody>
+        <thead>
 
-${data.map(function(invoice){
+            <tr>
 
-return `
+                <th>Invoice</th>
+                <th>Customer</th>
+                <th>Description</th>
+                <th>Total</th>
+                <th>Action</th>
 
-<tr>
+            </tr>
 
-<td>
-${escapeHTML(
-invoice.invoice_number
-)}
-</td>
+        </thead>
 
-<td>
-${escapeHTML(
-invoice.customer_name || "-"
-)}
-</td>
+        <tbody>
 
-<td>
-${escapeHTML(
-invoice.item_description || "-"
-)}
-</td>
+            ${data.map(function(invoice){
 
-<td>
-${Number(
-invoice.total || 0
-).toFixed(2)}
-</td>
+                return `
 
-<td>
+                    <tr>
 
-<button
-class="btn"
-onclick='printInvoice(${JSON.stringify(invoice)})'
->
-Print
-</button>
+                        <td>
 
-</td>
+                        ${
+                            escapeHTML(
+                                invoice.invoice_number
+                            )
+                        }
 
-</tr>
+                        </td>
 
-`;
 
-}).join("")}
+                        <td>
 
-</tbody>
+                        ${
+                            escapeHTML(
+                                invoice.customer_name || "-"
+                            )
+                        }
 
-</table>
-`;
+                        </td>
+
+
+                        <td>
+
+                        ${
+                            escapeHTML(
+                                invoice.item_description || "-"
+                            )
+                        }
+
+                        </td>
+
+
+                        <td>
+
+                        ${
+                            Number(
+                                invoice.total || 0
+                            )
+                            .toFixed(2)
+                        }
+
+                        </td>
+
+
+                        <td>
+
+                            <button
+                            class="btn"
+                            onclick='printInvoice(${JSON.stringify(invoice)})'
+                            >
+                            Print
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }).join("")}
+
+        </tbody>
+
+    </table>`;
 
 }
 
@@ -2966,14 +3868,14 @@ Print
 
 function printInvoice(invoice){
 
-const win =
-window.open(
-"",
-"_blank"
-);
+    const win =
+    window.open(
+        "",
+        "_blank"
+    );
 
 
-win.document.write(`
+    win.document.write(`
 
 <!DOCTYPE html>
 
@@ -3061,28 +3963,49 @@ ${escapeHTML(invoice.item_description || "")}
 </div>
 
 <div class="row">
+
 Quantity:
+
 ${invoice.quantity || 1}
+
 </div>
 
 <div class="row">
+
 Unit Price:
-${Number(invoice.unit_price || 0).toFixed(2)}
+
+${Number(
+invoice.unit_price || 0
+).toFixed(2)}
+
 </div>
 
 <div class="row">
+
 Tax:
-${Number(invoice.tax || 0).toFixed(2)}
+
+${Number(
+invoice.tax || 0
+).toFixed(2)}
+
 </div>
 
 <div class="total">
+
 Total:
-${Number(invoice.total || 0).toFixed(2)}
+
+${Number(
+invoice.total || 0
+).toFixed(2)}
+
 </div>
 
-<button onclick="window.print()">
-Print Invoice
-</button>
+<button
+onclick="window.print()"
+
+>
+
+Print Invoice </button>
 
 </body>
 
@@ -3090,84 +4013,96 @@ Print Invoice
 
 `);
 
+```
 win.document.close();
+```
 
 }
 
-
 /* =====================================================
-   LOGOUT
+LOGOUT
 ===================================================== */
 
 async function logout(){
 
+```
+await setOnlineStatus(false);
+
 await db.auth.signOut();
 
 window.location.reload();
+```
 
 }
 
-
 /* =====================================================
-   LOGIN
+LOGIN
 ===================================================== */
 
 document
 .getElementById("loginForm")
-.addEventListener("submit",async function(e){
+.addEventListener(
+"submit",
+async function(e){
 
+```
 e.preventDefault();
 
 
 showMessage(
-"Logging in...",
-"success"
+    "Logging in...",
+    "success"
 );
 
 
 const {
-error
+    error
 } =
-await db.auth.signInWithPassword({
+await db.auth
+.signInWithPassword({
 
-email:
-document
-.getElementById("loginEmail")
-.value
-.trim(),
+    email:
+    document
+    .getElementById("loginEmail")
+    .value
+    .trim(),
 
-password:
-document
-.getElementById("loginPassword")
-.value
+    password:
+    document
+    .getElementById("loginPassword")
+    .value
 
 });
 
 
 if(error){
 
-showMessage(
-error.message
-);
+    showMessage(
+        error.message
+    );
 
-return;
+    return;
 
 }
 
 
 await loadAccount();
+```
 
-});
-
+}
+);
 
 /* =====================================================
-   SIGNUP
+SIGNUP
 ===================================================== */
 
 document
 .getElementById("signupForm")
-.addEventListener("submit",async function(e){
+.addEventListener(
+"submit",
+async function(e){
 
+```
 e.preventDefault();
 
 
@@ -3204,150 +4139,167 @@ document
 .value;
 
 
-if(password !== confirmPassword){
+if(
+    password !==
+    confirmPassword
+){
 
-showMessage(
-"Passwords do not match."
-);
+    showMessage(
+        "Passwords do not match."
+    );
 
-return;
-
-}
-
-
-if(password.length < 6){
-
-showMessage(
-"Password must be at least 6 characters."
-);
-
-return;
+    return;
 
 }
 
 
+if(
+    password.length < 6
+){
+
+    showMessage(
+        "Password must be at least 6 characters."
+    );
+
+    return;
+
+}
+
+
 showMessage(
-"Creating account...",
-"success"
+    "Creating account...",
+    "success"
 );
 
 
 const {
-data,
-error
+    data,
+    error
 } =
-await db.auth.signUp({
+await db.auth
+.signUp({
 
-email:email,
+    email:email,
 
-password:password,
+    password:password,
 
-options:{
+    options:{
 
-data:{
+        data:{
 
-full_name:fullName,
+            full_name:fullName,
 
-phone:phone
+            phone:phone
 
-}
+        }
 
-}
+    }
 
 });
 
 
 if(error){
 
-showMessage(
-error.message
-);
+    showMessage(
+        error.message
+    );
 
-return;
-
-}
-
-
-/*
-   If Supabase immediately gives us a session,
-   link the account to Top Ranger Breakers.
-*/
-
-if(data.session && data.user){
-
-const {
-error:profileError
-} =
-await db
-.from("profiles")
-.update({
-
-garage_id:GARAGE_ID,
-
-full_name:fullName
-
-})
-.eq("id",data.user.id);
-
-
-if(profileError){
-
-showMessage(
-"Account created, but garage linking failed: " +
-profileError.message
-);
-
-return;
+    return;
 
 }
 
 
-await loadAccount();
+if(
+    data.session &&
+    data.user
+){
 
-return;
+    const {
+        error:profileError
+    } =
+    await db
+    .from("profiles")
+    .update({
+
+        garage_id:GARAGE_ID,
+
+        full_name:fullName,
+
+        phone:phone,
+
+        is_online:true,
+
+        last_seen:
+        new Date()
+        .toISOString()
+
+    })
+    .eq(
+        "id",
+        data.user.id
+    );
+
+
+    if(profileError){
+
+        showMessage(
+            "Account created, but profile setup failed: " +
+            profileError.message
+        );
+
+        return;
+
+    }
+
+
+    await loadAccount();
+
+    return;
 
 }
 
 
-/*
-   Email confirmation is enabled.
-   The account will be linked automatically
-   when the user logs in because loadAccount()
-   always assigns GARAGE_ID.
-*/
-
 showMessage(
-"Account created. Check your email to confirm your account, then log in.",
-"success"
+    "Account created. Check your email to confirm your account, then log in.",
+    "success"
 );
+
 
 showLogin();
+```
 
-});
-
+}
+);
 
 /* =====================================================
-   SESSION
+SESSION
 ===================================================== */
 
 db.auth.onAuthStateChange(
 function(event){
 
-if(event==="SIGNED_IN"){
+```
+if(
+    event==="SIGNED_IN"
+){
 
-setTimeout(function(){
+    setTimeout(
+    function(){
 
-loadAccount();
+        loadAccount();
 
-},0);
+    },
+    0
+    );
 
 }
+```
 
-});
-
+}
+);
 
 /* =====================================================
-   START
+START
 ===================================================== */
 
 loadAccount();
