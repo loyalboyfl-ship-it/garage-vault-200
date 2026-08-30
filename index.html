@@ -1263,11 +1263,6 @@ return;
 
 currentUser = user;
 
-
-/*
-   Profile is loaded without garages relationship.
-*/
-
 let {
 data:profileData,
 error:profileError
@@ -1302,10 +1297,6 @@ return;
 
 }
 
-
-/*
-   Create profile if it does not exist.
-*/
 
 if(!profileData){
 
@@ -1345,10 +1336,6 @@ profileData = newProfile;
 
 }
 
-
-/*
-   Make sure user is connected to this garage.
-*/
 
 const {
 data:updatedProfile,
@@ -1409,15 +1396,8 @@ escapeHTML(user.email || "") +
 "</b>";
 
 
-/*
-   Seller address is placed here automatically
-   when an invoice is opened.
-
-   Change this value to your real business address.
-*/
-
 document.getElementById("invoiceSellerAddress").value =
-" 49 Lavender Rd";
+"49 Lavender Rd";
 
 
 document.getElementById("authScreen").style.display="none";
@@ -1757,6 +1737,10 @@ document.getElementById("carModal")
 }
 
 
+/* =====================================================
+   SAVE CAR + AUTOMATIC STANDARD PARTS
+===================================================== */
+
 document.getElementById("carForm")
 .addEventListener("submit",async function(e){
 
@@ -1808,6 +1792,12 @@ payload.photo_url=photoUrl;
 }
 
 let result;
+let savedCar;
+
+
+/* =====================================================
+   UPDATE EXISTING CAR
+===================================================== */
 
 if(id){
 
@@ -1816,16 +1806,9 @@ await db
 .from("cars")
 .update(payload)
 .eq("id",id)
-.eq("garage_id",GARAGE_ID);
-
-}else{
-
-result =
-await db
-.from("cars")
-.insert(payload);
-
-}
+.eq("garage_id",GARAGE_ID)
+.select()
+.single();
 
 if(result.error){
 
@@ -1838,9 +1821,148 @@ return;
 
 }
 
+savedCar=result.data;
+
+}
+
+
+/* =====================================================
+   ADD NEW CAR
+===================================================== */
+
+else{
+
+result =
+await db
+.from("cars")
+.insert(payload)
+.select()
+.single();
+
+if(result.error){
+
+alert(
+"Could not save car: " +
+result.error.message
+);
+
+return;
+
+}
+
+savedCar=result.data;
+
+
+/* =====================================================
+   AUTOMATIC STANDARD PARTS
+   LINKED TO THIS EXACT CAR
+===================================================== */
+
+const standardParts = [
+
+"Engine",
+"Gearbox",
+"Bonnet",
+"Front Bumper",
+"Rear Bumper",
+"Left Front Door",
+"Right Front Door",
+"Left Rear Door",
+"Right Rear Door",
+"Front Left Headlight",
+"Front Right Headlight",
+"Rear Left Taillight",
+"Rear Right Taillight",
+"Radiator",
+"Alternator",
+"Starter Motor",
+"Air Conditioning Compressor",
+"Front Seats",
+"Rear Seats",
+"Dashboard",
+"Steering Wheel",
+"Front Left Wheel",
+"Front Right Wheel",
+"Rear Left Wheel",
+"Rear Right Wheel"
+
+];
+
+
+const partsToInsert =
+standardParts.map(function(partName,index){
+
+return {
+
+garage_id:GARAGE_ID,
+
+car_id:savedCar.id,
+
+part_number:
+"STD-" +
+savedCar.garage_number +
+"-" +
+String(index + 1).padStart(2,"0"),
+
+name:partName,
+
+category:"Standard Part",
+
+quantity:1,
+
+price:0
+
+};
+
+});
+
+
+const {
+error:partsError
+} =
+await db
+.from("parts")
+.insert(partsToInsert);
+
+
+if(partsError){
+
+console.error(
+"Standard parts could not be created:",
+partsError
+);
+
+alert(
+"Car was added, but the standard parts could not be created:\n\n" +
+partsError.message
+);
+
+}else{
+
+console.log(
+"Standard parts created and linked to car:",
+savedCar.id
+);
+
+}
+
+}
+
+
+/* =====================================================
+   COMPLETE
+===================================================== */
+
 closeModal("carModal");
 
+document.getElementById("carForm").reset();
+
 await loadCars();
+
+await loadCarDropdowns();
+
+await loadParts();
+
 await refreshDashboard();
 
 });
@@ -2006,6 +2128,8 @@ return;
 }
 
 await loadCars();
+await loadCarDropdowns();
+await loadParts();
 await refreshDashboard();
 
 }
@@ -2404,15 +2528,8 @@ document.getElementById("invoicePartInfo").style.display="none";
 
 document.getElementById("invoiceStockWarning").innerHTML="";
 
-
-/*
-   Default seller address.
-   Replace this with the real seller address.
-*/
-
 document.getElementById("invoiceSellerAddress").value =
-"Top Ranger Breakers";
-
+"49 Lavender Rd";
 
 await loadCarDropdowns();
 
@@ -2812,10 +2929,9 @@ return;
 }
 
 
-/*
-   Verify selected part and make sure it belongs
-   to the selected car.
-*/
+/* =====================================================
+   VERIFY SELECTED PART
+===================================================== */
 
 let selectedPart = null;
 
@@ -2841,12 +2957,6 @@ return;
 }
 
 selectedPart = part;
-
-
-/*
-   IMPORTANT:
-   Part must belong to the car selected on invoice.
-*/
 
 if(!carId){
 
