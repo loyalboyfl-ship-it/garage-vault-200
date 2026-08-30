@@ -177,6 +177,7 @@ footer{
     background:white;
     border-right:1px solid #ddd;
     padding:20px 14px;
+    overflow-y:auto;
 }
 
 .brand{
@@ -293,7 +294,8 @@ footer{
     flex-wrap:wrap;
 }
 
-.toolbar input{
+.toolbar input,
+.toolbar select{
     flex:1;
     min-width:220px;
     padding:12px;
@@ -382,29 +384,56 @@ th{
     display:none;
 }
 
-.profile-list{
-    display:grid;
-    gap:10px;
+.status-available{
+    color:#176b31;
+    font-weight:bold;
 }
 
-.profile-item{
-    border:1px solid #eee;
-    border-radius:10px;
-    padding:14px;
+.status-sold{
+    color:#990000;
+    font-weight:bold;
+}
+
+.status-breaking{
+    color:#d71920;
+    font-weight:bold;
+}
+
+.online-dot{
+    display:inline-block;
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:#21a366;
+    margin-right:6px;
+}
+
+.user-card{
     display:flex;
-    justify-content:space-between;
     align-items:center;
-    gap:10px;
+    gap:12px;
+    padding:12px;
+    border-bottom:1px solid #eee;
 }
 
-.profile-name{
+.user-avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#d71920;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
     font-weight:bold;
 }
 
-.online{
-    color:#16833a;
-    font-size:13px;
-    font-weight:bold;
+.part-select-info{
+    background:#f7f7f7;
+    border-radius:8px;
+    padding:12px;
+    margin-top:10px;
+    display:none;
 }
 
 @media(max-width:850px){
@@ -454,8 +483,9 @@ th{
         padding:0 14px;
     }
 
-    .topbar strong{
-        font-size:14px;
+    table{
+        display:block;
+        overflow-x:auto;
     }
 }
 </style>
@@ -463,7 +493,9 @@ th{
 
 <body>
 
-<!-- AUTH -->
+<!-- =====================================================
+     AUTH
+===================================================== -->
 
 <div id="authScreen" class="auth">
 
@@ -483,15 +515,15 @@ Sign in to your garage
 
 <div class="field">
 <label>Email</label>
-<input id="loginEmail" type="email" autocomplete="email" required>
+<input id="loginEmail" type="email" required>
 </div>
 
 <div class="field">
 <label>Password</label>
-<input id="loginPassword" type="password" autocomplete="current-password" required>
+<input id="loginPassword" type="password" required>
 </div>
 
-<button id="loginButton" class="btn" type="submit">
+<button class="btn" type="submit">
 Login
 </button>
 
@@ -504,6 +536,7 @@ Sign up
 </div>
 
 </form>
+
 
 <form id="signupForm" style="display:none">
 
@@ -519,20 +552,20 @@ Sign up
 
 <div class="field">
 <label>Email</label>
-<input id="signupEmail" type="email" autocomplete="email" required>
+<input id="signupEmail" type="email" required>
 </div>
 
 <div class="field">
 <label>Password</label>
-<input id="signupPassword" type="password" minlength="6" autocomplete="new-password" required>
+<input id="signupPassword" type="password" minlength="6" required>
 </div>
 
 <div class="field">
 <label>Confirm Password</label>
-<input id="confirmPassword" type="password" minlength="6" autocomplete="new-password" required>
+<input id="confirmPassword" type="password" minlength="6" required>
 </div>
 
-<button id="signupButton" class="btn" type="submit">
+<button class="btn" type="submit">
 Create Account
 </button>
 
@@ -554,7 +587,9 @@ Top Ranger Breakers
 </div>
 
 
-<!-- APPLICATION -->
+<!-- =====================================================
+     APPLICATION
+===================================================== -->
 
 <div id="app" class="app">
 
@@ -595,8 +630,8 @@ Top Ranger<br>
 🧾 <span class="nav-text">Invoices</span>
 </button>
 
-<button onclick="goToPage('profiles',this)">
-👥 <span class="nav-text">Profiles</span>
+<button onclick="goToPage('users',this)">
+👥 <span class="nav-text">Online Users</span>
 </button>
 
 </nav>
@@ -621,7 +656,9 @@ Logout
 
 <div class="content">
 
-<!-- DASHBOARD -->
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
 
 <section id="dashboard" class="page active">
 
@@ -661,6 +698,7 @@ Top Ranger Breakers management system.
 
 </div>
 
+
 <div class="panel">
 
 <h3>
@@ -673,10 +711,25 @@ Loading...
 
 </div>
 
+
+<div class="panel">
+
+<h3>
+👥 Users Online
+</h3>
+
+<div id="dashboardOnlineUsers">
+Loading...
+</div>
+
+</div>
+
 </section>
 
 
-<!-- CARS -->
+<!-- =====================================================
+     CARS
+===================================================== -->
 
 <section id="cars" class="page">
 
@@ -707,7 +760,9 @@ Loading...
 </section>
 
 
-<!-- PARTS -->
+<!-- =====================================================
+     PARTS
+===================================================== -->
 
 <section id="parts" class="page">
 
@@ -723,9 +778,9 @@ placeholder="Search parts..."
 oninput="loadParts()"
 >
 
-<button class="btn" onclick="openPartModal()">
-+ Add Part
-</button>
+<select id="partCarFilter" onchange="loadParts()">
+<option value="">All Cars</option>
+</select>
 
 </div>
 
@@ -738,7 +793,9 @@ Loading...
 </section>
 
 
-<!-- SALES -->
+<!-- =====================================================
+     SALES
+===================================================== -->
 
 <section id="sales" class="page">
 
@@ -763,7 +820,9 @@ Loading...
 </section>
 
 
-<!-- INVOICES -->
+<!-- =====================================================
+     INVOICES
+===================================================== -->
 
 <section id="invoices" class="page">
 
@@ -788,19 +847,21 @@ Loading...
 </section>
 
 
-<!-- PROFILES -->
+<!-- =====================================================
+     USERS
+===================================================== -->
 
-<section id="profiles" class="page">
+<section id="users" class="page">
 
 <div class="panel">
 
-<h2>👥 Profiles</h2>
+<h2>👥 Users Online</h2>
 
 <p class="muted">
-People registered with Top Ranger Breakers.
+People currently logged into Top Ranger Breakers.
 </p>
 
-<div id="profilesList">
+<div id="onlineUsers">
 Loading...
 </div>
 
@@ -809,11 +870,15 @@ Loading...
 </section>
 
 </div>
+
 </main>
+
 </div>
 
 
-<!-- CAR MODAL -->
+<!-- =====================================================
+     CAR MODAL
+===================================================== -->
 
 <div id="carModal" class="modal">
 
@@ -839,12 +904,19 @@ Loading...
 
 <div class="field">
 <label>Make / Model *</label>
-<input id="carName" required>
+<input
+id="carName"
+required
+placeholder="e.g. BMW 320i"
+>
 </div>
 
 <div class="field">
 <label>Year</label>
-<input id="carYear">
+<input
+id="carYear"
+placeholder="e.g. 2015"
+>
 </div>
 
 <div class="field">
@@ -907,7 +979,9 @@ Cancel
 </div>
 
 
-<!-- PART MODAL -->
+<!-- =====================================================
+     PART MODAL
+===================================================== -->
 
 <div id="partModal" class="modal">
 
@@ -947,8 +1021,10 @@ Cancel
 </div>
 
 <div class="field">
-<label>Car ID</label>
-<input id="partCarId">
+<label>Car</label>
+<select id="partCarSelect">
+<option value="">Select car</option>
+</select>
 </div>
 
 <div class="field full">
@@ -992,7 +1068,9 @@ Cancel
 </div>
 
 
-<!-- SALE MODAL -->
+<!-- =====================================================
+     SALE MODAL
+===================================================== -->
 
 <div id="saleModal" class="modal">
 
@@ -1010,10 +1088,9 @@ Cancel
 </div>
 
 <div class="field">
-
 <label>Item Type</label>
 
-<select id="saleType">
+<select id="saleType" onchange="updateSaleCarFields()">
 
 <option value="part">Part</option>
 <option value="car">Car</option>
@@ -1022,31 +1099,74 @@ Cancel
 
 </div>
 
+<div class="field full" id="saleCarField">
+
+<label>Car</label>
+
+<select id="saleCarSelect" onchange="loadSaleParts()">
+<option value="">Select car</option>
+</select>
+
+</div>
+
+<div class="field full">
+
+<label>Part</label>
+
+<select id="salePartSelect" onchange="selectSalePart()">
+<option value="">Select part</option>
+</select>
+
+</div>
+
 <div class="field full">
 
 <label>Item ID</label>
-<input id="saleItemId" required>
+
+<input
+id="saleItemId"
+required
+readonly
+>
 
 </div>
 
 <div class="field">
 
 <label>Item Name</label>
-<input id="saleItemName" required>
+
+<input
+id="saleItemName"
+required
+readonly
+>
 
 </div>
 
 <div class="field">
 
 <label>Quantity</label>
-<input id="saleQuantity" type="number" min="1" value="1">
+
+<input
+id="saleQuantity"
+type="number"
+min="1"
+value="1"
+>
 
 </div>
 
 <div class="field">
 
 <label>Total</label>
-<input id="saleTotal" type="number" min="0" step="0.01" required>
+
+<input
+id="saleTotal"
+type="number"
+min="0"
+step="0.01"
+required
+>
 
 </div>
 
@@ -1074,7 +1194,9 @@ Cancel
 </div>
 
 
-<!-- INVOICE MODAL -->
+<!-- =====================================================
+     INVOICE MODAL
+===================================================== -->
 
 <div id="invoiceModal" class="modal">
 
@@ -1110,13 +1232,60 @@ Cancel
 
 </div>
 
+
+<div class="field full">
+
+<label>Car</label>
+
+<select
+id="invoiceCarSelect"
+onchange="loadInvoiceParts()"
+>
+
+<option value="">
+Select car
+</option>
+
+</select>
+
+</div>
+
+
+<div class="field full">
+
+<label>Part from this car</label>
+
+<select
+id="invoicePartSelect"
+onchange="selectInvoicePart()"
+>
+
+<option value="">
+Select part
+</option>
+
+</select>
+
+<div
+id="invoicePartInfo"
+class="part-select-info"
+>
+</div>
+
+</div>
+
+
 <div class="field full">
 
 <label>Item Description *</label>
 
-<textarea id="invoiceDescription" required></textarea>
+<textarea
+id="invoiceDescription"
+required
+></textarea>
 
 </div>
+
 
 <div class="field">
 
@@ -1196,8 +1365,8 @@ const SUPABASE_KEY =
 
 const db =
 supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
+    SUPABASE_URL,
+    SUPABASE_KEY
 );
 
 
@@ -1214,6 +1383,78 @@ const GARAGE_NAME =
 
 let profile = null;
 let currentUser = null;
+
+
+/* =====================================================
+   AUTOMATIC STANDARD PARTS
+===================================================== */
+
+const STANDARD_PARTS = [
+
+"Engine",
+"Gearbox",
+"Bonnet",
+"Front Bumper",
+"Rear Bumper",
+"Left Front Fender",
+"Right Front Fender",
+"Left Rear Fender",
+"Right Rear Fender",
+"Left Front Door",
+"Right Front Door",
+"Left Rear Door",
+"Right Rear Door",
+"Tailgate",
+"Boot Lid",
+"Left Headlight",
+"Right Headlight",
+"Left Tail Light",
+"Right Tail Light",
+"Front Grille",
+"Radiator",
+"Radiator Fan",
+"Intercooler",
+"Air Conditioning Condenser",
+"Alternator",
+"Starter Motor",
+"Battery",
+"ECU",
+"Turbocharger",
+"Exhaust",
+"Catalytic Converter",
+"Fuel Tank",
+"Fuel Pump",
+"Steering Rack",
+"Power Steering Pump",
+"Front Subframe",
+"Rear Subframe",
+"Front Suspension",
+"Rear Suspension",
+"Front Brake Caliper",
+"Rear Brake Caliper",
+"Front Brake Disc",
+"Rear Brake Disc",
+"Front Seats",
+"Rear Seats",
+"Dashboard",
+"Instrument Cluster",
+"Steering Wheel",
+"Airbag",
+"Centre Console",
+"Door Mirrors",
+"Left Door Mirror",
+"Right Door Mirror",
+"Front Windscreen",
+"Rear Windscreen",
+"Left Front Window",
+"Right Front Window",
+"Left Rear Window",
+"Right Rear Window",
+"Front Wheels",
+"Rear Wheels",
+"Tyres"
+
+];
 
 
 /* =====================================================
@@ -1323,12 +1564,10 @@ x.classList.remove("active");
 
 });
 
-const pageElement =
-document.getElementById(page);
-
-if(pageElement){
-pageElement.classList.add("active");
-}
+document
+.getElementById(page)
+.classList
+.add("active");
 
 document
 .querySelectorAll(".nav button")
@@ -1338,15 +1577,31 @@ x.classList.remove("active");
 
 });
 
-if(button){
 button.classList.add("active");
+
+
+if(page==="cars"){
+loadCars();
 }
 
-if(page==="cars") loadCars();
-if(page==="parts") loadParts();
-if(page==="sales") loadSales();
-if(page==="invoices") loadInvoices();
-if(page==="profiles") loadProfiles();
+if(page==="parts"){
+loadCarsForSelectors();
+loadParts();
+}
+
+if(page==="sales"){
+loadCarsForSelectors();
+loadSales();
+}
+
+if(page==="invoices"){
+loadCarsForSelectors();
+loadInvoices();
+}
+
+if(page==="users"){
+loadOnlineUsers();
+}
 
 }
 
@@ -1357,28 +1612,29 @@ if(page==="profiles") loadProfiles();
 
 async function loadAccount(){
 
-try{
-
 const {
 data,
 error
 } =
 await db.auth.getUser();
 
+
 if(error){
 
-console.error("AUTH USER ERROR:",error);
+console.error(error);
 
 showMessage(
-"Could not check your login: " +
+"Authentication error: " +
 error.message
 );
 
-return false;
+return;
 
 }
 
-const user=data?.user;
+
+const user = data?.user;
+
 
 if(!user){
 
@@ -1390,59 +1646,50 @@ document
 .getElementById("app")
 .style.display="none";
 
-return false;
+return;
 
 }
 
-currentUser=user;
+
+currentUser = user;
 
 
 /*
    IMPORTANT:
-   Get the existing profile first.
-
-   We do NOT blindly update the profile every login.
+   We do NOT query garages through a relationship.
+   This avoids the schema relationship error.
 */
 
-let {
+
+const {
 data:profileData,
 error:profileError
 } =
 await db
 .from("profiles")
-.select(`
-id,
-full_name,
-phone,
-role,
-garage_id,
-garages(
-name,
-phone,
-address
-)
-`)
+.select("*")
 .eq("id",user.id)
 .maybeSingle();
 
 
-/*
-   If profile doesn't exist, create it.
-*/
-
 if(profileError){
 
-console.error("PROFILE QUERY ERROR:",profileError);
+console.error(profileError);
 
 showMessage(
 "Profile error: " +
 profileError.message
 );
 
-return false;
+return;
 
 }
 
+
+/*
+   If the profile doesn't exist,
+   create it.
+*/
 
 if(!profileData){
 
@@ -1452,116 +1699,89 @@ error:newProfileError
 } =
 await db
 .from("profiles")
-.insert({
+.upsert({
 
 id:user.id,
 
 full_name:
 user.user_metadata?.full_name ||
+user.email?.split("@")[0] ||
 "User",
 
 phone:
 user.user_metadata?.phone ||
 "",
 
-role:"User",
+role:
+"User",
 
-garage_id:GARAGE_ID
+garage_id:
+GARAGE_ID,
+
+is_online:true,
+
+last_seen:
+new Date().toISOString()
 
 })
-.select(`
-id,
-full_name,
-phone,
-role,
-garage_id,
-garages(
-name,
-phone,
-address
-)
-`)
-.single();
+.select()
+.maybeSingle();
 
 
 if(newProfileError){
 
-console.error(
-"PROFILE CREATE ERROR:",
-newProfileError
-);
+console.error(newProfileError);
 
 showMessage(
-"Could not create your profile: " +
+"Could not create profile: " +
 newProfileError.message
 );
 
-return false;
+return;
 
 }
 
-profileData=newProfile;
+profile = newProfile;
 
-}
+}else{
+
+profile = profileData;
 
 
 /*
-   Make sure this user's profile is connected
-   to Top Ranger Breakers.
+   Link the user to the garage
+   without requiring a garages relationship.
 */
 
-if(profileData.garage_id !== GARAGE_ID){
-
 const {
-data:updatedProfile,
 error:updateError
 } =
 await db
 .from("profiles")
 .update({
-garage_id:GARAGE_ID
+
+garage_id:GARAGE_ID,
+
+is_online:true,
+
+last_seen:
+new Date().toISOString()
+
 })
-.eq("id",user.id)
-.select(`
-id,
-full_name,
-phone,
-role,
-garage_id,
-garages(
-name,
-phone,
-address
-)
-`)
-.single();
+.eq("id",user.id);
 
 
 if(updateError){
 
 console.error(
-"GARAGE LINK ERROR:",
+"Profile update error:",
 updateError
 );
 
-showMessage(
-"Could not connect your profile to Top Ranger Breakers: " +
-updateError.message
-);
-
-return false;
+}
 
 }
 
-profileData=updatedProfile;
-
-}
-
-
-profile=profileData;
-
-
-/* DISPLAY ACCOUNT */
 
 document
 .getElementById("garageTitle")
@@ -1573,7 +1793,7 @@ document
 .getElementById("welcome")
 .textContent =
 "Welcome, " +
-(profileData.full_name || "User");
+(profile?.full_name || "User");
 
 
 document
@@ -1585,15 +1805,21 @@ escapeHTML(GARAGE_NAME) +
 "</b><br>" +
 
 "User: <b>" +
-escapeHTML(profileData.full_name || "User") +
+escapeHTML(
+profile?.full_name || "User"
+) +
 "</b><br>" +
 
 "Role: <b>" +
-escapeHTML(profileData.role || "User") +
+escapeHTML(
+profile?.role || "User"
+) +
 "</b><br>" +
 
 "Email: <b>" +
-escapeHTML(user.email || "") +
+escapeHTML(
+user.email || ""
+) +
 "</b>";
 
 
@@ -1606,23 +1832,231 @@ document
 .style.display="block";
 
 
+await updateOnlineStatus();
+
 await refreshDashboard();
 
-return true;
+await loadOnlineUsers();
 
-}catch(error){
+}
 
-console.error(
-"LOAD ACCOUNT ERROR:",
+
+/* =====================================================
+   ONLINE STATUS
+===================================================== */
+
+async function updateOnlineStatus(){
+
+if(!currentUser)return;
+
+
+await db
+.from("profiles")
+.update({
+
+is_online:true,
+
+last_seen:
+new Date().toISOString()
+
+})
+.eq("id",currentUser.id);
+
+}
+
+
+async function setOffline(){
+
+if(!currentUser)return;
+
+await db
+.from("profiles")
+.update({
+
+is_online:false,
+
+last_seen:
+new Date().toISOString()
+
+})
+.eq("id",currentUser.id);
+
+}
+
+
+/*
+   Update activity periodically.
+*/
+
+setInterval(function(){
+
+if(currentUser){
+
+updateOnlineStatus();
+
+}
+
+},30000);
+
+
+/* =====================================================
+   ONLINE USERS
+===================================================== */
+
+async function loadOnlineUsers(){
+
+const container =
+document.getElementById("onlineUsers");
+
+const dashboardContainer =
+document.getElementById(
+"dashboardOnlineUsers"
+);
+
+
+const {
+data,
 error
-);
+} =
+await db
+.from("profiles")
+.select(
+"id,full_name,username,role,is_online,last_seen"
+)
+.eq("garage_id",GARAGE_ID)
+.order("full_name",{ascending:true});
 
-showMessage(
-"Could not load your account: " +
-(error?.message || error)
-);
 
+if(error){
+
+console.error(error);
+
+if(container){
+
+container.innerHTML =
+"<p>" +
+escapeHTML(error.message) +
+"</p>";
+
+}
+
+if(dashboardContainer){
+
+dashboardContainer.innerHTML =
+"<p>" +
+escapeHTML(error.message) +
+"</p>";
+
+}
+
+return;
+
+}
+
+
+const onlineUsers =
+(data || []).filter(function(user){
+
+if(user.is_online !== true){
 return false;
+}
+
+if(!user.last_seen){
+return false;
+}
+
+const lastSeen =
+new Date(user.last_seen).getTime();
+
+return (
+Date.now() - lastSeen <
+120000
+);
+
+});
+
+
+function renderUser(user){
+
+const name =
+user.full_name ||
+user.username ||
+"User";
+
+const initials =
+name
+.split(" ")
+.map(function(x){
+return x.charAt(0);
+})
+.join("")
+.substring(0,2)
+.toUpperCase();
+
+
+return `
+
+<div class="user-card">
+
+<div class="user-avatar">
+${escapeHTML(initials)}
+</div>
+
+<div>
+
+<div>
+<span class="online-dot"></span>
+<b>${escapeHTML(name)}</b>
+</div>
+
+<div class="muted">
+${escapeHTML(user.role || "User")}
+</div>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+if(container){
+
+if(!onlineUsers.length){
+
+container.innerHTML =
+'<div class="empty">No users currently online.</div>';
+
+}else{
+
+container.innerHTML =
+onlineUsers
+.map(renderUser)
+.join("");
+
+}
+
+}
+
+
+if(dashboardContainer){
+
+if(!onlineUsers.length){
+
+dashboardContainer.innerHTML =
+'<div class="empty">No users currently online.</div>';
+
+}else{
+
+dashboardContainer.innerHTML =
+onlineUsers
+.slice(0,5)
+.map(renderUser)
+.join("");
+
+}
 
 }
 
@@ -1637,7 +2071,8 @@ async function refreshDashboard(){
 
 if(!profile)return;
 
-const gid=GARAGE_ID;
+const gid =
+GARAGE_ID;
 
 
 const cars =
@@ -1673,20 +2108,26 @@ document
 .textContent =
 cars.count || 0;
 
+
 document
 .getElementById("partsCount")
 .textContent =
 parts.count || 0;
+
 
 document
 .getElementById("salesCount")
 .textContent =
 sales.count || 0;
 
+
 document
 .getElementById("invoiceCount")
 .textContent =
 invoices.count || 0;
+
+
+await loadOnlineUsers();
 
 }
 
@@ -1699,8 +2140,10 @@ async function uploadPhoto(file,folder){
 
 if(!file)return null;
 
+
 const extension =
 file.name.split(".").pop();
+
 
 const fileName =
 GARAGE_ID +
@@ -1760,12 +2203,18 @@ return data.publicUrl;
 
 document
 .getElementById("carPhoto")
-.addEventListener("change",function(){
+.addEventListener(
+"change",
+function(){
 
-const file=this.files[0];
+const file =
+this.files[0];
 
 const preview =
-document.getElementById("carPhotoPreview");
+document.getElementById(
+"carPhotoPreview"
+);
+
 
 if(file){
 
@@ -1785,12 +2234,18 @@ preview.style.display="none";
 
 document
 .getElementById("partPhoto")
-.addEventListener("change",function(){
+.addEventListener(
+"change",
+function(){
 
-const file=this.files[0];
+const file =
+this.files[0];
 
 const preview =
-document.getElementById("partPhotoPreview");
+document.getElementById(
+"partPhotoPreview"
+);
+
 
 if(file){
 
@@ -1809,7 +2264,7 @@ preview.style.display="none";
 
 
 /* =====================================================
-   CARS
+   CAR MODAL
 ===================================================== */
 
 function openCarModal(car=null){
@@ -1819,35 +2274,42 @@ document
 .value =
 car?.id || "";
 
+
 document
 .getElementById("carGarageNumber")
 .value =
 car?.garage_number || "";
+
 
 document
 .getElementById("carPlate")
 .value =
 car?.number_plate || "";
 
+
 document
 .getElementById("carName")
 .value =
 car?.name || "";
+
 
 document
 .getElementById("carYear")
 .value =
 car?.year || "";
 
+
 document
 .getElementById("carPrice")
 .value =
 car?.price || 0;
 
+
 document
 .getElementById("carStatus")
 .value =
 car?.status || "Available";
+
 
 document
 .getElementById("carPhoto")
@@ -1855,7 +2317,10 @@ document
 
 
 const preview =
-document.getElementById("carPhotoPreview");
+document.getElementById(
+"carPhotoPreview"
+);
+
 
 if(car?.photo_url){
 
@@ -1870,6 +2335,7 @@ preview.style.display="none";
 
 }
 
+
 document
 .getElementById("carModal")
 .classList
@@ -1878,21 +2344,151 @@ document
 }
 
 
+/* =====================================================
+   CREATE AUTOMATIC PARTS
+===================================================== */
+
+async function createAutomaticParts(car){
+
+if(!car?.id){
+return;
+}
+
+
+/*
+   Check whether parts already exist.
+   This prevents duplicate automatic parts.
+*/
+
+const {
+data:existingParts,
+error:existingError
+} =
+await db
+.from("parts")
+.select("name")
+.eq("car_id",car.id)
+.eq("garage_id",GARAGE_ID);
+
+
+if(existingError){
+
+console.error(existingError);
+
+return;
+
+}
+
+
+const existingNames =
+new Set(
+(existingParts || [])
+.map(function(part){
+
+return String(part.name)
+.toLowerCase()
+.trim();
+
+})
+);
+
+
+const newParts =
+STANDARD_PARTS
+.filter(function(partName){
+
+return !existingNames.has(
+partName.toLowerCase()
+);
+
+})
+.map(function(partName,index){
+
+return {
+
+garage_id:GARAGE_ID,
+
+part_number:
+"CAR-" +
+car.garage_number +
+"-" +
+String(index+1).padStart(3,"0"),
+
+name:partName,
+
+category:
+"Automatic Catalogue",
+
+quantity:1,
+
+price:0,
+
+car_id:car.id,
+
+status:"Available"
+
+};
+
+});
+
+
+if(!newParts.length){
+return;
+}
+
+
+const {
+error
+} =
+await db
+.from("parts")
+.insert(newParts);
+
+
+if(error){
+
+console.error(
+"Automatic parts error:",
+error
+);
+
+alert(
+"Car saved, but automatic parts could not be created: " +
+error.message
+);
+
+}
+
+}
+
+
+/* =====================================================
+   SAVE CAR
+===================================================== */
+
 document
 .getElementById("carForm")
-.addEventListener("submit",async function(e){
+.addEventListener(
+"submit",
+async function(e){
 
 e.preventDefault();
 
+
 const id =
-document.getElementById("carId").value;
+document
+.getElementById("carId")
+.value;
+
 
 const photoFile =
 document
 .getElementById("carPhoto")
 .files[0];
 
+
 let photoUrl=null;
+
 
 if(photoFile){
 
@@ -1952,7 +2548,8 @@ document
 
 if(photoUrl){
 
-payload.photo_url=photoUrl;
+payload.photo_url =
+photoUrl;
 
 }
 
@@ -1974,7 +2571,9 @@ await db
 result =
 await db
 .from("cars")
-.insert(payload);
+.insert(payload)
+.select()
+.single();
 
 }
 
@@ -1991,18 +2590,48 @@ return;
 }
 
 
+/*
+   ONLY CREATE AUTOMATIC PARTS
+   WHEN A NEW CAR IS CREATED.
+*/
+
+if(!id && result.data){
+
+await createAutomaticParts(
+result.data
+);
+
+}
+
+
 closeModal("carModal");
 
 await loadCars();
 
+await loadCarsForSelectors();
+
 await refreshDashboard();
+
+
+alert(
+id
+?
+"Car updated successfully."
+:
+"Car saved and automatic parts were added."
+);
 
 });
 
 
+/* =====================================================
+   LOAD CARS
+===================================================== */
+
 async function loadCars(){
 
 if(!profile)return;
+
 
 const search =
 (
@@ -2021,7 +2650,10 @@ await db
 .from("cars")
 .select("*")
 .eq("garage_id",GARAGE_ID)
-.order("created_at",{ascending:false});
+.order(
+"created_at",
+{ascending:false}
+);
 
 
 if(error){
@@ -2039,7 +2671,8 @@ return;
 
 
 const cars =
-(data || []).filter(function(car){
+(data || [])
+.filter(function(car){
 
 return (
 
@@ -2056,6 +2689,12 @@ String(car.number_plate || "")
 ||
 
 String(car.name || "")
+.toLowerCase()
+.includes(search)
+
+||
+
+String(car.year || "")
 .toLowerCase()
 .includes(search)
 
@@ -2081,11 +2720,13 @@ document
 .innerHTML =
 
 `
+
 <table>
 
 <thead>
 
 <tr>
+
 <th>Photo</th>
 <th>Garage #</th>
 <th>Plate</th>
@@ -2094,6 +2735,7 @@ document
 <th>Price</th>
 <th>Status</th>
 <th>Actions</th>
+
 </tr>
 
 </thead>
@@ -2101,6 +2743,11 @@ document
 <tbody>
 
 ${cars.map(function(car){
+
+const status =
+String(car.status || "Available")
+.toLowerCase();
+
 
 return `
 
@@ -2135,7 +2782,7 @@ ${escapeHTML(car.number_plate || "-")}
 </td>
 
 <td>
-${escapeHTML(car.name)}
+<b>${escapeHTML(car.name)}</b>
 </td>
 
 <td>
@@ -2146,7 +2793,19 @@ ${escapeHTML(car.year || "-")}
 ${Number(car.price || 0).toFixed(2)}
 </td>
 
-<td>
+<td
+class="${
+status==="sold"
+?
+"status-sold"
+:
+status==="breaking"
+?
+"status-breaking"
+:
+"status-available"
+}"
+>
 ${escapeHTML(car.status || "Available")}
 </td>
 
@@ -2156,9 +2815,16 @@ ${escapeHTML(car.status || "Available")}
 
 <button
 class="btn secondary"
-onclick='openCarModal(${JSON.stringify(car).replace(/'/g,"&#39;")})'
+onclick='openCarModal(${JSON.stringify(car)})'
 >
 Edit
+</button>
+
+<button
+class="btn secondary"
+onclick="viewCarParts('${car.id}')"
+>
+Parts
 </button>
 
 <button
@@ -2181,14 +2847,23 @@ Delete
 </tbody>
 
 </table>
+
 `;
 
 }
 
 
+/* =====================================================
+   DELETE CAR
+===================================================== */
+
 async function deleteCar(id){
 
-if(!confirm("Delete this car?"))return;
+if(!confirm(
+"Delete this car? Its attached parts will remain unless you delete them separately."
+)){
+return;
+}
 
 
 const {
@@ -2212,7 +2887,268 @@ return;
 
 await loadCars();
 
+await loadCarsForSelectors();
+
 await refreshDashboard();
+
+}
+
+
+/* =====================================================
+   LOAD CARS INTO SELECTS
+===================================================== */
+
+async function loadCarsForSelectors(){
+
+const {
+data,
+error
+} =
+await db
+.from("cars")
+.select(
+"id,name,year,garage_number,number_plate"
+)
+.eq("garage_id",GARAGE_ID)
+.order("name",{ascending:true});
+
+
+if(error){
+
+console.error(error);
+
+return;
+
+}
+
+
+/* PART CAR FILTER */
+
+const partFilter =
+document.getElementById(
+"partCarFilter"
+);
+
+
+if(partFilter){
+
+const oldValue =
+partFilter.value;
+
+partFilter.innerHTML =
+'<option value="">All Cars</option>';
+
+(data || []).forEach(function(car){
+
+const option =
+document.createElement("option");
+
+option.value =
+car.id;
+
+option.textContent =
+formatCarName(car);
+
+partFilter.appendChild(option);
+
+});
+
+partFilter.value =
+oldValue;
+
+}
+
+
+/* PART MODAL CAR SELECT */
+
+const partCarSelect =
+document.getElementById(
+"partCarSelect"
+);
+
+
+if(partCarSelect){
+
+const oldValue =
+partCarSelect.value;
+
+partCarSelect.innerHTML =
+'<option value="">Select car</option>';
+
+(data || []).forEach(function(car){
+
+const option =
+document.createElement("option");
+
+option.value =
+car.id;
+
+option.textContent =
+formatCarName(car);
+
+partCarSelect.appendChild(option);
+
+});
+
+partCarSelect.value =
+oldValue;
+
+}
+
+
+/* SALE CAR SELECT */
+
+const saleCarSelect =
+document.getElementById(
+"saleCarSelect"
+);
+
+
+if(saleCarSelect){
+
+const oldValue =
+saleCarSelect.value;
+
+saleCarSelect.innerHTML =
+'<option value="">Select car</option>';
+
+(data || []).forEach(function(car){
+
+const option =
+document.createElement("option");
+
+option.value =
+car.id;
+
+option.textContent =
+formatCarName(car);
+
+saleCarSelect.appendChild(option);
+
+});
+
+saleCarSelect.value =
+oldValue;
+
+}
+
+
+/* INVOICE CAR SELECT */
+
+const invoiceCarSelect =
+document.getElementById(
+"invoiceCarSelect"
+);
+
+
+if(invoiceCarSelect){
+
+const oldValue =
+invoiceCarSelect.value;
+
+invoiceCarSelect.innerHTML =
+'<option value="">Select car</option>';
+
+(data || []).forEach(function(car){
+
+const option =
+document.createElement("option");
+
+option.value =
+car.id;
+
+option.textContent =
+formatCarName(car);
+
+invoiceCarSelect.appendChild(option);
+
+});
+
+invoiceCarSelect.value =
+oldValue;
+
+}
+
+}
+
+
+function formatCarName(car){
+
+return (
+(car.name || "Unknown car") +
+" — " +
+(car.year || "Year unknown") +
+" — Garage #" +
+(car.garage_number || "")
+);
+
+}
+
+
+/* =====================================================
+   VIEW CAR PARTS
+===================================================== */
+
+async function viewCarParts(carId){
+
+const {
+data,
+error
+} =
+await db
+.from("parts")
+.select("*")
+.eq("car_id",carId)
+.eq("garage_id",GARAGE_ID)
+.order("name",{ascending:true});
+
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+
+if(!data?.length){
+
+alert("This car has no parts.");
+
+return;
+
+}
+
+
+const available =
+data.filter(function(x){
+
+return String(x.status).toLowerCase() !== "sold";
+
+}).length;
+
+
+const sold =
+data.filter(function(x){
+
+return String(x.status).toLowerCase() === "sold";
+
+}).length;
+
+
+alert(
+"Parts for this car:\n\n" +
+
+"Total parts: " +
+data.length +
+
+"\nAvailable: " +
+available +
+
+"\nSold: " +
+sold
+);
 
 }
 
@@ -2228,35 +3164,42 @@ document
 .value =
 part?.id || "";
 
+
 document
 .getElementById("partNumber")
 .value =
 part?.part_number || "";
+
 
 document
 .getElementById("partName")
 .value =
 part?.name || "";
 
+
 document
 .getElementById("partCategory")
 .value =
 part?.category || "";
+
 
 document
 .getElementById("partQuantity")
 .value =
 part?.quantity ?? 1;
 
+
 document
 .getElementById("partPrice")
 .value =
 part?.price || 0;
 
+
 document
-.getElementById("partCarId")
+.getElementById("partCarSelect")
 .value =
 part?.car_id || "";
+
 
 document
 .getElementById("partPhoto")
@@ -2264,7 +3207,10 @@ document
 
 
 const preview =
-document.getElementById("partPhotoPreview");
+document.getElementById(
+"partPhotoPreview"
+);
+
 
 if(part?.photo_url){
 
@@ -2279,6 +3225,7 @@ preview.style.display="none";
 
 }
 
+
 document
 .getElementById("partModal")
 .classList
@@ -2287,9 +3234,15 @@ document
 }
 
 
+/* =====================================================
+   SAVE PART
+===================================================== */
+
 document
 .getElementById("partForm")
-.addEventListener("submit",async function(e){
+.addEventListener(
+"submit",
+async function(e){
 
 e.preventDefault();
 
@@ -2360,16 +3313,17 @@ document
 
 car_id:
 document
-.getElementById("partCarId")
+.getElementById("partCarSelect")
 .value
-.trim() || null
+|| null
 
 };
 
 
 if(photoUrl){
 
-payload.photo_url=photoUrl;
+payload.photo_url =
+photoUrl;
 
 }
 
@@ -2417,6 +3371,10 @@ await refreshDashboard();
 });
 
 
+/* =====================================================
+   LOAD PARTS
+===================================================== */
+
 async function loadParts(){
 
 if(!profile)return;
@@ -2431,24 +3389,62 @@ document
 .toLowerCase();
 
 
+const carFilter =
+document
+.getElementById("partCarFilter")
+?.value || "";
+
+
 const {
 data,
 error
 } =
 await db
 .from("parts")
-.select("*")
+.select(
+`
+*,
+cars(
+id,
+name,
+year,
+garage_number
+)
+`
+)
 .eq("garage_id",GARAGE_ID)
-.order("created_at",{ascending:false});
+.order(
+"created_at",
+{ascending:false}
+);
 
 
 if(error){
+
+/*
+   Fallback without relationship if needed.
+*/
+
+const fallback =
+await db
+.from("parts")
+.select("*")
+.eq("garage_id",GARAGE_ID)
+.order(
+"created_at",
+{ascending:false}
+);
+
+
+if(fallback.error){
 
 document
 .getElementById("partsTable")
 .innerHTML =
 "<p>" +
-escapeHTML(error.message) +
+escapeHTML(
+fallback.error.message
+) +
 "</p>";
 
 return;
@@ -2456,10 +3452,18 @@ return;
 }
 
 
-const parts =
-(data || []).filter(function(part){
+return renderParts(
+fallback.data || []
+);
 
-return (
+}
+
+
+const parts =
+(data || [])
+.filter(function(part){
+
+const matchesSearch =
 
 String(part.part_number || "")
 .toLowerCase()
@@ -2475,12 +3479,26 @@ String(part.name || "")
 
 String(part.category || "")
 .toLowerCase()
-.includes(search)
+.includes(search);
 
-);
+
+const matchesCar =
+!carFilter ||
+part.car_id === carFilter;
+
+
+return matchesSearch &&
+matchesCar;
 
 });
 
+
+renderParts(parts);
+
+}
+
+
+function renderParts(parts){
 
 if(!parts.length){
 
@@ -2499,18 +3517,23 @@ document
 .innerHTML =
 
 `
+
 <table>
 
 <thead>
 
 <tr>
+
 <th>Photo</th>
 <th>Part #</th>
-<th>Name</th>
+<th>Part</th>
+<th>Car</th>
 <th>Category</th>
 <th>Qty</th>
 <th>Price</th>
+<th>Status</th>
 <th>Actions</th>
+
 </tr>
 
 </thead>
@@ -2518,6 +3541,21 @@ document
 <tbody>
 
 ${parts.map(function(part){
+
+const status =
+String(
+part.status || "Available"
+)
+.toLowerCase();
+
+
+const carName =
+part.cars
+?
+formatCarName(part.cars)
+:
+"Not attached";
+
 
 return `
 
@@ -2548,7 +3586,11 @@ ${escapeHTML(part.part_number)}
 </td>
 
 <td>
-${escapeHTML(part.name)}
+<b>${escapeHTML(part.name)}</b>
+</td>
+
+<td>
+${escapeHTML(carName)}
 </td>
 
 <td>
@@ -2563,13 +3605,25 @@ ${part.quantity ?? 0}
 ${Number(part.price || 0).toFixed(2)}
 </td>
 
+<td
+class="${
+status==="sold"
+?
+"status-sold"
+:
+"status-available"
+}"
+>
+${escapeHTML(part.status || "Available")}
+</td>
+
 <td>
 
 <div class="actions">
 
 <button
 class="btn secondary"
-onclick='openPartModal(${JSON.stringify(part).replace(/'/g,"&#39;")})'
+onclick='openPartModal(${JSON.stringify(part)})'
 >
 Edit
 </button>
@@ -2594,14 +3648,21 @@ Delete
 </tbody>
 
 </table>
+
 `;
 
 }
 
 
+/* =====================================================
+   DELETE PART
+===================================================== */
+
 async function deletePart(id){
 
-if(!confirm("Delete this part?"))return;
+if(!confirm("Delete this part?")){
+return;
+}
 
 
 const {
@@ -2640,9 +3701,27 @@ document
 .getElementById("saleForm")
 .reset();
 
+
 document
 .getElementById("saleQuantity")
 .value=1;
+
+
+document
+.getElementById("salePartSelect")
+.innerHTML =
+'<option value="">Select part</option>';
+
+
+document
+.getElementById("saleItemId")
+.value="";
+
+
+document
+.getElementById("saleItemName")
+.value="";
+
 
 document
 .getElementById("saleModal")
@@ -2652,11 +3731,232 @@ document
 }
 
 
+function updateSaleCarFields(){
+
+const type =
+document
+.getElementById("saleType")
+.value;
+
+
+const carField =
+document
+.getElementById("saleCarField");
+
+
+const partSelect =
+document
+.getElementById("salePartSelect");
+
+
+if(type==="car"){
+
+carField.style.display="none";
+
+partSelect.style.display="none";
+
+}else{
+
+carField.style.display="block";
+
+partSelect.style.display="block";
+
+}
+
+}
+
+
+/* =====================================================
+   LOAD SALE PARTS
+===================================================== */
+
+async function loadSaleParts(){
+
+const carId =
+document
+.getElementById("saleCarSelect")
+.value;
+
+
+const select =
+document
+.getElementById("salePartSelect");
+
+
+select.innerHTML =
+'<option value="">Loading parts...</option>';
+
+
+if(!carId){
+
+select.innerHTML =
+'<option value="">Select part</option>';
+
+return;
+
+}
+
+
+const {
+data,
+error
+} =
+await db
+.from("parts")
+.select("*")
+.eq("garage_id",GARAGE_ID)
+.eq("car_id",carId)
+.order("name",{ascending:true});
+
+
+if(error){
+
+select.innerHTML =
+'<option value="">Could not load parts</option>';
+
+console.error(error);
+
+return;
+
+}
+
+
+const available =
+(data || [])
+.filter(function(part){
+
+return (
+String(
+part.status || "Available"
+)
+.toLowerCase()
+!=="sold"
+&&
+Number(part.quantity || 0)>0
+);
+
+});
+
+
+select.innerHTML =
+'<option value="">Select part</option>';
+
+
+available.forEach(function(part){
+
+const option =
+document.createElement("option");
+
+option.value =
+part.id;
+
+option.textContent =
+part.name +
+" — " +
+Number(part.price || 0).toFixed(2);
+
+option.dataset.name =
+part.name;
+
+option.dataset.price =
+part.price || 0;
+
+select.appendChild(option);
+
+});
+
+
+if(!available.length){
+
+select.innerHTML =
+'<option value="">No available parts</option>';
+
+}
+
+}
+
+
+/* =====================================================
+   SELECT SALE PART
+===================================================== */
+
+function selectSalePart(){
+
+const select =
+document
+.getElementById("salePartSelect");
+
+
+const option =
+select.options[
+select.selectedIndex
+];
+
+
+if(!option?.value){
+
+document
+.getElementById("saleItemId")
+.value="";
+
+document
+.getElementById("saleItemName")
+.value="";
+
+return;
+
+}
+
+
+document
+.getElementById("saleItemId")
+.value =
+option.value;
+
+
+document
+.getElementById("saleItemName")
+.value =
+option.dataset.name || "";
+
+
+document
+.getElementById("saleTotal")
+.value =
+option.dataset.price || 0;
+
+}
+
+
+/* =====================================================
+   SAVE SALE
+===================================================== */
+
 document
 .getElementById("saleForm")
-.addEventListener("submit",async function(e){
+.addEventListener(
+"submit",
+async function(e){
 
 e.preventDefault();
+
+
+const type =
+document
+.getElementById("saleType")
+.value;
+
+
+const partId =
+document
+.getElementById("salePartSelect")
+.value;
+
+
+const carId =
+document
+.getElementById("saleCarSelect")
+.value;
 
 
 const payload={
@@ -2669,10 +3969,7 @@ document
 .value
 .trim(),
 
-item_type:
-document
-.getElementById("saleType")
-.value,
+item_type:type,
 
 item_id:
 document
@@ -2698,9 +3995,34 @@ Number(
 document
 .getElementById("saleTotal")
 .value
-) || 0
+) || 0,
+
+car_id:
+type==="part"
+?
+carId
+:
+null,
+
+part_id:
+type==="part"
+?
+partId
+:
+null
 
 };
+
+
+if(type==="part" && !partId){
+
+alert(
+"Please select the part being sold."
+);
+
+return;
+
+}
 
 
 const {
@@ -2723,53 +4045,31 @@ return;
 }
 
 
-/* REDUCE PART STOCK */
-
-if(payload.item_type==="part"){
-
-const {
-data:part
-} =
-await db
-.from("parts")
-.select("quantity")
-.eq("id",payload.item_id)
-.eq("garage_id",GARAGE_ID)
-.single();
-
-
-if(part){
-
-await db
-.from("parts")
-.update({
-
-quantity:
-Math.max(
-0,
-Number(part.quantity || 0)
--
-payload.quantity
-
-)
-
-})
-.eq("id",payload.item_id)
-.eq("garage_id",GARAGE_ID);
-
-}
-
-}
+/*
+   Our Supabase trigger automatically
+   changes the part to SOLD.
+*/
 
 
 closeModal("saleModal");
 
 await loadSales();
 
+await loadParts();
+
 await refreshDashboard();
+
+
+alert(
+"Sale recorded. The selected part has been marked SOLD."
+);
 
 });
 
+
+/* =====================================================
+   LOAD SALES
+===================================================== */
 
 async function loadSales(){
 
@@ -2784,7 +4084,10 @@ await db
 .from("sales")
 .select("*")
 .eq("garage_id",GARAGE_ID)
-.order("created_at",{ascending:false});
+.order(
+"created_at",
+{ascending:false}
+);
 
 
 if(error){
@@ -2818,16 +4121,20 @@ document
 .innerHTML =
 
 `
+
 <table>
 
 <thead>
 
 <tr>
+
 <th>Date</th>
 <th>Customer</th>
+<th>Type</th>
 <th>Item</th>
 <th>Qty</th>
 <th>Total</th>
+
 </tr>
 
 </thead>
@@ -2849,6 +4156,12 @@ sale.created_at
 <td>
 ${escapeHTML(
 sale.customer_name || "-"
+)}
+</td>
+
+<td>
+${escapeHTML(
+sale.item_type || "-"
 )}
 </td>
 
@@ -2877,6 +4190,7 @@ sale.total || 0
 </tbody>
 
 </table>
+
 `;
 
 }
@@ -2911,6 +4225,17 @@ document
 
 
 document
+.getElementById("invoicePartSelect")
+.innerHTML =
+'<option value="">Select part</option>';
+
+
+document
+.getElementById("invoicePartInfo")
+.style.display="none";
+
+
+document
 .getElementById("invoiceModal")
 .classList
 .add("open");
@@ -2918,11 +4243,224 @@ document
 }
 
 
+/* =====================================================
+   LOAD INVOICE PARTS
+===================================================== */
+
+async function loadInvoiceParts(){
+
+const carId =
+document
+.getElementById("invoiceCarSelect")
+.value;
+
+
+const select =
+document
+.getElementById("invoicePartSelect");
+
+
+const info =
+document
+.getElementById("invoicePartInfo");
+
+
+info.style.display="none";
+
+
+select.innerHTML =
+'<option value="">Loading parts...</option>';
+
+
+if(!carId){
+
+select.innerHTML =
+'<option value="">Select part</option>';
+
+return;
+
+}
+
+
+const {
+data,
+error
+} =
+await db
+.from("parts")
+.select("*")
+.eq("garage_id",GARAGE_ID)
+.eq("car_id",carId)
+.order("name",{ascending:true});
+
+
+if(error){
+
+console.error(error);
+
+select.innerHTML =
+'<option value="">Could not load parts</option>';
+
+return;
+
+}
+
+
+const available =
+(data || [])
+.filter(function(part){
+
+return (
+
+String(
+part.status || "Available"
+)
+.toLowerCase()
+!=="sold"
+
+&&
+
+Number(
+part.quantity || 0
+)>0
+
+);
+
+});
+
+
+select.innerHTML =
+'<option value="">Select part</option>';
+
+
+available.forEach(function(part){
+
+const option =
+document.createElement("option");
+
+option.value =
+part.id;
+
+option.textContent =
+part.name +
+" — " +
+Number(part.price || 0).toFixed(2);
+
+option.dataset.name =
+part.name;
+
+option.dataset.price =
+part.price || 0;
+
+option.dataset.partNumber =
+part.part_number || "";
+
+select.appendChild(option);
+
+});
+
+
+if(!available.length){
+
+select.innerHTML =
+'<option value="">No available parts for this car</option>';
+
+}
+
+}
+
+
+/* =====================================================
+   SELECT INVOICE PART
+===================================================== */
+
+function selectInvoicePart(){
+
+const select =
+document
+.getElementById("invoicePartSelect");
+
+
+const option =
+select.options[
+select.selectedIndex
+];
+
+
+const info =
+document
+.getElementById("invoicePartInfo");
+
+
+if(!option?.value){
+
+info.style.display="none";
+
+return;
+
+}
+
+
+document
+.getElementById("invoiceDescription")
+.value =
+option.dataset.name || "";
+
+
+document
+.getElementById("invoiceUnitPrice")
+.value =
+option.dataset.price || 0;
+
+
+info.innerHTML =
+
+"<b>Part:</b> " +
+escapeHTML(
+option.dataset.name || ""
+) +
+
+"<br>" +
+
+"<b>Part number:</b> " +
+escapeHTML(
+option.dataset.partNumber || ""
+) +
+
+"<br>" +
+
+"<b>Status:</b> " +
+'<span class="status-available">AVAILABLE</span>';
+
+
+info.style.display="block";
+
+}
+
+
+/* =====================================================
+   SAVE INVOICE
+===================================================== */
+
 document
 .getElementById("invoiceForm")
-.addEventListener("submit",async function(e){
+.addEventListener(
+"submit",
+async function(e){
 
 e.preventDefault();
+
+
+const carId =
+document
+.getElementById("invoiceCarSelect")
+.value;
+
+
+const partId =
+document
+.getElementById("invoicePartSelect")
+.value;
 
 
 const quantity =
@@ -2947,6 +4485,28 @@ document
 .getElementById("invoiceTax")
 .value
 ) || 0;
+
+
+if(!carId){
+
+alert(
+"Please select the car."
+);
+
+return;
+
+}
+
+
+if(!partId){
+
+alert(
+"Please select the part being sold."
+);
+
+return;
+
+}
 
 
 const payload={
@@ -2984,7 +4544,11 @@ unit_price:unitPrice,
 tax:tax,
 
 total:
-(quantity * unitPrice) + tax
+(quantity * unitPrice) + tax,
+
+car_id:carId,
+
+part_id:partId
 
 };
 
@@ -3009,14 +4573,31 @@ return;
 }
 
 
+/*
+   The database trigger created earlier
+   automatically marks this exact part SOLD.
+*/
+
+
 closeModal("invoiceModal");
 
 await loadInvoices();
 
+await loadParts();
+
 await refreshDashboard();
+
+
+alert(
+"Invoice saved. The selected part has been marked SOLD."
+);
 
 });
 
+
+/* =====================================================
+   LOAD INVOICES
+===================================================== */
 
 async function loadInvoices(){
 
@@ -3031,7 +4612,10 @@ await db
 .from("invoices")
 .select("*")
 .eq("garage_id",GARAGE_ID)
-.order("created_at",{ascending:false});
+.order(
+"created_at",
+{ascending:false}
+);
 
 
 if(error){
@@ -3065,16 +4649,19 @@ document
 .innerHTML =
 
 `
+
 <table>
 
 <thead>
 
 <tr>
+
 <th>Invoice</th>
 <th>Customer</th>
 <th>Description</th>
 <th>Total</th>
 <th>Action</th>
+
 </tr>
 
 </thead>
@@ -3115,7 +4702,7 @@ invoice.total || 0
 
 <button
 class="btn"
-onclick='printInvoice(${JSON.stringify(invoice).replace(/'/g,"&#39;")})'
+onclick='printInvoice(${JSON.stringify(invoice)})'
 >
 Print
 </button>
@@ -3131,122 +4718,8 @@ Print
 </tbody>
 
 </table>
-`;
-
-}
-
-
-/* =====================================================
-   PROFILES
-===================================================== */
-
-async function loadProfiles(){
-
-if(!profile)return;
-
-
-const {
-data,
-error
-} =
-await db
-.from("profiles")
-.select(`
-id,
-full_name,
-phone,
-role,
-garage_id
-`)
-.eq("garage_id",GARAGE_ID)
-.order("created_at",{ascending:false});
-
-
-if(error){
-
-document
-.getElementById("profilesList")
-.innerHTML =
-"<p>" +
-escapeHTML(error.message) +
-"</p>";
-
-return;
-
-}
-
-
-if(!data?.length){
-
-document
-.getElementById("profilesList")
-.innerHTML =
-'<div class="empty">No profiles found.</div>';
-
-return;
-
-}
-
-
-document
-.getElementById("profilesList")
-.className="profile-list";
-
-
-document
-.getElementById("profilesList")
-.innerHTML =
-
-data.map(function(user){
-
-const isCurrent =
-currentUser &&
-user.id === currentUser.id;
-
-return `
-
-<div class="profile-item">
-
-<div>
-
-<div class="profile-name">
-
-${escapeHTML(
-user.full_name || "User"
-)}
-
-${isCurrent ? " (You)" : ""}
-
-</div>
-
-<div class="muted">
-
-${escapeHTML(
-user.phone || "No phone number"
-)}
-
-</div>
-
-<div class="muted">
-
-Role:
-${escapeHTML(
-user.role || "User"
-)}
-
-</div>
-
-</div>
-
-<div class="online">
-🟢 Registered
-</div>
-
-</div>
 
 `;
-
-}).join("");
 
 }
 
@@ -3263,9 +4736,12 @@ window.open(
 "_blank"
 );
 
+
 if(!win){
 
-alert("Please allow pop-ups to print invoices.");
+alert(
+"Please allow pop-ups to print the invoice."
+);
 
 return;
 
@@ -3389,6 +4865,7 @@ Print Invoice
 
 `);
 
+
 win.document.close();
 
 }
@@ -3400,18 +4877,12 @@ win.document.close();
 
 async function logout(){
 
-try{
+await setOffline();
 
 await db.auth.signOut();
 
-}catch(error){
-
-console.error(
-"LOGOUT ERROR:",
-error
-);
-
-}
+currentUser=null;
+profile=null;
 
 window.location.reload();
 
@@ -3424,18 +4895,11 @@ window.location.reload();
 
 document
 .getElementById("loginForm")
-.addEventListener("submit",async function(e){
+.addEventListener(
+"submit",
+async function(e){
 
 e.preventDefault();
-
-
-const button =
-document.getElementById("loginButton");
-
-
-button.disabled=true;
-
-button.textContent="Logging in...";
 
 
 showMessage(
@@ -3444,114 +4908,37 @@ showMessage(
 );
 
 
-const email =
-document
-.getElementById("loginEmail")
-.value
-.trim();
-
-
-const password =
-document
-.getElementById("loginPassword")
-.value;
-
-
-try{
-
 const {
-data,
 error
 } =
 await db.auth.signInWithPassword({
 
-email:email,
+email:
+document
+.getElementById("loginEmail")
+.value
+.trim(),
 
-password:password
+password:
+document
+.getElementById("loginPassword")
+.value
 
 });
 
 
 if(error){
 
-console.error(
-"LOGIN ERROR:",
-error
-);
-
 showMessage(
-error.message,
-"error"
+error.message
 );
-
-button.disabled=false;
-
-button.textContent="Login";
 
 return;
 
 }
 
 
-if(!data?.user){
-
-showMessage(
-"Login failed: no user was returned.",
-"error"
-);
-
-button.disabled=false;
-
-button.textContent="Login";
-
-return;
-
-}
-
-
-/*
-   Authentication succeeded.
-   Now load the user's profile.
-*/
-
-const success =
 await loadAccount();
-
-
-if(!success){
-
-button.disabled=false;
-
-button.textContent="Login";
-
-return;
-
-}
-
-
-button.disabled=false;
-
-button.textContent="Login";
-
-
-}catch(error){
-
-console.error(
-"LOGIN EXCEPTION:",
-error
-);
-
-showMessage(
-"Login failed: " +
-(error?.message || error),
-"error"
-);
-
-button.disabled=false;
-
-button.textContent="Login";
-
-}
 
 });
 
@@ -3562,13 +4949,11 @@ button.textContent="Login";
 
 document
 .getElementById("signupForm")
-.addEventListener("submit",async function(e){
+.addEventListener(
+"submit",
+async function(e){
 
 e.preventDefault();
-
-
-const button =
-document.getElementById("signupButton");
 
 
 const fullName =
@@ -3626,18 +5011,11 @@ return;
 }
 
 
-button.disabled=true;
-
-button.textContent="Creating...";
-
-
 showMessage(
 "Creating account...",
 "success"
 );
 
-
-try{
 
 const {
 data,
@@ -3670,78 +5048,68 @@ showMessage(
 error.message
 );
 
-button.disabled=false;
-
-button.textContent="Create Account";
-
 return;
 
 }
 
 
 /*
-   If Supabase immediately gives us a session,
-   load the account.
+   If email confirmation is disabled,
+   there will be a session immediately.
 */
 
 if(data.session && data.user){
 
-const success =
+const {
+error:profileError
+} =
+await db
+.from("profiles")
+.upsert({
+
+id:data.user.id,
+
+full_name:fullName,
+
+phone:phone,
+
+role:"User",
+
+garage_id:GARAGE_ID,
+
+is_online:true,
+
+last_seen:
+new Date().toISOString()
+
+});
+
+
+if(profileError){
+
+showMessage(
+"Account created, but profile setup failed: " +
+profileError.message
+);
+
+return;
+
+}
+
+
 await loadAccount();
 
-
-if(!success){
-
-button.disabled=false;
-
-button.textContent="Create Account";
-
 return;
 
 }
 
-return;
-
-}
-
-
-/*
-   Email confirmation enabled.
-*/
 
 showMessage(
 "Account created. Check your email to confirm your account, then log in.",
 "success"
 );
 
-button.disabled=false;
-
-button.textContent="Create Account";
-
-setTimeout(function(){
-
 showLogin();
-
-},1500);
-
-
-}catch(error){
-
-console.error(
-"SIGNUP ERROR:",
-error
-);
-
-showMessage(
-"Signup failed: " +
-(error?.message || error)
-);
-
-button.disabled=false;
-
-button.textContent="Create Account";
-
-}
 
 });
 
@@ -3751,41 +5119,69 @@ button.textContent="Create Account";
 ===================================================== */
 
 db.auth.onAuthStateChange(
-async function(event,session){
+function(event,session){
 
-console.log(
-"AUTH EVENT:",
-event
-);
+if(event==="SIGNED_IN" && session){
 
-if(event==="SIGNED_IN" && session?.user){
-
-/*
-   Small delay prevents Supabase auth event
-   from racing with the login request.
-*/
-
-setTimeout(function(){
+setTimeout(
+function(){
 
 loadAccount();
 
-},100);
+},
+100
+);
 
 }
 
 if(event==="SIGNED_OUT"){
 
+currentUser=null;
 profile=null;
 
-currentUser=null;
+}
 
-document
-.getElementById("authScreen")
-.style.display="flex";
+});
 
-document
-.getElementById("app")
-.style.display="none";
+
+/* =====================================================
+   PAGE VISIBILITY
+===================================================== */
+
+document.addEventListener(
+"visibilitychange",
+function(){
+
+if(
+document.visibilityState==="visible"
+&&
+currentUser
+){
+
+updateOnlineStatus();
+
+loadOnlineUsers();
+
+}
+
+});
+
+
+/* =====================================================
+   BEFORE LEAVING
+===================================================== */
+
+window.addEventListener(
+"beforeunload",
+function(){
+
+/*
+   Best-effort online update.
+*/
+
+if(currentUser){
+
+setOffline();
 
 }
 
@@ -3796,63 +5192,7 @@ document
    START
 ===================================================== */
 
-(async function(){
-
-try{
-
-const {
-data,
-error
-} =
-await db.auth.getSession();
-
-
-if(error){
-
-console.error(
-"SESSION ERROR:",
-error
-);
-
-document
-.getElementById("authScreen")
-.style.display="flex";
-
-return;
-
-}
-
-
-if(data?.session?.user){
-
-await loadAccount();
-
-}else{
-
-document
-.getElementById("authScreen")
-.style.display="flex";
-
-document
-.getElementById("app")
-.style.display="none";
-
-}
-
-}catch(error){
-
-console.error(
-"START ERROR:",
-error
-);
-
-document
-.getElementById("authScreen")
-.style.display="flex";
-
-}
-
-})();
+loadAccount();
 
 </script>
 
