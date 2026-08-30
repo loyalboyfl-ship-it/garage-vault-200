@@ -438,33 +438,6 @@ th{
     margin:15px 0;
 }
 
-.part-list{
-    max-height:250px;
-    overflow-y:auto;
-    border:1px solid #ddd;
-    border-radius:8px;
-    margin-top:10px;
-}
-
-.part-option{
-    padding:12px;
-    border-bottom:1px solid #eee;
-    cursor:pointer;
-}
-
-.part-option:last-child{
-    border-bottom:0;
-}
-
-.part-option:hover{
-    background:#fff0f0;
-}
-
-.part-option.disabled{
-    opacity:.5;
-    cursor:not-allowed;
-}
-
 @media(max-width:850px){
 
     .sidebar{
@@ -560,7 +533,6 @@ Sign up
 </div>
 
 </form>
-
 
 <form id="signupForm" style="display:none">
 
@@ -673,12 +645,9 @@ Logout
 
 </header>
 
-
 <div class="content">
 
-<!-- =====================================================
-     DASHBOARD
-===================================================== -->
+<!-- DASHBOARD -->
 
 <section id="dashboard" class="page active">
 
@@ -733,9 +702,7 @@ Loading...
 </section>
 
 
-<!-- =====================================================
-     CARS
-===================================================== -->
+<!-- CARS -->
 
 <section id="cars" class="page">
 
@@ -766,9 +733,7 @@ Loading...
 </section>
 
 
-<!-- =====================================================
-     PARTS
-===================================================== -->
+<!-- PARTS -->
 
 <section id="parts" class="page">
 
@@ -803,9 +768,7 @@ Loading...
 </section>
 
 
-<!-- =====================================================
-     SALES
-===================================================== -->
+<!-- SALES -->
 
 <section id="sales" class="page">
 
@@ -822,9 +785,7 @@ Loading...
 </section>
 
 
-<!-- =====================================================
-     INVOICES
-===================================================== -->
+<!-- INVOICES -->
 
 <section id="invoices" class="page">
 
@@ -959,11 +920,29 @@ Cancel
 
 <h2>Add Part</h2>
 
+<div class="info-box">
+<strong>Part numbers are linked to the selected car.</strong><br>
+The same part number can exist on different cars, but each car has its own stock.
+</div>
+
 <form id="partForm">
 
 <input id="partId" type="hidden">
 
 <div class="form-grid">
+
+<div class="field">
+<label>Car *</label>
+
+<select id="partCarSelect" required>
+
+<option value="">
+Select the car this part belongs to
+</option>
+
+</select>
+
+</div>
 
 <div class="field">
 <label>Part Number *</label>
@@ -988,15 +967,6 @@ Cancel
 <div class="field">
 <label>Price</label>
 <input id="partPrice" type="number" min="0" step="0.01">
-</div>
-
-<div class="field">
-<label>Car</label>
-
-<select id="partCarSelect">
-<option value="">Not linked to a car</option>
-</select>
-
 </div>
 
 <div class="field full">
@@ -1051,10 +1021,13 @@ Cancel
 <h2>Create Invoice</h2>
 
 <div class="info-box">
-<strong>Important:</strong><br>
-When you invoice a part from a car, the system will automatically
-deduct the quantity from that part's stock and record the transaction
-in Sales.
+
+<strong>Automatic stock deduction</strong><br>
+
+When you sell a part, the exact part belonging to the selected
+car will have its stock reduced automatically and the sale will
+be recorded.
+
 </div>
 
 <form id="invoiceForm">
@@ -1063,27 +1036,21 @@ in Sales.
 
 <div class="field">
 <label>Invoice Number *</label>
-
 <input id="invoiceNumber" required>
-
 </div>
 
 <div class="field">
 <label>Customer Name</label>
-
 <input id="invoiceCustomer">
-
 </div>
 
 <div class="field">
 <label>Customer Phone</label>
-
 <input id="invoicePhone">
-
 </div>
 
 <div class="field">
-<label>Car</label>
+<label>Car *</label>
 
 <select id="invoiceCar" onchange="loadInvoiceParts()">
 
@@ -1097,7 +1064,7 @@ Select car
 
 <div class="field full">
 
-<label>Part</label>
+<label>Part *</label>
 
 <select id="invoicePart" onchange="selectInvoicePart()">
 
@@ -1109,13 +1076,20 @@ Select a car first
 
 </div>
 
-<div id="invoicePartInfo" class="field full" style="display:none">
+<div id="invoicePartInfo"
+class="field full"
+style="display:none">
 
 <div class="success-box">
 
 <div>
 <strong>Selected Part:</strong>
 <span id="selectedPartName"></span>
+</div>
+
+<div>
+<strong>Part Number:</strong>
+<span id="selectedPartNumber"></span>
 </div>
 
 <div>
@@ -1303,7 +1277,7 @@ document
 
 
 /* =====================================================
-   AUTH SWITCH
+   AUTH
 ===================================================== */
 
 function showSignup(){
@@ -1380,16 +1354,21 @@ x.classList.remove("active");
 button.classList.add("active");
 
 
-if(page==="cars") loadCars();
+if(page==="cars")
+loadCars();
 
 if(page==="parts"){
+
 loadCarDropdowns();
 loadParts();
+
 }
 
-if(page==="sales") loadSales();
+if(page==="sales")
+loadSales();
 
-if(page==="invoices") loadInvoices();
+if(page==="invoices")
+loadInvoices();
 
 }
 
@@ -1410,14 +1389,6 @@ await db.auth.getUser();
 if(error){
 
 console.error(error);
-
-document
-.getElementById("authScreen")
-.style.display="flex";
-
-document
-.getElementById("app")
-.style.display="none";
 
 return;
 
@@ -1445,12 +1416,6 @@ return;
 currentUser = user;
 
 
-/*
-   IMPORTANT:
-   We do NOT select garages(...) here.
-   This prevents the old schema relationship error.
-*/
-
 let {
 data:profileData,
 error:profileError
@@ -1471,10 +1436,6 @@ last_seen
 .eq("id",user.id)
 .maybeSingle();
 
-
-/*
-   If profile does not exist, create it.
-*/
 
 if(profileError){
 
@@ -1499,13 +1460,24 @@ error:newProfileError
 await db
 .from("profiles")
 .insert({
+
 id:user.id,
-full_name:user.user_metadata?.full_name || "",
-phone:user.user_metadata?.phone || "",
+
+full_name:
+user.user_metadata?.full_name || "",
+
+phone:
+user.user_metadata?.phone || "",
+
 role:"User",
+
 garage_id:GARAGE_ID,
+
 is_online:true,
-last_seen:new Date().toISOString()
+
+last_seen:
+new Date().toISOString()
+
 })
 .select()
 .single();
@@ -1529,9 +1501,7 @@ profileData = newProfile;
 }
 
 
-/*
-   Make sure this account belongs to the garage.
-*/
+/* Make sure profile is attached to this garage */
 
 const {
 data:updatedProfile,
@@ -1540,9 +1510,14 @@ error:updateError
 await db
 .from("profiles")
 .update({
+
 garage_id:GARAGE_ID,
+
 is_online:true,
-last_seen:new Date().toISOString()
+
+last_seen:
+new Date().toISOString()
+
 })
 .eq("id",user.id)
 .select()
@@ -1588,15 +1563,21 @@ escapeHTML(GARAGE_NAME) +
 "</b><br>" +
 
 "User: <b>" +
-escapeHTML(profile.full_name || "") +
+escapeHTML(
+profile.full_name || ""
+) +
 "</b><br>" +
 
 "Role: <b>" +
-escapeHTML(profile.role || "User") +
+escapeHTML(
+profile.role || "User"
+) +
 "</b><br>" +
 
 "Email: <b>" +
-escapeHTML(user.email || "") +
+escapeHTML(
+user.email || ""
+) +
 "</b>";
 
 
@@ -1620,13 +1601,18 @@ await refreshDashboard();
 
 async function updateOnlineStatus(isOnline){
 
-if(!currentUser)return;
+if(!currentUser)
+return;
 
 await db
 .from("profiles")
 .update({
+
 is_online:isOnline,
-last_seen:new Date().toISOString()
+
+last_seen:
+new Date().toISOString()
+
 })
 .eq("id",currentUser.id);
 
@@ -1650,14 +1636,15 @@ function(){
 
 if(currentUser){
 
-/*
-   Best effort update.
-*/
 db
 .from("profiles")
 .update({
+
 is_online:false,
-last_seen:new Date().toISOString()
+
+last_seen:
+new Date().toISOString()
+
 })
 .eq("id",currentUser.id);
 
@@ -1672,36 +1659,51 @@ last_seen:new Date().toISOString()
 
 async function refreshDashboard(){
 
-if(!profile)return;
+if(!profile)
+return;
 
-const gid = GARAGE_ID;
+
+const gid =
+GARAGE_ID;
 
 
 const cars =
 await db
 .from("cars")
-.select("id",{count:"exact",head:true})
+.select("id",{
+count:"exact",
+head:true
+})
 .eq("garage_id",gid);
 
 
 const parts =
 await db
 .from("parts")
-.select("id",{count:"exact",head:true})
+.select("id",{
+count:"exact",
+head:true
+})
 .eq("garage_id",gid);
 
 
 const sales =
 await db
 .from("sales")
-.select("id",{count:"exact",head:true})
+.select("id",{
+count:"exact",
+head:true
+})
 .eq("garage_id",gid);
 
 
 const invoices =
 await db
 .from("invoices")
-.select("id",{count:"exact",head:true})
+.select("id",{
+count:"exact",
+head:true
+})
 .eq("garage_id",gid);
 
 
@@ -1734,14 +1736,18 @@ invoices.count || 0;
 
 async function uploadPhoto(file,folder){
 
-if(!file)return null;
+if(!file)
+return null;
 
 
 const extension =
-file.name.split(".").pop();
+file.name
+.split(".")
+.pop();
 
 
 const fileName =
+
 GARAGE_ID +
 "/" +
 folder +
@@ -1799,12 +1805,17 @@ return data.publicUrl;
 
 document
 .getElementById("carPhoto")
-.addEventListener("change",function(){
+.addEventListener(
+"change",
+function(){
 
-const file=this.files[0];
+const file =
+this.files[0];
 
 const preview =
-document.getElementById("carPhotoPreview");
+document.getElementById(
+"carPhotoPreview"
+);
 
 
 if(file){
@@ -1812,11 +1823,13 @@ if(file){
 preview.src =
 URL.createObjectURL(file);
 
-preview.style.display="block";
+preview.style.display =
+"block";
 
 }else{
 
-preview.style.display="none";
+preview.style.display =
+"none";
 
 }
 
@@ -1825,12 +1838,17 @@ preview.style.display="none";
 
 document
 .getElementById("partPhoto")
-.addEventListener("change",function(){
+.addEventListener(
+"change",
+function(){
 
-const file=this.files[0];
+const file =
+this.files[0];
 
 const preview =
-document.getElementById("partPhotoPreview");
+document.getElementById(
+"partPhotoPreview"
+);
 
 
 if(file){
@@ -1838,11 +1856,13 @@ if(file){
 preview.src =
 URL.createObjectURL(file);
 
-preview.style.display="block";
+preview.style.display =
+"block";
 
 }else{
 
-preview.style.display="none";
+preview.style.display =
+"none";
 
 }
 
@@ -1850,7 +1870,7 @@ preview.style.display="none";
 
 
 /* =====================================================
-   LOAD CAR DROPDOWNS
+   CAR DROPDOWNS
 ===================================================== */
 
 async function loadCarDropdowns(){
@@ -1861,9 +1881,16 @@ error
 } =
 await db
 .from("cars")
-.select("id,name,year,garage_number")
+.select(
+"id,name,year,garage_number"
+)
 .eq("garage_id",GARAGE_ID)
-.order("created_at",{ascending:false});
+.order(
+"created_at",
+{
+ascending:false
+}
+);
 
 
 if(error){
@@ -1876,35 +1903,63 @@ return;
 
 
 const partCarSelect =
-document.getElementById("partCarSelect");
+document.getElementById(
+"partCarSelect"
+);
 
 const partCarFilter =
-document.getElementById("partCarFilter");
+document.getElementById(
+"partCarFilter"
+);
 
 const invoiceCar =
-document.getElementById("invoiceCar");
+document.getElementById(
+"invoiceCar"
+);
 
 
 partCarSelect.innerHTML =
-'<option value="">Not linked to a car</option>';
+`
+<option value="">
+Select the car this part belongs to
+</option>
+`;
 
 
 partCarFilter.innerHTML =
-'<option value="">All Cars</option>';
+`
+<option value="">
+All Cars
+</option>
+`;
 
 
 invoiceCar.innerHTML =
-'<option value="">Select car</option>';
+`
+<option value="">
+Select car
+</option>
+`;
 
 
 (data || []).forEach(function(car){
 
 const label =
 escapeHTML(
+
 car.name +
-(car.year ? " " + car.year : "") +
+
+(car.year
+?
+" " + car.year
+:
+""
+) +
+
 " — Garage #" +
+
 car.garage_number
+
 );
 
 
@@ -1990,7 +2045,9 @@ document
 
 
 const preview =
-document.getElementById("carPhotoPreview");
+document.getElementById(
+"carPhotoPreview"
+);
 
 
 if(car?.photo_url){
@@ -1998,11 +2055,13 @@ if(car?.photo_url){
 preview.src =
 car.photo_url;
 
-preview.style.display="block";
+preview.style.display =
+"block";
 
 }else{
 
-preview.style.display="none";
+preview.style.display =
+"none";
 
 }
 
@@ -2047,7 +2106,8 @@ photoFile,
 "cars"
 );
 
-if(!photoUrl)return;
+if(!photoUrl)
+return;
 
 }
 
@@ -2058,38 +2118,50 @@ garage_id:GARAGE_ID,
 
 garage_number:
 document
-.getElementById("carGarageNumber")
+.getElementById(
+"carGarageNumber"
+)
 .value
 .trim(),
 
 number_plate:
 document
-.getElementById("carPlate")
+.getElementById(
+"carPlate"
+)
 .value
 .trim(),
 
 name:
 document
-.getElementById("carName")
+.getElementById(
+"carName"
+)
 .value
 .trim(),
 
 year:
 document
-.getElementById("carYear")
+.getElementById(
+"carYear"
+)
 .value
 .trim(),
 
 price:
 Number(
 document
-.getElementById("carPrice")
+.getElementById(
+"carPrice"
+)
 .value
 ) || 0,
 
 status:
 document
-.getElementById("carStatus")
+.getElementById(
+"carStatus"
+)
 .value
 
 };
@@ -2148,7 +2220,8 @@ await refreshDashboard();
 
 async function loadCars(){
 
-if(!profile)return;
+if(!profile)
+return;
 
 
 const search =
@@ -2168,7 +2241,12 @@ await db
 .from("cars")
 .select("*")
 .eq("garage_id",GARAGE_ID)
-.order("created_at",{ascending:false});
+.order(
+"created_at",
+{
+ascending:false
+}
+);
 
 
 if(error){
@@ -2186,23 +2264,30 @@ return;
 
 
 const cars =
-(data || []).filter(function(car){
+(data || []).filter(
+function(car){
 
 return (
 
-String(car.garage_number || "")
+String(
+car.garage_number || ""
+)
 .toLowerCase()
 .includes(search)
 
 ||
 
-String(car.number_plate || "")
+String(
+car.number_plate || ""
+)
 .toLowerCase()
 .includes(search)
 
 ||
 
-String(car.name || "")
+String(
+car.name || ""
+)
 .toLowerCase()
 .includes(search)
 
@@ -2216,7 +2301,11 @@ if(!cars.length){
 document
 .getElementById("carsTable")
 .innerHTML =
-'<div class="empty">No cars found.</div>';
+`
+<div class="empty">
+No cars found.
+</div>
+`;
 
 return;
 
@@ -2249,7 +2338,8 @@ document
 
 <tbody>
 
-${cars.map(function(car){
+${cars.map(
+function(car){
 
 return `
 
@@ -2276,27 +2366,40 @@ class="car-photo"
 </td>
 
 <td>
-${escapeHTML(car.garage_number)}
+${escapeHTML(
+car.garage_number
+)}
 </td>
 
 <td>
-${escapeHTML(car.number_plate || "-")}
+${escapeHTML(
+car.number_plate || "-"
+)}
 </td>
 
 <td>
-${escapeHTML(car.name)}
+${escapeHTML(
+car.name
+)}
 </td>
 
 <td>
-${escapeHTML(car.year || "-")}
+${escapeHTML(
+car.year || "-"
+)}
 </td>
 
 <td>
-${Number(car.price || 0).toFixed(2)}
+${Number(
+car.price || 0
+).toFixed(2)}
 </td>
 
 <td>
-${escapeHTML(car.status || "Available")}
+${escapeHTML(
+car.status ||
+"Available"
+)}
 </td>
 
 <td>
@@ -2337,7 +2440,10 @@ Delete
 
 async function deleteCar(id){
 
-if(!confirm("Delete this car?"))return;
+if(!confirm(
+"Delete this car?"
+))
+return;
 
 
 const {
@@ -2368,11 +2474,11 @@ await refreshDashboard();
 
 /* =====================================================
    PARTS
-===================================================== */
+   ===================================================== */
 
-function openPartModal(part=null){
+async function openPartModal(part=null){
 
-loadCarDropdowns();
+await loadCarDropdowns();
 
 
 document
@@ -2423,7 +2529,9 @@ document
 
 
 const preview =
-document.getElementById("partPhotoPreview");
+document.getElementById(
+"partPhotoPreview"
+);
 
 
 if(part?.photo_url){
@@ -2431,11 +2539,13 @@ if(part?.photo_url){
 preview.src =
 part.photo_url;
 
-preview.style.display="block";
+preview.style.display =
+"block";
 
 }else{
 
-preview.style.display="none";
+preview.style.display =
+"none";
 
 }
 
@@ -2447,6 +2557,10 @@ document
 
 }
 
+
+/* =====================================================
+   SAVE PART
+===================================================== */
 
 document
 .getElementById("partForm")
@@ -2462,6 +2576,201 @@ document
 .getElementById("partId")
 .value;
 
+
+const carId =
+document
+.getElementById("partCarSelect")
+.value;
+
+
+const partNumber =
+document
+.getElementById("partNumber")
+.value
+.trim();
+
+
+const partName =
+document
+.getElementById("partName")
+.value
+.trim();
+
+
+const category =
+document
+.getElementById("partCategory")
+.value
+.trim();
+
+
+const quantity =
+Number(
+document
+.getElementById("partQuantity")
+.value
+) || 0;
+
+
+const price =
+Number(
+document
+.getElementById("partPrice")
+.value
+) || 0;
+
+
+/* Car required */
+
+if(!carId){
+
+alert(
+"Please select the car this part belongs to."
+);
+
+return;
+
+}
+
+
+/* Part number required */
+
+if(!partNumber){
+
+alert(
+"Part number is required."
+);
+
+return;
+
+}
+
+
+/* Part name required */
+
+if(!partName){
+
+alert(
+"Part name is required."
+);
+
+return;
+
+}
+
+
+/* Verify car belongs to garage */
+
+const {
+data:car,
+error:carError
+} =
+await db
+.from("cars")
+.select(
+"id,name,year,garage_number"
+)
+.eq("id",carId)
+.eq("garage_id",GARAGE_ID)
+.maybeSingle();
+
+
+if(carError){
+
+alert(
+"Could not verify the selected car: " +
+carError.message
+);
+
+return;
+
+}
+
+
+if(!car){
+
+alert(
+"The selected car does not belong to this garage."
+);
+
+return;
+
+}
+
+
+/* =====================================================
+   IMPORTANT:
+   CHECK PART NUMBER ONLY FOR THIS CAR
+===================================================== */
+
+let duplicateQuery =
+db
+.from("parts")
+.select(
+"id,name,part_number"
+)
+.eq("garage_id",GARAGE_ID)
+.eq("car_id",carId)
+.eq("part_number",partNumber);
+
+
+if(id){
+
+duplicateQuery =
+duplicateQuery
+.neq("id",id);
+
+}
+
+
+const {
+data:duplicates,
+error:duplicateError
+} =
+await duplicateQuery;
+
+
+if(duplicateError){
+
+alert(
+"Could not check the part number: " +
+duplicateError.message
+);
+
+return;
+
+}
+
+
+if(duplicates &&
+duplicates.length > 0){
+
+alert(
+
+"Part number " +
+partNumber +
+" already exists for " +
+
+car.name +
+
+(car.year
+?
+" " + car.year
+:
+"") +
+
+".\n\nUse a different part number for this car."
+
+);
+
+return;
+
+}
+
+
+/* =====================================================
+   PHOTO
+===================================================== */
 
 const photoFile =
 document
@@ -2480,54 +2789,37 @@ photoFile,
 "parts"
 );
 
-if(!photoUrl)return;
+if(!photoUrl)
+return;
 
 }
 
 
-const quantity =
-Number(
-document
-.getElementById("partQuantity")
-.value
-) || 0;
-
+/* =====================================================
+   SAVE
+===================================================== */
 
 const payload={
 
 garage_id:GARAGE_ID,
 
 part_number:
-document
-.getElementById("partNumber")
-.value
-.trim(),
+partNumber,
 
 name:
-document
-.getElementById("partName")
-.value
-.trim(),
+partName,
 
 category:
-document
-.getElementById("partCategory")
-.value
-.trim(),
+category,
 
-quantity:quantity,
+quantity:
+quantity,
 
 price:
-Number(
-document
-.getElementById("partPrice")
-.value
-) || 0,
+price,
 
 car_id:
-document
-.getElementById("partCarSelect")
-.value || null
+carId
 
 };
 
@@ -2564,10 +2856,22 @@ await db
 
 if(result.error){
 
+if(
+result.error.code === "23505"
+){
+
+alert(
+"This part number already exists for this car."
+);
+
+}else{
+
 alert(
 "Could not save part: " +
 result.error.message
 );
+
+}
 
 return;
 
@@ -2583,9 +2887,14 @@ await refreshDashboard();
 });
 
 
+/* =====================================================
+   LOAD PARTS
+===================================================== */
+
 async function loadParts(){
 
-if(!profile)return;
+if(!profile)
+return;
 
 
 const search =
@@ -2611,7 +2920,12 @@ await db
 .from("parts")
 .select("*")
 .eq("garage_id",GARAGE_ID)
-.order("created_at",{ascending:false});
+.order(
+"created_at",
+{
+ascending:false
+}
+);
 
 
 if(error){
@@ -2629,54 +2943,65 @@ return;
 
 
 let parts =
-(data || []).filter(function(part){
+(data || []).filter(
+function(part){
 
 const matchesSearch =
 
-String(part.part_number || "")
+String(
+part.part_number || ""
+)
 .toLowerCase()
 .includes(search)
 
 ||
 
-String(part.name || "")
+String(
+part.name || ""
+)
 .toLowerCase()
 .includes(search)
 
 ||
 
-String(part.category || "")
+String(
+part.category || ""
+)
 .toLowerCase()
 .includes(search);
 
 
 const matchesCar =
+
 !carFilter ||
+
 part.car_id === carFilter;
 
 
-return matchesSearch && matchesCar;
+return (
+matchesSearch &&
+matchesCar
+);
 
 });
 
-
-/*
-   Get cars for displaying car names.
-*/
 
 const {
 data:cars
 } =
 await db
 .from("cars")
-.select("id,name,year")
+.select(
+"id,name,year,garage_number"
+)
 .eq("garage_id",GARAGE_ID);
 
 
 const carMap={};
 
 
-(cars || []).forEach(function(car){
+(cars || []).forEach(
+function(car){
 
 carMap[car.id]=car;
 
@@ -2688,7 +3013,11 @@ if(!parts.length){
 document
 .getElementById("partsTable")
 .innerHTML =
-'<div class="empty">No parts found.</div>';
+`
+<div class="empty">
+No parts found.
+</div>
+`;
 
 return;
 
@@ -2722,14 +3051,17 @@ document
 
 <tbody>
 
-${parts.map(function(part){
+${parts.map(
+function(part){
 
 const car =
 carMap[part.car_id];
 
 
 const quantity =
-Number(part.quantity || 0);
+Number(
+part.quantity || 0
+);
 
 
 let statusHTML;
@@ -2738,12 +3070,20 @@ let statusHTML;
 if(quantity <= 0){
 
 statusHTML =
-'<span class="badge sold">SOLD / OUT</span>';
+`
+<span class="badge sold">
+SOLD / OUT
+</span>
+`;
 
 }else{
 
 statusHTML =
-'<span class="badge available">IN STOCK</span>';
+`
+<span class="badge available">
+IN STOCK
+</span>
+`;
 
 }
 
@@ -2773,11 +3113,15 @@ class="part-photo"
 </td>
 
 <td>
-${escapeHTML(part.part_number)}
+${escapeHTML(
+part.part_number
+)}
 </td>
 
 <td>
-${escapeHTML(part.name)}
+${escapeHTML(
+part.name
+)}
 </td>
 
 <td>
@@ -2788,20 +3132,33 @@ car
 ?
 
 escapeHTML(
+
 car.name +
-(car.year ? " " + car.year : "")
+
+(car.year
+?
+" " + car.year
+:
+"") +
+
+" — Garage #" +
+
+(car.garage_number || "")
+
 )
 
 :
 
-'<span class="muted">Not linked</span>'
+'<span class="muted">No car</span>'
 
 }
 
 </td>
 
 <td>
-${escapeHTML(part.category || "-")}
+${escapeHTML(
+part.category || "-"
+)}
 </td>
 
 <td>
@@ -2809,7 +3166,9 @@ ${quantity}
 </td>
 
 <td>
-${Number(part.price || 0).toFixed(2)}
+${Number(
+part.price || 0
+).toFixed(2)}
 </td>
 
 <td>
@@ -2854,7 +3213,10 @@ Delete
 
 async function deletePart(id){
 
-if(!confirm("Delete this part?"))return;
+if(!confirm(
+"Delete this part?"
+))
+return;
 
 
 const {
@@ -2884,7 +3246,7 @@ await refreshDashboard();
 
 
 /* =====================================================
-   INVOICE - OPEN
+   INVOICE OPEN
 ===================================================== */
 
 async function openInvoiceModal(){
@@ -2919,12 +3281,17 @@ document
 document
 .getElementById("invoicePart")
 .innerHTML =
-'<option value="">Select a car first</option>';
+`
+<option value="">
+Select a car first
+</option>
+`;
 
 
 document
 .getElementById("invoicePartInfo")
-.style.display="none";
+.style.display =
+"none";
 
 
 document
@@ -2944,7 +3311,8 @@ document
 
 
 /* =====================================================
-   INVOICE - LOAD PARTS FOR CAR
+   LOAD INVOICE PARTS
+   ONLY PARTS FOR SELECTED CAR
 ===================================================== */
 
 async function loadInvoiceParts(){
@@ -2962,13 +3330,18 @@ document
 
 document
 .getElementById("invoicePartInfo")
-.style.display="none";
+.style.display =
+"none";
 
 
 if(!carId){
 
 partSelect.innerHTML =
-'<option value="">Select a car first</option>';
+`
+<option value="">
+Select a car first
+</option>
+`;
 
 return;
 
@@ -2990,7 +3363,11 @@ await db
 if(error){
 
 partSelect.innerHTML =
-'<option value="">Could not load parts</option>';
+`
+<option value="">
+Could not load parts
+</option>
+`;
 
 console.error(error);
 
@@ -3000,23 +3377,34 @@ return;
 
 
 partSelect.innerHTML =
-'<option value="">Select part</option>';
+`
+<option value="">
+Select part
+</option>
+`;
 
 
 if(!data?.length){
 
 partSelect.innerHTML =
-'<option value="">No parts linked to this car</option>';
+`
+<option value="">
+No parts linked to this car
+</option>
+`;
 
 return;
 
 }
 
 
-data.forEach(function(part){
+data.forEach(
+function(part){
 
 const quantity =
-Number(part.quantity || 0);
+Number(
+part.quantity || 0
+);
 
 
 const option =
@@ -3030,10 +3418,20 @@ part.id;
 option.textContent =
 
 part.name +
+
+" — Part #: " +
+
+part.part_number +
+
 " — Stock: " +
+
 quantity +
+
 " — Price: " +
-Number(part.price || 0).toFixed(2);
+
+Number(
+part.price || 0
+).toFixed(2);
 
 
 if(quantity <= 0){
@@ -3046,7 +3444,9 @@ option.textContent +=
 }
 
 
-partSelect.appendChild(option);
+partSelect.appendChild(
+option
+);
 
 });
 
@@ -3054,7 +3454,7 @@ partSelect.appendChild(option);
 
 
 /* =====================================================
-   INVOICE - SELECT PART
+   SELECT INVOICE PART
 ===================================================== */
 
 async function selectInvoicePart(){
@@ -3069,7 +3469,8 @@ if(!partId){
 
 document
 .getElementById("invoicePartInfo")
-.style.display="none";
+.style.display =
+"none";
 
 return;
 
@@ -3099,29 +3500,42 @@ return;
 }
 
 
+/*
+   IMPORTANT:
+   Get the car directly from part.car_id.
+*/
+
 const {
-data:car
+data:car,
+error:carError
 } =
-part.car_id
-
-?
-
 await db
 .from("cars")
-.select("name,year,garage_number")
+.select(
+"name,year,garage_number"
+)
 .eq("id",part.car_id)
 .eq("garage_id",GARAGE_ID)
-.maybeSingle()
+.maybeSingle();
 
-:
 
-{data:null};
+if(carError){
+
+console.error(carError);
+
+}
 
 
 document
 .getElementById("selectedPartName")
 .textContent =
 part.name;
+
+
+document
+.getElementById("selectedPartNumber")
+.textContent =
+part.part_number;
 
 
 document
@@ -3133,29 +3547,44 @@ car
 ?
 
 car.name +
-(car.year ? " " + car.year : "")
+
+(car.year
+?
+" " + car.year
+:
+"") +
+
+" — Garage #" +
+
+(car.garage_number || "")
 
 :
 
-"Not linked";
+"Unknown car";
 
 
 document
 .getElementById("selectedPartStock")
 .textContent =
-Number(part.quantity || 0);
+Number(
+part.quantity || 0
+);
 
 
 document
 .getElementById("selectedPartPrice")
 .textContent =
-Number(part.price || 0).toFixed(2);
+Number(
+part.price || 0
+).toFixed(2);
 
 
 document
 .getElementById("invoiceUnitPrice")
 .value =
-Number(part.price || 0);
+Number(
+part.price || 0
+);
 
 
 document
@@ -3166,7 +3595,8 @@ part.name;
 
 document
 .getElementById("invoicePartInfo")
-.style.display="block";
+.style.display =
+"block";
 
 
 updateInvoiceTotal();
@@ -3185,7 +3615,9 @@ function updateInvoiceTotal(){
 const quantity =
 Number(
 document
-.getElementById("invoiceQuantity")
+.getElementById(
+"invoiceQuantity"
+)
 .value
 ) || 0;
 
@@ -3193,7 +3625,9 @@ document
 const price =
 Number(
 document
-.getElementById("invoiceUnitPrice")
+.getElementById(
+"invoiceUnitPrice"
+)
 .value
 ) || 0;
 
@@ -3201,7 +3635,9 @@ document
 const tax =
 Number(
 document
-.getElementById("invoiceTax")
+.getElementById(
+"invoiceTax"
+)
 .value
 ) || 0;
 
@@ -3233,14 +3669,18 @@ document
 const quantity =
 Number(
 document
-.getElementById("invoiceQuantity")
+.getElementById(
+"invoiceQuantity"
+)
 .value
 ) || 0;
 
 
 const box =
 document
-.getElementById("invoiceStockWarning");
+.getElementById(
+"invoiceStockWarning"
+);
 
 
 if(!partId){
@@ -3257,7 +3697,9 @@ data:part
 } =
 await db
 .from("parts")
-.select("quantity")
+.select(
+"quantity"
+)
 .eq("id",partId)
 .eq("garage_id",GARAGE_ID)
 .maybeSingle();
@@ -3273,7 +3715,9 @@ return;
 
 
 const stock =
-Number(part.quantity || 0);
+Number(
+part.quantity || 0
+);
 
 
 if(quantity > stock){
@@ -3283,10 +3727,17 @@ box.innerHTML =
 `
 <div class="warning-box">
 
-<strong>Not enough stock.</strong><br>
+<strong>
+Not enough stock.
+</strong>
 
-You are trying to sell ${quantity},
-but only ${stock} is available.
+<br>
+
+You are trying to sell
+${quantity},
+but only
+${stock}
+is available.
 
 </div>
 `;
@@ -3298,9 +3749,14 @@ box.innerHTML =
 `
 <div class="warning-box">
 
-This sale will use the last ${stock} item(s).
+This sale will use the last
+${stock}
+item(s).
+
 The part will automatically become
-<strong>SOLD / OUT OF STOCK</strong>.
+<strong>
+SOLD / OUT OF STOCK
+</strong>.
 
 </div>
 `;
@@ -3313,7 +3769,10 @@ box.innerHTML =
 <div class="success-box">
 
 Stock after this sale:
-<strong>${stock - quantity}</strong>
+
+<strong>
+${stock - quantity}
+</strong>
 
 </div>
 `;
@@ -3324,7 +3783,7 @@ Stock after this sale:
 
 
 /* =====================================================
-   INVOICE INPUT LISTENERS
+   INVOICE INPUTS
 ===================================================== */
 
 document
@@ -3334,6 +3793,7 @@ document
 function(){
 
 updateInvoiceTotal();
+
 updateStockWarning();
 
 });
@@ -3356,7 +3816,7 @@ updateInvoiceTotal
 
 
 /* =====================================================
-   INVOICE SAVE
+   SAVE INVOICE
 ===================================================== */
 
 document
@@ -3370,40 +3830,52 @@ e.preventDefault();
 
 const invoiceNumber =
 document
-.getElementById("invoiceNumber")
+.getElementById(
+"invoiceNumber"
+)
 .value
 .trim();
 
 
 const customerName =
 document
-.getElementById("invoiceCustomer")
+.getElementById(
+"invoiceCustomer"
+)
 .value
 .trim();
 
 
 const customerPhone =
 document
-.getElementById("invoicePhone")
+.getElementById(
+"invoicePhone"
+)
 .value
 .trim();
 
 
 const carId =
 document
-.getElementById("invoiceCar")
+.getElementById(
+"invoiceCar"
+)
 .value;
 
 
 const partId =
 document
-.getElementById("invoicePart")
+.getElementById(
+"invoicePart"
+)
 .value;
 
 
 const description =
 document
-.getElementById("invoiceDescription")
+.getElementById(
+"invoiceDescription"
+)
 .value
 .trim();
 
@@ -3411,7 +3883,9 @@ document
 const quantity =
 Number(
 document
-.getElementById("invoiceQuantity")
+.getElementById(
+"invoiceQuantity"
+)
 .value
 ) || 0;
 
@@ -3419,7 +3893,9 @@ document
 const unitPrice =
 Number(
 document
-.getElementById("invoiceUnitPrice")
+.getElementById(
+"invoiceUnitPrice"
+)
 .value
 ) || 0;
 
@@ -3427,7 +3903,9 @@ document
 const tax =
 Number(
 document
-.getElementById("invoiceTax")
+.getElementById(
+"invoiceTax"
+)
 .value
 ) || 0;
 
@@ -3438,7 +3916,31 @@ const total =
 
 if(!invoiceNumber){
 
-alert("Invoice number is required.");
+alert(
+"Invoice number is required."
+);
+
+return;
+
+}
+
+
+if(!carId){
+
+alert(
+"Please select a car."
+);
+
+return;
+
+}
+
+
+if(!partId){
+
+alert(
+"Please select a part."
+);
 
 return;
 
@@ -3447,7 +3949,9 @@ return;
 
 if(!description){
 
-alert("Item description is required.");
+alert(
+"Item description is required."
+);
 
 return;
 
@@ -3456,25 +3960,21 @@ return;
 
 if(quantity <= 0){
 
-alert("Quantity must be at least 1.");
+alert(
+"Quantity must be at least 1."
+);
 
 return;
 
 }
 
 
-/*
-   If a part was selected, verify stock
-   immediately before creating the invoice.
-*/
-
-let selectedPart = null;
-
-
-if(partId){
+/* =====================================================
+   VERIFY PART BELONGS TO SELECTED CAR
+===================================================== */
 
 const {
-data:part,
+data:selectedPart,
 error:partError
 } =
 await db
@@ -3482,13 +3982,15 @@ await db
 .select("*")
 .eq("id",partId)
 .eq("garage_id",GARAGE_ID)
+.eq("car_id",carId)
 .maybeSingle();
 
 
-if(partError || !part){
+if(partError){
 
 alert(
-"Could not find the selected part."
+"Could not verify the selected part: " +
+partError.message
 );
 
 return;
@@ -3496,55 +3998,73 @@ return;
 }
 
 
-selectedPart = part;
-
-
-const currentStock =
-Number(part.quantity || 0);
-
-
-if(currentStock < quantity){
+if(!selectedPart){
 
 alert(
-"Not enough stock. Available: " +
-currentStock +
-", requested: " +
+"This part does not belong to the selected car."
+);
+
+return;
+
+}
+
+
+const oldStock =
+Number(
+selectedPart.quantity || 0
+);
+
+
+if(oldStock < quantity){
+
+alert(
+
+"Not enough stock.\n\n" +
+
+"Available: " +
+oldStock +
+
+"\nRequested: " +
 quantity
+
 );
 
 return;
 
 }
 
-}
 
-
-/*
-   =====================================================
-   STEP 1
+/* =====================================================
    CREATE INVOICE
-   =====================================================
-*/
+===================================================== */
 
 const invoicePayload = {
 
 garage_id:GARAGE_ID,
 
-invoice_number:invoiceNumber,
+invoice_number:
+invoiceNumber,
 
-customer_name:customerName,
+customer_name:
+customerName,
 
-customer_phone:customerPhone,
+customer_phone:
+customerPhone,
 
-item_description:description,
+item_description:
+description,
 
-quantity:quantity,
+quantity:
+quantity,
 
-unit_price:unitPrice,
+unit_price:
+unitPrice,
 
-tax:tax,
+tax:
+tax,
 
-total:total
+total:
+total
 
 };
 
@@ -3572,18 +4092,9 @@ return;
 }
 
 
-/*
-   =====================================================
-   STEP 2
+/* =====================================================
    DEDUCT STOCK
-   =====================================================
-*/
-
-if(selectedPart){
-
-const oldStock =
-Number(selectedPart.quantity || 0);
-
+===================================================== */
 
 const newStock =
 Math.max(
@@ -3601,14 +4112,11 @@ await db
 quantity:newStock
 })
 .eq("id",selectedPart.id)
-.eq("garage_id",GARAGE_ID);
+.eq("garage_id",GARAGE_ID)
+.eq("car_id",carId);
 
 
 if(stockError){
-
-/*
-   Remove invoice if stock deduction failed.
-*/
 
 await db
 .from("invoices")
@@ -3618,8 +4126,11 @@ await db
 
 
 alert(
-"Invoice was not completed because stock could not be updated: " +
+
+"Invoice was not completed because stock could not be updated:\n\n" +
+
 stockError.message
+
 );
 
 return;
@@ -3627,42 +4138,49 @@ return;
 }
 
 
-/*
-   =====================================================
-   STEP 3
-   RECORD SALE AUTOMATICALLY
-   =====================================================
-*/
-
-let saleItemName =
-selectedPart.name;
-
-
-if(carId){
+/* =====================================================
+   GET CAR
+===================================================== */
 
 const {
 data:car
 } =
 await db
 .from("cars")
-.select("name,year")
+.select(
+"name,year,garage_number"
+)
 .eq("id",carId)
 .eq("garage_id",GARAGE_ID)
 .maybeSingle();
 
 
+let saleItemName =
+selectedPart.name;
+
+
 if(car){
 
 saleItemName =
+
 selectedPart.name +
+
 " — " +
+
 car.name +
-(car.year ? " " + car.year : "");
+
+(car.year
+?
+" " + car.year
+:
+"");
 
 }
 
-}
 
+/* =====================================================
+   RECORD SALE
+===================================================== */
 
 const {
 error:saleError
@@ -3673,26 +4191,30 @@ await db
 
 garage_id:GARAGE_ID,
 
-customer_name:customerName,
+customer_name:
+customerName,
 
-item_type:"part",
+item_type:
+"part",
 
-item_id:selectedPart.id,
+item_id:
+selectedPart.id,
 
-item_name:saleItemName,
+item_name:
+saleItemName,
 
-quantity:quantity,
+quantity:
+quantity,
 
-total:total
+total:
+total
 
 });
 
 
 if(saleError){
 
-/*
-   Try to restore stock if Sales recording failed.
-*/
+/* Restore stock */
 
 await db
 .from("parts")
@@ -3700,12 +4222,11 @@ await db
 quantity:oldStock
 })
 .eq("id",selectedPart.id)
-.eq("garage_id",GARAGE_ID);
+.eq("garage_id",GARAGE_ID)
+.eq("car_id",carId);
 
 
-/*
-   Remove invoice too.
-*/
+/* Remove invoice */
 
 await db
 .from("invoices")
@@ -3715,44 +4236,62 @@ await db
 
 
 alert(
-"Invoice was not completed because the sale could not be recorded: " +
+
+"Invoice was not completed because the sale could not be recorded:\n\n" +
+
 saleError.message
+
 );
 
 return;
 
 }
 
-}
 
-
-/*
-   =====================================================
+/* =====================================================
    COMPLETE
-   =====================================================
-*/
+===================================================== */
 
 closeModal("invoiceModal");
 
 
 alert(
-selectedPart
-
-?
 
 "Invoice created successfully.\n\n" +
-"Part: " +
-selectedPart.name +
-"\n" +
-"Quantity sold: " +
-quantity +
-"\n" +
-"Stock deducted automatically.\n" +
-"Sale recorded automatically."
 
+"Car: " +
+
+(
+car
+?
+car.name +
+(car.year
+?
+" " + car.year
 :
+"")
+:
+""
+) +
 
-"Invoice created successfully."
+"\nPart: " +
+
+selectedPart.name +
+
+"\nPart Number: " +
+
+selectedPart.part_number +
+
+"\nQuantity sold: " +
+
+quantity +
+
+"\nRemaining stock: " +
+
+newStock +
+
+"\n\nStock deducted and sale recorded automatically."
+
 );
 
 
@@ -3773,7 +4312,8 @@ await refreshDashboard();
 
 async function loadSales(){
 
-if(!profile)return;
+if(!profile)
+return;
 
 
 const {
@@ -3784,7 +4324,12 @@ await db
 .from("sales")
 .select("*")
 .eq("garage_id",GARAGE_ID)
-.order("created_at",{ascending:false});
+.order(
+"created_at",
+{
+ascending:false
+}
+);
 
 
 if(error){
@@ -3806,7 +4351,11 @@ if(!data?.length){
 document
 .getElementById("salesTable")
 .innerHTML =
-'<div class="empty">No sales recorded.</div>';
+`
+<div class="empty">
+No sales recorded.
+</div>
+`;
 
 return;
 
@@ -3837,7 +4386,8 @@ document
 
 <tbody>
 
-${data.map(function(sale){
+${data.map(
+function(sale){
 
 return `
 
@@ -3897,7 +4447,8 @@ sale.total || 0
 
 async function loadInvoices(){
 
-if(!profile)return;
+if(!profile)
+return;
 
 
 const {
@@ -3908,7 +4459,12 @@ await db
 .from("invoices")
 .select("*")
 .eq("garage_id",GARAGE_ID)
-.order("created_at",{ascending:false});
+.order(
+"created_at",
+{
+ascending:false
+}
+);
 
 
 if(error){
@@ -3930,7 +4486,11 @@ if(!data?.length){
 document
 .getElementById("invoiceTable")
 .innerHTML =
-'<div class="empty">No invoices created.</div>';
+`
+<div class="empty">
+No invoices created.
+</div>
+`;
 
 return;
 
@@ -3962,7 +4522,8 @@ document
 
 <tbody>
 
-${data.map(function(invoice){
+${data.map(
+function(invoice){
 
 return `
 
@@ -4060,7 +4621,9 @@ win.document.write(`
 <head>
 
 <title>
-${escapeHTML(invoice.invoice_number)}
+${escapeHTML(
+invoice.invoice_number
+)}
 </title>
 
 <style>
@@ -4113,49 +4676,84 @@ Top Ranger Breakers
 </h1>
 
 <h2>
-INVOICE ${escapeHTML(invoice.invoice_number)}
+INVOICE
+${escapeHTML(
+invoice.invoice_number
+)}
 </h2>
 
 <div class="row">
+
 <b>Garage:</b>
+
 Top Ranger Breakers
+
 </div>
 
 <div class="row">
+
 <b>Customer:</b>
-${escapeHTML(invoice.customer_name || "")}
+
+${escapeHTML(
+invoice.customer_name || ""
+)}
+
 </div>
 
 <div class="row">
+
 <b>Phone:</b>
-${escapeHTML(invoice.customer_phone || "")}
+
+${escapeHTML(
+invoice.customer_phone || ""
+)}
+
 </div>
 
 <hr>
 
 <div class="row">
+
 <b>Description:</b>
-${escapeHTML(invoice.item_description || "")}
+
+${escapeHTML(
+invoice.item_description || ""
+)}
+
 </div>
 
 <div class="row">
+
 Quantity:
 ${invoice.quantity || 1}
+
 </div>
 
 <div class="row">
+
 Unit Price:
-${Number(invoice.unit_price || 0).toFixed(2)}
+${Number(
+invoice.unit_price || 0
+).toFixed(2)}
+
 </div>
 
 <div class="row">
+
 Tax:
-${Number(invoice.tax || 0).toFixed(2)}
+${Number(
+invoice.tax || 0
+).toFixed(2)}
+
 </div>
 
 <div class="total">
+
 Total:
-${Number(invoice.total || 0).toFixed(2)}
+${Number(
+invoice.total || 0
+).toFixed(2)}
+
 </div>
 
 <button onclick="window.print()">
@@ -4254,12 +4852,6 @@ showMessage(
 return;
 
 }
-
-
-showMessage(
-"Login successful...",
-"success"
-);
 
 
 await loadAccount();
@@ -4377,11 +4969,6 @@ return;
 }
 
 
-/*
-   If Supabase immediately gives a session,
-   create/update the profile.
-*/
-
 if(data.session && data.user){
 
 const {
@@ -4403,7 +4990,8 @@ garage_id:GARAGE_ID,
 
 is_online:true,
 
-last_seen:new Date().toISOString()
+last_seen:
+new Date().toISOString()
 
 });
 
@@ -4411,8 +4999,11 @@ last_seen:new Date().toISOString()
 if(profileError){
 
 showMessage(
+
 "Account created, but profile setup failed: " +
+
 profileError.message
+
 );
 
 return;
@@ -4428,8 +5019,11 @@ return;
 
 
 showMessage(
+
 "Account created. Check your email to confirm your account, then log in.",
+
 "success"
+
 );
 
 
