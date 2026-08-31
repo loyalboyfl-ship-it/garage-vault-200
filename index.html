@@ -537,7 +537,9 @@ Top Ranger<br>
 <button onclick="goToPage('invoices',this)">
 🧾 <span class="nav-text">Invoices</span>
 </button>
-
+<button onclick="goToPage('profile',this)">
+👤 <span class="nav-text">Profile</span>
+</button>
 </nav>
 
 </aside>
@@ -707,7 +709,56 @@ oninput="loadParts()"
 </div>
 
 </section>
+<!-- ================= PROFILE ================= -->
 
+<section id="profile" class="page">
+
+<div class="panel">
+
+<h2>👤 My Profile</h2>
+
+<div class="info-box">
+
+<p>
+<strong>Full Name:</strong>
+<span id="profileFullName">Loading...</span>
+</p>
+
+<p>
+<strong>Email:</strong>
+<span id="profileEmail">Loading...</span>
+</p>
+
+<p>
+<strong>Phone:</strong>
+<span id="profilePhone">Loading...</span>
+</p>
+
+<p>
+<strong>Username:</strong>
+<span id="profileUsername">Loading...</span>
+</p>
+
+<p>
+<strong>Role:</strong>
+<span id="profileRole">Loading...</span>
+</p>
+
+<p>
+<strong>Garage:</strong>
+<span id="profileGarage">Top Ranger Breakers</span>
+</p>
+
+<p>
+<strong>Status:</strong>
+<span id="profileStatus">🟢 Online</span>
+</p>
+
+</div>
+
+</div>
+
+</section>
 </div>
 </main>
 </div>
@@ -1227,6 +1278,7 @@ if(page==="sales") loadSales();
 
 if(page==="invoices") loadInvoices();
 
+if(page==="profile") loadProfilePage();
 }
 
 
@@ -3843,7 +3895,45 @@ profile=null;
 /* =====================================================
    START
 ===================================================== */
+/* =====================================================
+   PROFILE PAGE
+===================================================== */
 
+function loadProfilePage(){
+
+if(!currentUser || !profile)return;
+
+document.getElementById("profileFullName").textContent =
+profile.full_name || "Not set";
+
+document.getElementById("profileEmail").textContent =
+currentUser.email || "Not available";
+
+document.getElementById("profilePhone").textContent =
+profile.phone || "Not set";
+
+document.getElementById("profileUsername").textContent =
+profile.username || "Not set";
+
+document.getElementById("profileRole").textContent =
+profile.role || "User";
+
+document.getElementById("profileGarage").textContent =
+GARAGE_NAME;
+
+document.getElementById("profileStatus").textContent =
+profile.is_online
+? "🟢 Online"
+: "⚪ Offline";
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadAccount();
 loadAccount();
 
 </script>
