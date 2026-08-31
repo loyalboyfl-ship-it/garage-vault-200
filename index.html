@@ -498,7 +498,6 @@ Already have an account?
 </div>
 </div>
 
-
 <!-- ================= APP ================= -->
 
 <div id="app" class="app">
@@ -610,7 +609,6 @@ Loading...
 
 </section>
 
-
 <!-- ================= CARS ================= -->
 
 <section id="cars" class="page">
@@ -638,7 +636,6 @@ oninput="loadCars()"
 </div>
 
 </section>
-
 
 <!-- ================= PARTS ================= -->
 
@@ -672,7 +669,6 @@ oninput="loadParts()"
 
 </section>
 
-
 <!-- ================= SALES ================= -->
 
 <section id="sales" class="page">
@@ -686,7 +682,6 @@ oninput="loadParts()"
 </div>
 
 </section>
-
 
 <!-- ================= INVOICES ================= -->
 
@@ -762,7 +757,6 @@ oninput="loadParts()"
 </div>
 </main>
 </div>
-
 
 <!-- ================= CAR MODAL ================= -->
 
@@ -852,7 +846,6 @@ Cancel
 </div>
 </div>
 
-
 <!-- ================= PART MODAL ================= -->
 
 <div id="partModal" class="modal">
@@ -937,7 +930,6 @@ Cancel
 
 </div>
 </div>
-
 
 <!-- ================= INVOICE MODAL ================= -->
 
@@ -1140,7 +1132,6 @@ Cancel
 </div>
 </div>
 
-
 <script>
 
 /* =====================================================
@@ -1159,7 +1150,6 @@ SUPABASE_URL,
 SUPABASE_KEY
 );
 
-
 /* =====================================================
    GARAGE
 ===================================================== */
@@ -1172,7 +1162,6 @@ const GARAGE_NAME =
 
 let profile = null;
 let currentUser = null;
-
 
 /* =====================================================
    HELPERS
@@ -1195,7 +1184,6 @@ return {
 
 }
 
-
 function showMessage(text,type="error"){
 
 const box =
@@ -1208,7 +1196,6 @@ box.className =
 
 }
 
-
 function closeModal(id){
 
 document
@@ -1217,7 +1204,6 @@ document
 .remove("open");
 
 }
-
 
 /* =====================================================
    AUTH SWITCH
@@ -1235,7 +1221,6 @@ document.getElementById("message").className="message";
 
 }
 
-
 function showLogin(){
 
 document.getElementById("signupForm").style.display="none";
@@ -1247,7 +1232,6 @@ document.getElementById("authSubtitle").textContent =
 document.getElementById("message").className="message";
 
 }
-
 
 /* =====================================================
    NAVIGATION
@@ -1280,7 +1264,6 @@ if(page==="invoices") loadInvoices();
 
 if(page==="profile") loadProfilePage();
 }
-
 
 /* =====================================================
    LOAD ACCOUNT / PROFILE
@@ -1335,7 +1318,6 @@ last_seen
 .eq("id",user.id)
 .maybeSingle();
 
-
 if(profileError){
 
 console.error("Profile error:",profileError);
@@ -1348,7 +1330,6 @@ profileError.message
 return;
 
 }
-
 
 if(!profileData){
 
@@ -1370,7 +1351,6 @@ last_seen:new Date().toISOString()
 .select()
 .single();
 
-
 if(newProfileError){
 
 console.error(newProfileError);
@@ -1388,7 +1368,6 @@ profileData = newProfile;
 
 }
 
-
 const {
 data:updatedProfile,
 error:updateError
@@ -1403,7 +1382,6 @@ last_seen:new Date().toISOString()
 .eq("id",user.id)
 .select()
 .single();
-
 
 if(updateError){
 
@@ -1420,14 +1398,12 @@ return;
 
 profile = updatedProfile;
 
-
 document.getElementById("garageTitle").textContent =
 GARAGE_NAME;
 
 document.getElementById("welcome").textContent =
 "Welcome, " +
 (profile.full_name || "User");
-
 
 document.getElementById("accountInfo").innerHTML =
 
@@ -1447,10 +1423,8 @@ escapeHTML(profile.role || "User") +
 escapeHTML(user.email || "") +
 "</b>";
 
-
 document.getElementById("invoiceSellerAddress").value =
 "49 Lavender Rd";
-
 
 document.getElementById("authScreen").style.display="none";
 document.getElementById("app").style.display="block";
@@ -1458,7 +1432,6 @@ document.getElementById("app").style.display="block";
 await refreshDashboard();
 
 }
-
 
 /* =====================================================
    ONLINE STATUS
@@ -1478,7 +1451,6 @@ last_seen:new Date().toISOString()
 
 }
 
-
 setInterval(function(){
 
 if(currentUser){
@@ -1486,7 +1458,6 @@ updateOnlineStatus(true);
 }
 
 },60000);
-
 
 window.addEventListener(
 "beforeunload",
@@ -1505,7 +1476,6 @@ last_seen:new Date().toISOString()
 }
 
 });
-
 
 /* =====================================================
    DASHBOARD
@@ -1554,7 +1524,6 @@ document.getElementById("invoiceCount").textContent =
 invoices.count || 0;
 
 }
-
 
 /* =====================================================
    STORAGE
@@ -1610,7 +1579,6 @@ return data.publicUrl;
 
 }
 
-
 /* =====================================================
    PHOTO PREVIEWS
 ===================================================== */
@@ -1638,7 +1606,6 @@ preview.style.display="none";
 
 });
 
-
 document.getElementById("partPhoto")
 .addEventListener("change",function(){
 
@@ -1661,7 +1628,6 @@ preview.style.display="none";
 }
 
 });
-
 
 /* =====================================================
    LOAD CAR DROPDOWNS
@@ -1737,7 +1703,6 @@ ${label}
 
 }
 
-
 /* =====================================================
    CARS
 ===================================================== */
@@ -1787,7 +1752,6 @@ document.getElementById("carModal")
 .classList.add("open");
 
 }
-
 
 /* =====================================================
    SAVE CAR + AUTOMATIC STANDARD PARTS
@@ -1846,7 +1810,6 @@ payload.photo_url=photoUrl;
 let result;
 let savedCar;
 
-
 /* =====================================================
    UPDATE EXISTING CAR
 ===================================================== */
@@ -1877,7 +1840,6 @@ savedCar=result.data;
 
 }
 
-
 /* =====================================================
    ADD NEW CAR
 ===================================================== */
@@ -1903,7 +1865,6 @@ return;
 }
 
 savedCar=result.data;
-
 
 /* =====================================================
    AUTOMATIC STANDARD PARTS
@@ -1940,7 +1901,6 @@ const standardParts = [
 
 ];
 
-
 const partsToInsert =
 standardParts.map(function(partName,index){
 
@@ -1968,14 +1928,12 @@ price:0
 
 });
 
-
 const {
 error:partsError
 } =
 await db
 .from("parts")
 .insert(partsToInsert);
-
 
 if(partsError){
 
@@ -2000,7 +1958,6 @@ savedCar.id
 
 }
 
-
 /* =====================================================
    COMPLETE
 ===================================================== */
@@ -2018,7 +1975,6 @@ await loadParts();
 await refreshDashboard();
 
 });
-
 
 async function loadCars(){
 
@@ -2159,7 +2115,6 @@ Delete
 
 }
 
-
 async function deleteCar(id){
 
 if(!confirm("Delete this car?"))return;
@@ -2185,7 +2140,6 @@ await loadParts();
 await refreshDashboard();
 
 }
-
 
 /* =====================================================
    PARTS
@@ -2238,7 +2192,6 @@ document.getElementById("partModal")
 .classList.add("open");
 
 }
-
 
 document.getElementById("partForm")
 .addEventListener("submit",async function(e){
@@ -2329,7 +2282,6 @@ await loadParts();
 await refreshDashboard();
 
 });
-
 
 async function loadParts(){
 
@@ -2530,7 +2482,6 @@ Delete
 
 }
 
-
 async function deletePart(id){
 
 if(!confirm("Delete this part?"))return;
@@ -2554,7 +2505,6 @@ await loadParts();
 await refreshDashboard();
 
 }
-
 
 /* =====================================================
    INVOICE OPEN
@@ -2589,7 +2539,6 @@ document.getElementById("invoiceModal")
 .classList.add("open");
 
 }
-
 
 /* =====================================================
    LOAD PARTS FOR SELECTED CAR
@@ -2681,7 +2630,6 @@ partSelect.appendChild(option);
 });
 
 }
-
 
 /* =====================================================
    SELECT INVOICE PART
@@ -2778,7 +2726,6 @@ updateStockWarning();
 
 }
 
-
 /* =====================================================
    TOTAL
 ===================================================== */
@@ -2801,7 +2748,6 @@ document.getElementById("invoiceTotal").value =
 total.toFixed(2);
 
 }
-
 
 /* =====================================================
    STOCK WARNING
@@ -2891,7 +2837,6 @@ Stock after this sale:
 
 }
 
-
 /* =====================================================
    INVOICE LISTENERS
 ===================================================== */
@@ -2909,7 +2854,6 @@ document.getElementById("invoiceUnitPrice")
 
 document.getElementById("invoiceTax")
 .addEventListener("input",updateInvoiceTotal);
-
 
 /* =====================================================
    SAVE INVOICE
@@ -2980,7 +2924,6 @@ return;
 
 }
 
-
 /* =====================================================
    VERIFY SELECTED PART
 ===================================================== */
@@ -3048,7 +2991,6 @@ return;
 
 }
 
-
 /* =====================================================
    CREATE INVOICE
 ===================================================== */
@@ -3100,7 +3042,6 @@ return;
 
 }
 
-
 /* =====================================================
    DEDUCT STOCK
 ===================================================== */
@@ -3140,7 +3081,6 @@ stockError.message
 return;
 
 }
-
 
 /* =====================================================
    RECORD SALE
@@ -3182,8 +3122,6 @@ await db
 .from("sales")
 .insert({
 
-.insert({
-
 garage_id:GARAGE_ID,
 
 customer_name:customerName,
@@ -3196,25 +3134,7 @@ item_name:saleItemName,
 
 quantity:quantity,
 
-unit_price:unitPrice,
-
-tax:tax,
-
-total:total,
-
-invoice_number:invoiceNumber,
-
-customer_address:customerAddress,
-
-customer_phone:customerPhone,
-
-seller_address:sellerAddress,
-
-car_id:carId,
-
-part_number:selectedPart.part_number,
-
-part_name:selectedPart.name
+total:total
 
 });
 
@@ -3244,7 +3164,6 @@ return;
 }
 
 }
-
 
 /* =====================================================
    COMPLETE
@@ -3284,156 +3203,100 @@ await refreshDashboard();
 
 });
 
-
 /* =====================================================
    SALES
 ===================================================== */
 
 async function loadSales(){
+
 if(!profile)return;
+
 const {data,error} =
 await db
 .from("sales")
 .select("*")
 .eq("garage_id",GARAGE_ID)
-.order("garage_number",{ascending:true});
+.order("created_at",{ascending:false});
+
 if(error){
+
 document.getElementById("salesTable").innerHTML =
 "<p>" + escapeHTML(error.message) + "</p>";
+
 return;
+
 }
-const sales = data || [];
-let totalSales = 0;
-let totalItems = 0;
-sales.forEach(function(sale){
-totalSales += Number(sale.total || 0);
-totalItems += Number(sale.quantity || 0);
-});
-/* =====================================================
-   SALES SUMMARY
-===================================================== */
-if(!sales.length){
-document.getElementById("salesTable").innerHTML = `
-<div class="cards">
-<div class="card">
-<small>Total Sales</small>
-<strong>R0.00</strong>
-</div>
-<div class="card">
-<small>Items Sold</small>
-<strong>0</strong>
-</div>
-<div class="card">
-<small>Number of Sales</small>
-<strong>0</strong>
-</div>
-</div>
-<div class="empty">
-No sales recorded.
-</div>
-`;
+
+if(!data?.length){
+
+document.getElementById("salesTable").innerHTML =
+'<div class="empty">No sales recorded.</div>';
+
 return;
+
 }
-/* =====================================================
-   SALES DISPLAY
-===================================================== */
-document.getElementById("salesTable").innerHTML = `
-<div class="cards">
-<div class="card">
-<small>Total Sales</small>
-<strong>
-R${totalSales.toFixed(2)}
-</strong>
-</div>
-<div class="card">
-<small>Items Sold</small>
-<strong>
-${totalItems}
-</strong>
-</div>
-<div class="card">
-<small>Number of Sales</small>
-<strong>
-${sales.length}
-</strong>
-</div>
-</div>
-<div class="panel">
-<h3>Sales History</h3>
+
+document.getElementById("salesTable").innerHTML =
+
+`
 <table>
+
 <thead>
+
 <tr>
 <th>Date</th>
-<th>Invoice</th>
 <th>Customer</th>
-<th>Address</th>
-<th>Phone</th>
-<th>Car</th>
-<th>Part</th>
-<th>Part #</th>
+<th>Item</th>
+<th>Type</th>
 <th>Qty</th>
-<th>Unit Price</th>
-<th>Tax</th>
 <th>Total</th>
 </tr>
+
 </thead>
+
 <tbody>
-${sales.map(function(sale){
+
+${data.map(function(sale){
+
 return `
+
 <tr>
+
 <td>
-${sale.created_at
-?
-new Date(sale.created_at).toLocaleString()
-:
-"-"}
+${new Date(sale.created_at).toLocaleString()}
 </td>
-<td>
-${escapeHTML(sale.invoice_number || "-")}
-</td>
+
 <td>
 ${escapeHTML(sale.customer_name || "-")}
 </td>
+
 <td>
-${escapeHTML(sale.customer_address || "-")}
+${escapeHTML(sale.item_name || "-")}
 </td>
+
 <td>
-${escapeHTML(sale.customer_phone || "-")}
+${escapeHTML(sale.item_type || "-")}
 </td>
+
 <td>
-${escapeHTML(sale.car_name || "-")}
+${sale.quantity || 1}
 </td>
+
 <td>
-${escapeHTML(
-sale.part_name ||
-sale.item_name ||
-"-"
-)}
+${Number(sale.total || 0).toFixed(2)}
 </td>
-<td>
-${escapeHTML(sale.part_number || "-")}
-</td>
-<td>
-${Number(sale.quantity || 0)}
-</td>
-<td>
-R${Number(sale.unit_price || 0).toFixed(2)}
-</td>
-<td>
-R${Number(sale.tax || 0).toFixed(2)}
-</td>
-<td>
-<strong>
-R${Number(sale.total || 0).toFixed(2)}
-</strong>
-</td>
+
 </tr>
+
 `;
+
 }).join("")}
+
 </tbody>
+
 </table>
-</div>
 `;
+
 }
 
 /* =====================================================
@@ -3545,7 +3408,6 @@ Print
 `;
 
 }
-
 
 /* =====================================================
    PRINT INVOICE
@@ -3748,7 +3610,6 @@ win.document.close();
 
 }
 
-
 /* =====================================================
    LOGOUT
 ===================================================== */
@@ -3762,7 +3623,6 @@ await db.auth.signOut();
 window.location.reload();
 
 }
-
 
 /* =====================================================
    LOGIN
@@ -3813,7 +3673,6 @@ showMessage(
 await loadAccount();
 
 });
-
 
 /* =====================================================
    SIGNUP
@@ -3935,23 +3794,34 @@ showLogin();
 
 });
 
-
 /* =====================================================
    AUTH STATE
 ===================================================== */
 
-db.auth.onAuthStateChange(function(event, session){
+db.auth.onAuthStateChange(
+function(event,session){
 
-    if(event === "SIGNED_OUT"){
-        currentUser = null;
-        profile = null;
+if(
+event === "SIGNED_IN" &&
+session?.user
+){
 
-        document.getElementById("authScreen").style.display = "flex";
-        document.getElementById("app").style.display = "none";
-    }
+setTimeout(function(){
+
+loadAccount();
+
+},100);
+
+}
+
+if(event === "SIGNED_OUT"){
+
+currentUser=null;
+profile=null;
+
+}
 
 });
-
 
 /* =====================================================
    START
@@ -3989,13 +3859,12 @@ profile.is_online
 
 }
 
-
 /* =====================================================
    START
 ===================================================== */
 
 loadAccount();
-
+loadAccount();
 
 </script>
 
