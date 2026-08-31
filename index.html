@@ -3940,28 +3940,15 @@ showLogin();
    AUTH STATE
 ===================================================== */
 
-db.auth.onAuthStateChange(
-function(event,session){
+db.auth.onAuthStateChange(function(event, session){
 
-if(
-event === "SIGNED_IN" &&
-session?.user
-){
+    if(event === "SIGNED_OUT"){
+        currentUser = null;
+        profile = null;
 
-setTimeout(function(){
-
-loadAccount();
-
-},100);
-
-}
-
-if(event === "SIGNED_OUT"){
-
-currentUser=null;
-profile=null;
-
-}
+        document.getElementById("authScreen").style.display = "flex";
+        document.getElementById("app").style.display = "none";
+    }
 
 });
 
