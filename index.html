@@ -1990,7 +1990,7 @@ await db
 .from("cars")
 .select("*")
 .eq("garage_id",GARAGE_ID)
-.order("created_at",{ascending:false});
+.order("garage_number",{ascending:true});
 
 if(error){
 
